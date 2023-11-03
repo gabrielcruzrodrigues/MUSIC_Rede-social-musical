@@ -1,5 +1,8 @@
 package com.gabriel.music.redesocial.domain;
 
+import com.gabriel.music.redesocial.domain.enums.AvaliabityEnum;
+import com.gabriel.music.redesocial.domain.enums.GenresEnum;
+import com.gabriel.music.redesocial.domain.enums.InstrumentsEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,31 +26,50 @@ public class User {
     private String username;
     private String email;
     private String password;
-
-    @ManyToOne
-    @JoinColumn(name = "imageProfile_id")
-    private ImageUser imageProfile;
-
-    @ManyToOne
-    @JoinColumn(name = "imageBackground_id")
-    private ImageUser imageBackground;
-
     private String cep;
     private String goals;
-    private PhoneNumber phoneNumber;
     private String whatsapp;
-    private List<InstrumentsEnum> instruments;
-    private List<GenresEnum> genres;
-    private List<Post> posts;
-    private List<SocialMediaEnum> socialMedia;
-    private List<ImageUser> photos;
-    private List<VideoUser> videos;
-    private List<Friends> friends;
-    private List<Material> purchasedMaterials;
-    private List<Material> createdMaterials;
     private Date age;
     private Date entryDate;
     private Integer shows;
-    private List<AvaliabityEnum> avaliabity;
+
+    @Enumerated(EnumType.STRING)
+    private List<GenresEnum> genres;
+
+    @OneToMany
+    @JoinColumn(name = "socialMedia_id")
+    private List<SocialMedia> socialMedia;
+
+    @Enumerated(EnumType.STRING)
+    private List<InstrumentsEnum> instruments;
+
+    @Enumerated(EnumType.STRING)
+    private List<AvaliabityEnum> availability;
+
+    private List<Post> posts;
+
+    @OneToOne
+    @JoinColumn(name = "imageProfile_id")
+    private ImageUser imageProfile;
+
+    @OneToOne
+    @JoinColumn(name = "imageBackground_id")
+    private ImageUser imageBackground;
+
+    @OneToOne
+    @JoinColumn(name = "number_id")
+    private PhoneNumber phoneNumber;
+
+    @OneToMany
+    @JoinColumn(name = "photos_id")
+    private List<ImageUser> photos;
+
+    @OneToMany
+    @JoinColumn(name = "videos_id")
+    private List<VideoUser> videos;
+
+    private List<Friends> friends;
+    private List<Material> purchasedMaterials;
+    private List<Material> createdMaterials;
     private List<Material> saves;
 }
