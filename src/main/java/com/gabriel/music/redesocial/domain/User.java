@@ -23,8 +23,15 @@ public class User {
     private String username;
     private String email;
     private String password;
-    private Image imageProfile;
-    private Image imageBackground;
+
+    @ManyToOne
+    @JoinColumn(name = "imageProfile_id")
+    private ImageUser imageProfile;
+
+    @ManyToOne
+    @JoinColumn(name = "imageBackground_id")
+    private ImageUser imageBackground;
+
     private String cep;
     private String goals;
     private PhoneNumber phoneNumber;
