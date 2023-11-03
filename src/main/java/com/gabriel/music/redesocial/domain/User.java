@@ -1,31 +1,47 @@
 package com.gabriel.music.redesocial.domain;
 
 import com.gabriel.music.redesocial.domain.enums.AvaliabityEnum;
-import com.gabriel.music.redesocial.domain.enums.GenresEnum;
+import com.gabriel.music.redesocial.domain.enums.GenreEnum;
 import com.gabriel.music.redesocial.domain.enums.InstrumentsEnum;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
+@Entity
+@Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
+
+    @Column(unique = true, nullable = false)
+    @NotNull
+    @NotBlank(message = "o campo username não pode estar nulo.")
     private String username;
+
+    @Column(unique = true, nullable = false)
+    @Email
+    @NotNull(message = "o campo email não pode estar nulo.")
     private String email;
+
+    @NotBlank
+    @NotNull(message = "O campo password não pode estar nulo.")
+    @Size(min = 8, max = 60)
     private String password;
+
     private String cep;
     private String goals;
     private String whatsapp;
@@ -33,12 +49,8 @@ public class User {
     private Date entryDate;
     private Integer shows;
 
-    @Enumerated(EnumType.STRING)
-    private List<GenresEnum> genres;
-
-    @OneToMany
-    @JoinColumn(name = "socialMedia_id")
-    private List<SocialMedia> socialMedia;
+    @Enumerated(value = EnumType.STRING)
+    private List<GenreEnum> genre;
 
     @Enumerated(EnumType.STRING)
     private List<InstrumentsEnum> instruments;
@@ -46,32 +58,35 @@ public class User {
     @Enumerated(EnumType.STRING)
     private List<AvaliabityEnum> availability;
 
-    @OneToMany
-    @JoinColumn(name = "posts_id")
+    @OneToMany(mappedBy = "user")
+    private List<SocialMedia> socialMedia;
+
+    @OneToMany(mappedBy = "creator")
     private List<Post> posts;
 
-    @OneToOne
-    @JoinColumn(name = "imageProfile_id")
+    @OneToOne(mappedBy = "userProfile")
     private ImageUser imageProfile;
 
-    @OneToOne
-    @JoinColumn(name = "imageBackground_id")
+    @OneToOne(mappedBy = "userBackground")
     private ImageUser imageBackground;
 
-    @OneToOne
-    @JoinColumn(name = "number_id")
+    @OneToOne(mappedBy = "user")
     private PhoneNumber phoneNumber;
 
-    @OneToMany
-    @JoinColumn(name = "photos_id")
+    @OneToMany(mappedBy = "idUserPhoto")
     private List<ImageUser> photos;
 
-    @OneToMany
-    @JoinColumn(name = "videos_id")
+    @OneToMany(mappedBy = "user")
     private List<VideoUser> videos;
 
-    private List<Friends> friends;
-    private List<Material> purchasedMaterials;
-    private List<Material> createdMaterials;
-    private List<Material> saves;
+    @OneToMany(mappedBy = "user")
+    private List<Friend> friends;
+
 }
+
+
+
+//    private List<Material> purchasedMaterials;
+//    private List<Material> createdMaterials;
+//    private List<Material> saves;
+//}
