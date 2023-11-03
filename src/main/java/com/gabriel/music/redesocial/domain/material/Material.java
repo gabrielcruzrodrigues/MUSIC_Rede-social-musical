@@ -1,5 +1,6 @@
-package com.gabriel.music.redesocial.domain;
+package com.gabriel.music.redesocial.domain.material;
 
+import com.gabriel.music.redesocial.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.gabriel.music.redesocial.domain;
+package com.gabriel.music.redesocial.domain.post;
 
 import com.gabriel.music.redesocial.domain.user.User;
 import jakarta.persistence.*;
@@ -11,14 +11,19 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PhoneNumber {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String number;
+    private String comment;
+    private Long likes;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 }

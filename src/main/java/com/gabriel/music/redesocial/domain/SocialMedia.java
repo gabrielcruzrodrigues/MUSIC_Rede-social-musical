@@ -1,6 +1,7 @@
 package com.gabriel.music.redesocial.domain;
 
 import com.gabriel.music.redesocial.domain.enums.SocialMediaEnum;
+import com.gabriel.music.redesocial.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

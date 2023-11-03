@@ -1,8 +1,14 @@
-package com.gabriel.music.redesocial.domain;
+package com.gabriel.music.redesocial.domain.user;
 
+import com.gabriel.music.redesocial.domain.*;
 import com.gabriel.music.redesocial.domain.enums.AvaliabityEnum;
 import com.gabriel.music.redesocial.domain.enums.GenreEnum;
 import com.gabriel.music.redesocial.domain.enums.InstrumentsEnum;
+import com.gabriel.music.redesocial.domain.material.Material;
+import com.gabriel.music.redesocial.domain.post.Comment;
+import com.gabriel.music.redesocial.domain.post.Post;
+import com.gabriel.music.redesocial.domain.user.ImageUser;
+import com.gabriel.music.redesocial.domain.user.VideoUser;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -90,4 +96,7 @@ public class User {
 
     @OneToMany(mappedBy = "savesUser_id")
     private List<Material> saves;
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
 }
