@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImagePost {
+public class VideosPost {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String imageReference;
+    private String videoReference;
 
     @ManyToOne
     @JoinColumn(name = "post_id")

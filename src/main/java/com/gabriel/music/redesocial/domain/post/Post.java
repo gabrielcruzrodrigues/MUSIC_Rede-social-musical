@@ -21,19 +21,25 @@ public class Post {
     private Long id;
     private String title;
     private String description;
-    private List<ImagePost> images;
-////    private List<VideosPost> videos;
     private Date CreatedDate;
+    private Long numbersClick;
+    private Long likes;
+    private Integer shares;
+    private Integer amountSaved;
+
+//    @ManyToMany
+//    @JoinTable(name = "post_tags", joinColumns = @JoinColumn(name = ))
+//    private List<Tags> tags;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User creator;
 
-////    private List<Tags> tags;
-    private Long numbersClick;
-    private Long likes;
-    private Integer shares;
-    private Integer amountSaved;
+    @OneToMany(mappedBy = "post")
+    private List<VideosPost> videos;
+
+    @OneToMany(mappedBy = "post")
+    private List<ImagePost> images;
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
