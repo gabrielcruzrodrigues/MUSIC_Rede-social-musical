@@ -23,4 +23,6 @@ public class ImageUser {
     private User idUserProfile;
     @OneToOne(mappedBy = "imageBackground")
     private User IdUserBackground;
+    @OneToOne(mappedBy = "photos")
+    private User idUserPhotos;
 }
