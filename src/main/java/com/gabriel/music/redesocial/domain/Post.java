@@ -18,22 +18,23 @@ import java.util.UUID;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-    private String title;
-    private String description;
-    private List<ImagePost> images;
-    private List<VideosPost> videos;
-    private Date CreatedDate;
-
-
-    @OneToOne(mappedBy = "posts")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+//    private String title;
+//    private String description;
+////    private List<ImagePost> images;
+////    private List<VideosPost> videos;
+//    private Date CreatedDate;
+//
+//
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User creator;
-
-    private List<Tags> tags;
-    private BigInteger numbersClick;
-    private BigInteger likes;
-    private Integer shares;
-    private Integer amountSaved;
+//
+////    private List<Tags> tags;
+//    private BigInteger numbersClick;
+//    private BigInteger likes;
+//    private Integer shares;
+//    private Integer amountSaved;
 }
 

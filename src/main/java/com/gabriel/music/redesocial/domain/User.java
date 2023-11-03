@@ -82,11 +82,12 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Friend> friends;
 
+    @OneToMany(mappedBy = "purchasedMaterialsUser_id")
+    private List<Material> purchasedMaterials;
+
+    @OneToMany(mappedBy = "createdMaterialsUser_id")
+    private List<Material> createdMaterials;
+
+    @OneToMany(mappedBy = "savesUser_id")
+    private List<Material> saves;
 }
-
-
-
-//    private List<Material> purchasedMaterials;
-//    private List<Material> createdMaterials;
-//    private List<Material> saves;
-//}

@@ -15,14 +15,19 @@ import java.util.UUID;
 public class ImageUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String imageReference;
 
-    @OneToOne(mappedBy = "imageProfile")
-    private User idUserProfile;
-    @OneToOne(mappedBy = "imageBackground")
-    private User IdUserBackground;
-    @OneToOne(mappedBy = "photos")
-    private User idUserPhotos;
+    @OneToOne
+    @JoinColumn(name = "id_imageProfile")
+    private User userProfile;
+
+    @OneToOne
+    @JoinColumn(name = "id_imageBackground")
+    private User userBackground;
+
+    @ManyToOne
+    @JoinColumn(name = "id_UserPhoto")
+    private User idUserPhoto;
 }

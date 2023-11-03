@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Entity
 @Table
 @Data
@@ -16,10 +14,13 @@ import java.util.UUID;
 public class SocialMedia {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private SocialMediaEnum socialMedia;
     private String username;
-    @OneToOne(mappedBy = "socialMedia")
-    private User idUserSocialMedia;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
