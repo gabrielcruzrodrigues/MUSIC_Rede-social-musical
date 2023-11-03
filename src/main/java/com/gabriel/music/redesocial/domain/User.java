@@ -46,6 +46,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private List<AvaliabityEnum> availability;
 
+    @OneToMany
+    @JoinColumn(name = "posts_id")
     private List<Post> posts;
 
     @OneToOne
