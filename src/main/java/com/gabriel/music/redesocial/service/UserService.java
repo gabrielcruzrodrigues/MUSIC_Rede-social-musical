@@ -16,32 +16,42 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User InitialRegistration(UserInitialRegistration user) throws UserNotFoundException {
-        this.findByUsername(user.username());
-        User newUser = createNewInitialUser(user);
+    public User initialRegistration(UserInitialRegistration user) throws UserNotFoundException {
+        User newUser = modelingNewInitialUser(user);
         return userRepository.save(newUser);
     }
 
 
     public User findByUsername(String username) throws UserNotFoundException {
         Optional<User> user = userRepository.findByUsername(username);
-        return user.orElseThrow(() -> new UserNotFoundException());
+        return user.orElseThrow(UserNotFoundException::new);
     }
 
     public User findByEmail(String email) throws UserNotFoundException {
         Optional<User> user = userRepository.findByEmail(email);
-        return user.orElseThrow(() -> new UserNotFoundException())
+        return user.orElseThrow(UserNotFoundException::new);
     }
 
-    public User registrationToSearchForABand(UserRegisterToSearchForABand userRegisterToSearchForABand) {
-        return null;
+    public User registrationToSearchForABand(UserRegisterToSearchForABand userRegisterToSearchForABand, String username) throws UserNotFoundException {
+        return modelingNewRegistrationToSearchForABand(userRegisterToSearchForABand, username);
     }
 
-    private User createNewInitialUser(UserInitialRegistration userDTO) {
+    private User modelingNewInitialUser(UserInitialRegistration userDTO) {
         var newUser = new User();
         newUser.setUsername(userDTO.username());
         newUser.setEmail(userDTO.email());
         newUser.setPassword(userDTO.password());
         return newUser;
+    }
+
+    private User modelingNewRegistrationToSearchForABand(UserRegisterToSearchForABand user, String username) throws UserNotFoundException {
+        User existingUser = this.findByUsername(username);
+        existingUser.setCep(user.cep());
+        existingUser.setAge(user.age());
+        existingUser.setShows(user.shows());
+        existingUser.setGenre(user.genre());
+        existingUser.setInstruments(user.instruments());
+        existingUser.setAvailability(user.avaliabity());
+        return existingUser;
     }
 }
