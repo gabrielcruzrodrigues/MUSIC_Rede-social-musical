@@ -1,4 +1,4 @@
-package com.gabriel.music.redesocial.domain.user;
+package com.gabriel.music.redesocial.domain.user.DTO;
 
 import com.gabriel.music.redesocial.domain.enums.AvaliabityEnum;
 import com.gabriel.music.redesocial.domain.enums.GenreEnum;
