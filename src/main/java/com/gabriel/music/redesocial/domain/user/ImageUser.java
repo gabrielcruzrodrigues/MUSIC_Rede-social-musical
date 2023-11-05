@@ -28,4 +28,11 @@ public class ImageUser {
     @ManyToOne
     @JoinColumn(name = "id_UserPhoto")
     private User idUserPhoto;
+
+    public ImageUser(String imageReference, User userProfile, User userBackground, User idUserPhoto) {
+        this.imageReference = imageReference;
+        this.userProfile = userProfile;
+        this.userBackground = userBackground;
+        this.idUserPhoto = idUserPhoto;
+    }
 }
