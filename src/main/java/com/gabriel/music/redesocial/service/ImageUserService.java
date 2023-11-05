@@ -21,17 +21,17 @@ public class ImageUserService {
     @Autowired
     private ImageUserRepository imageUserRepository;
 
-    public void saveAndWriteToDirectory(MultipartFile arquivo, User user) throws IOException {
+    public void saveAndWriteToDirectory(MultipartFile file, User user) throws IOException {
         try {
-            if (!arquivo.isEmpty()) {
-                log.info(arquivo.getContentType());
-                byte[] bytes = arquivo.getBytes();
-                Path caminho = Paths.get(pathImages + "\\" + user.getUsername() + arquivo.getOriginalFilename());
-                Files.write(caminho, bytes);
+            if (!file.isEmpty()) {
+                log.info(file.getContentType());
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get(pathImages + "\\" + user.getUsername() + file.getOriginalFilename());
+                Files.write(path, bytes);
             }
 
             ImageUser imageUser = new ImageUser(
-                    user.getUsername() + arquivo.getOriginalFilename(), null, null, user
+                    user.getUsername() + file.getOriginalFilename(), null, null, user
             );
             imageUserRepository.save(imageUser);
         } catch (IOException e) {
