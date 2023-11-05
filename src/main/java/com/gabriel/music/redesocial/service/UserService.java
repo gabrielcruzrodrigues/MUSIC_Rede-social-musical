@@ -9,7 +9,9 @@ import com.gabriel.music.redesocial.repository.UserRepository;
 import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,6 +21,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ImageUserService imageUserService;
 
     public UserResponseInitialRegister initialRegistration(UserInitialRegistration user) throws UserNotFoundException {
         User newUser = modelingNewInitialRegistrationUser(user);
@@ -111,5 +116,10 @@ public class UserService {
         return new UserResponseInitialRegister(
                 user.getId(), user.getUsername(), user.getEmail()
         );
+    }
+
+    public void uploadImageProfileUser(MultipartFile arquivo, String username) throws UserNotFoundException, IOException {
+        User user = findByUsername(username);
+        imageUserService.saveAndWriteToDirectory(arquivo, user);
     }
 }
