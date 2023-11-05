@@ -1,5 +1,6 @@
 package com.gabriel.music.redesocial.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,10 +18,12 @@ public class ImageUser {
     private Long id;
     private String imageReference;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "id_imageProfile")
     private User userProfile;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "id_imageBackground")
     private User userBackground;

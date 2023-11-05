@@ -3,6 +3,8 @@ package com.gabriel.music.redesocial.service;
 import com.gabriel.music.redesocial.domain.user.ImageUser;
 import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.repository.ImageUserRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -21,6 +24,11 @@ public class ImageUserService {
     @Autowired
     private ImageUserRepository imageUserRepository;
 
+    public List<ImageUser> findAll() {
+        return imageUserRepository.findAll();
+    }
+
+    @Transactional
     public void saveAndWriteToDirectory(MultipartFile file, User user) throws IOException {
         try {
             if (!file.isEmpty()) {

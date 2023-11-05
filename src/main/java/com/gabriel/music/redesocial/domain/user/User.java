@@ -1,5 +1,6 @@
 package com.gabriel.music.redesocial.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gabriel.music.redesocial.domain.*;
 import com.gabriel.music.redesocial.domain.enums.AvaliabityEnum;
 import com.gabriel.music.redesocial.domain.enums.GenreEnum;
@@ -79,6 +80,7 @@ public class User {
     @OneToOne(mappedBy = "user")
     private PhoneNumber phoneNumber;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "idUserPhoto")
     private List<ImageUser> photos;
 
