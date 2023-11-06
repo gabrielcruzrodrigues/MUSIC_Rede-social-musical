@@ -80,7 +80,7 @@ public class User {
     @OneToOne(mappedBy = "user")
     private PhoneNumber phoneNumber;
 
-    @OneToMany(mappedBy = "idUserPhoto")
+    @OneToMany(mappedBy = "idUserPhotos")
     private List<ImageUser> photos;
 
     @OneToMany(mappedBy = "user")

@@ -31,12 +31,12 @@ public class ImageUser {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_UserPhoto")
-    private User idUserPhoto;
+    private User idUserPhotos;
 
-    public ImageUser(String imageReference, User userProfile, User userBackground, User idUserPhoto) {
+    public ImageUser(String imageReference, User userProfile, User userBackground, User idUserPhotos) {
         this.imageReference = imageReference;
         this.userProfile = userProfile;
         this.userBackground = userBackground;
-        this.idUserPhoto = idUserPhoto;
+        this.idUserPhotos = idUserPhotos;
     }
 }
