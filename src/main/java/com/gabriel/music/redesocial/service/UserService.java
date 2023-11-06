@@ -120,6 +120,12 @@ public class UserService {
 
     public void uploadImageProfileUser(MultipartFile arquivo, String username) throws UserNotFoundException, IOException {
         User user = findByUsername(username);
-        imageUserService.saveAndWriteToDirectory(arquivo, user);
+        imageUserService.saveAndWriteImageProfile(arquivo, user);
+    }
+
+    public void uploadBackgroundProfileUser(MultipartFile file, String username) throws UserNotFoundException, IOException {
+        User user = findByUsername(username);
+        imageUserService.saveAndWriteBackgroundProfile(file, user);
+
     }
 }

@@ -49,9 +49,16 @@ public class UserController {
     }
 
     @PostMapping("/updateImageProfile")
-    public ResponseEntity updateImageProfile(@RequestParam("file") MultipartFile arquivo,
+    public ResponseEntity updateImageProfile(@RequestParam("file") MultipartFile file,
                                              @RequestParam("username") String username) throws UserNotFoundException, IOException {
-        userService.uploadImageProfileUser(arquivo, username);
+        userService.uploadImageProfileUser(file, username);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("updateBackgroundProfile")
+    public ResponseEntity updateBackgroundImage(@RequestParam("file") MultipartFile file,
+                                                @RequestParam("username") String username) throws UserNotFoundException, IOException {
+        userService.uploadBackgroundProfileUser(file, username);
         return ResponseEntity.ok().build();
     }
 }

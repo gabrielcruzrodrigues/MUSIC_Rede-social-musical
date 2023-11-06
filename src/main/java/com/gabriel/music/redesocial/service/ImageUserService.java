@@ -4,7 +4,6 @@ import com.gabriel.music.redesocial.domain.user.ImageUser;
 import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.repository.ImageUserRepository;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ public class ImageUserService {
     }
 
     @Transactional
-    public void saveAndWriteToDirectory(MultipartFile file, User user) throws IOException {
+    public void saveAndWriteImageProfile(MultipartFile file, User user) throws IOException {
         try {
             if (!file.isEmpty()) {
                 log.info(file.getContentType());
@@ -40,6 +39,25 @@ public class ImageUserService {
 
             ImageUser imageUser = new ImageUser(
                     user.getUsername() + file.getOriginalFilename(), null, null, user
+            );
+            imageUserRepository.save(imageUser);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Transactional
+    public void saveAndWriteBackgroundProfile(MultipartFile file, User user) throws IOException {
+        try {
+            if (!file.isEmpty()) {
+                log.info(file.getContentType());
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get(pathImages + "\\" + user.getUsername() + file.getOriginalFilename());
+                Files.write(path, bytes);
+            }
+
+            ImageUser imageUser = new ImageUser(
+                    user.getUsername() + file.getOriginalFilename(), null, user, null
             );
             imageUserRepository.save(imageUser);
         } catch (IOException e) {
