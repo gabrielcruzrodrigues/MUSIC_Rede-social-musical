@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 public record UserRegisterToSearchForABand(
+        String username,
         String cep,
         Date age,
         Integer shows,
