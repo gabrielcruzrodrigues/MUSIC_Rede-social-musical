@@ -28,6 +28,7 @@ public class ImageUser {
     @JoinColumn(name = "id_imageBackground")
     private User userBackground;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_UserPhoto")
     private User idUserPhoto;
