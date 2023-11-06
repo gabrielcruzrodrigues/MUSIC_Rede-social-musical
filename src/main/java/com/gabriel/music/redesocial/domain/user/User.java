@@ -80,7 +80,6 @@ public class User {
     @OneToOne(mappedBy = "user")
     private PhoneNumber phoneNumber;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "idUserPhoto")
     private List<ImageUser> photos;
 

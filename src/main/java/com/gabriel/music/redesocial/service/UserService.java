@@ -57,9 +57,9 @@ public class UserService {
     }
 
     @Transactional
-    public void uploadImageProfileUser(MultipartFile arquivo, String username) throws UserNotFoundException, IOException {
+    public void uploadImageProfileUser(MultipartFile file, String username) throws UserNotFoundException, IOException {
         User user = findByUsername(username);
-        imageUserService.saveAndWriteImageProfile(arquivo, user);
+        imageUserService.saveAndWriteImageProfile(file, user);
     }
 
     @Transactional

@@ -6,6 +6,7 @@ import com.gabriel.music.redesocial.repository.ImageUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +19,9 @@ import java.util.List;
 @Service
 @Slf4j
 public class ImageUserService {
-    private final String pathImages = "C:/Users/conta/OneDrive/Documentos/images-user";
+
+    @Value("${images-user-path}")
+    private String pathImages;
 
     @Autowired
     private ImageUserRepository imageUserRepository;
