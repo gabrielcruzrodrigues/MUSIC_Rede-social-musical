@@ -33,61 +33,16 @@ public class ImageUserService {
         return imageUserRepository.findAll();
     }
 
+    @Transactional
     public void saveAndWriteImageProfile(MultipartFile file, User user) throws IOException {
-//        String imageProfileReference = createImageProfileReference(user);
-
         if (!file.isEmpty()) {
             if (user.getImageProfile() != null) {
-                log.info("entrou no delete primeiro");
-                this.deleteImageOfCurrentUser(user, file);
+                this.deleteCurrentUserImage(user, file);
             } else {
                 this.writeAndSaveFile(file, user);
             }
         }
     }
-
-    private void writeAndSaveFile(MultipartFile file, User user) throws IOException {
-        byte[] bytes = file.getBytes();
-        Path path = Paths.get(pathImages + "\\" + user.getUsername() + file.getOriginalFilename());
-        Files.write(path, bytes);
-
-        ImageUser imageUser = new ImageUser(
-                user.getUsername() + file.getOriginalFilename(), user, null, null
-        );
-        imageUserRepository.save(imageUser);
-    }
-
-//    public void saveAndWriteImageProfile(MultipartFile file, User user) throws IOException {
-//        String imageProfileReference = createImageProfileReference(user);
-//        try {
-//            if (!file.isEmpty()) {
-//                if (imageProfileReference != null) {
-//                    deleteImageOfCurrentUser(user, imageProfileReference);
-//                } else {
-//                    byte[] bytes = file.getBytes();
-//                    Path path = Paths.get(pathImages + "\\" + user.getUsername() + file.getOriginalFilename());
-//                    Files.write(path, bytes);
-//                };
-//            }
-//
-//            ImageUser imageUser = new ImageUser(
-//                    user.getUsername() + file.getOriginalFilename(), user, null, null
-//            );
-//            imageUserRepository.save(imageUser);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-//    private String createImageProfileReference(User user) {
-//        ImageUser imageProfile = user.getImageProfile();
-//        if (imageProfile == null) {
-//            return null;
-//        } else {
-//            String imageReference = imageProfile.getImageReference();
-//            return imageReference;
-//        }
-//    }
 
     @Transactional
     public void saveAndWriteBackgroundProfile(MultipartFile file, User user) throws IOException {
@@ -99,56 +54,46 @@ public class ImageUserService {
                 Files.write(path, bytes);
             }
 
-            ImageUser imageUser = new ImageUser(
-                    user.getUsername() + file.getOriginalFilename(), null, user, null
-            );
+            ImageUser imageUser = new ImageUser(user.getUsername() + file.getOriginalFilename(), null, user, null);
             imageUserRepository.save(imageUser);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void deleteImageOfCurrentUser(User user, MultipartFile file) throws IOException {
-        log.info("=============inicio===============");
-        //            deleteImageReferenceToDatabase(user.getImageProfile().getImageReference());
-
+    public void deleteImageReferenceFromDatabase(User user) {
         ImageUser imageUser = imageUserRepository.findByImageReference(user.getImageProfile().getImageReference());
         imageUserRepository.deleteById(imageUser.getId());
-
-        if (imageUserRepository.findAll().size() == 0) {
-            Boolean verify = deleteFile(user, file);
-            log.info(String.valueOf(verify));
-
-            if (verify == true) {
-                writeAndSaveFile(file, user);
-            }
-        }
-
-        log.info("=============final===============");
     }
 
-    private Boolean deleteFile(User user, MultipartFile file) throws IOException {
+    private void writeAndSaveFile(MultipartFile file, User user) throws IOException {
+        byte[] bytes = file.getBytes();
+        Path path = Paths.get(pathImages + "\\" + user.getUsername() + file.getOriginalFilename());
+        Files.write(path, bytes);
+        ImageUser imageUser = new ImageUser(user.getUsername() + file.getOriginalFilename(), user, null, null);
+        imageUserRepository.save(imageUser);
+    }
+
+    private void deleteCurrentUserImage(User user, MultipartFile file) throws IOException {
+        deleteImageReferenceFromDatabase(user);
+        if (imageUserRepository.findAll().isEmpty()) {
+            Boolean verify = deleteFileFromDirectory(user, file);
+            if (verify) writeAndSaveFile(file, user);
+        }
+    }
+
+    private Boolean deleteFileFromDirectory(User user, MultipartFile file) throws IOException {
         Path path = Paths.get(pathImages + "/" + user.getImageProfile().getImageReference());
         Files.delete(path);
-
-        //verificação
-        File arquivo = new File(pathImages, user.getImageProfile().getImageReference());
-        if (arquivo.exists()) {
-            return false;
-        } else {
-            return true;
-        }
+        return checkIfTheFileExists(user);
     }
 
-//    public void deleteImageReferenceToDatabase(String imageReference) {
-//        ImageUser imageUser = imageUserRepository.findByImageReference(imageReference);
-//        log.info("----------------------- chamou metodo delete");
-//        imageUserRepository.deleteById(imageUser.getId());
-//    }
+    private Boolean checkIfTheFileExists(User user) {
+        File file = new File(pathImages, user.getImageProfile().getImageReference());
+        return file.exists() ? false : true;
+    }
 
-    public void delete(Long id) {
-        log.info("================== Valor enviado para o delete: " + id + " " + id.getClass());
+    public void deleteById(Long id) {
         imageUserRepository.deleteById(id);
-        log.info("----------------------- deletou id: " + id);
     }
 }

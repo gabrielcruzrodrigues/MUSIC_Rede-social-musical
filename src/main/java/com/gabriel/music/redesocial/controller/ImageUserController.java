@@ -27,7 +27,7 @@ public class ImageUserController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id) {
-        imageUserService.delete(id);
+        imageUserService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 }
