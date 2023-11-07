@@ -21,7 +21,7 @@ public class ImageUser {
     @JsonIgnore
     @OneToOne
     @JoinColumn(name = "id_imageProfile")
-    private User userProfile;
+    private User userImageProfile;
 
     @JsonIgnore
     @OneToOne
@@ -33,9 +33,9 @@ public class ImageUser {
     @JoinColumn(name = "id_UserPhoto")
     private User idUserPhotos;
 
-    public ImageUser(String imageReference, User userProfile, User userBackground, User idUserPhotos) {
+    public ImageUser(String imageReference, User userImageProfile, User userBackground, User idUserPhotos) {
         this.imageReference = imageReference;
-        this.userProfile = userProfile;
+        this.userImageProfile = userImageProfile;
         this.userBackground = userBackground;
         this.idUserPhotos = idUserPhotos;
     }

@@ -71,7 +71,7 @@ public class User {
     @OneToMany(mappedBy = "creator")
     private List<Post> posts;
 
-    @OneToOne(mappedBy = "userProfile")
+    @OneToOne(mappedBy = "userImageProfile")
     private ImageUser imageProfile;
 
     @OneToOne(mappedBy = "userBackground")
@@ -100,4 +100,16 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
+
+    @Override
+    public String toString() {
+        Long var10000 = this.getId();
+        return "User(id=" + var10000 + ", name=" + this.getName() + ", username=" + this.getUsername() + ", email=" + this.getEmail()
+                + ", password=" + this.getPassword() + ", cep=" + this.getCep() + ", goals=" + this.getGoals() + ", whatsapp=" + this.getWhatsapp()
+                + ", age=" + this.getAge() + ", entryDate=" + this.getEntryDate() + ", shows=" + this.getShows() + ", genre=" + this.getGenre()
+                + ", instruments=" + this.getInstruments() + ", availability=" + this.getAvailability() + ", socialMedia=" + this.getSocialMedia()
+                + ", posts=" + this.getPosts() + ", imageProfile=" + this.getImageProfile().getImageReference() + ", imageBackground=" + this.getImageBackground()
+                + ", phoneNumber=" + this.getPhoneNumber() + ", photos=" + this.getPhotos() + ", videos=" + this.getVideos() + ", friends=" + this.getFriends()
+                + ", purchasedMaterials=" + this.getPurchasedMaterials() + ", createdMaterials=" + this.getCreatedMaterials() + ", saves=" + this.getSaves() + ", comments=" + this.getComments() + ")";
+    }
 }

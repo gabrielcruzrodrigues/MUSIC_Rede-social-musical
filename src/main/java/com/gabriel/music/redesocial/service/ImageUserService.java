@@ -3,24 +3,19 @@ package com.gabriel.music.redesocial.service;
 import com.gabriel.music.redesocial.domain.user.ImageUser;
 import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.repository.ImageUserRepository;
-import com.gabriel.music.redesocial.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -42,7 +37,7 @@ public class ImageUserService {
         try {
             if (!file.isEmpty()) {
                 if (imageProfileReference != null) {
-                    deleteImageOfCurrentUser(user);
+                    deleteImageOfCurrentUser(user, imageProfileReference);
                 } else {
                     byte[] bytes = file.getBytes();
                     Path path = Paths.get(pathImages + "\\" + user.getUsername() + file.getOriginalFilename());
@@ -58,6 +53,28 @@ public class ImageUserService {
             e.printStackTrace();
         }
     }
+
+//    public void saveAndWriteImageProfile(MultipartFile file, User user) throws IOException {
+//        String imageProfileReference = createImageProfileReference(user);
+//        try {
+//            if (!file.isEmpty()) {
+//                if (imageProfileReference != null) {
+//                    deleteImageOfCurrentUser(user, imageProfileReference);
+//                } else {
+//                    byte[] bytes = file.getBytes();
+//                    Path path = Paths.get(pathImages + "\\" + user.getUsername() + file.getOriginalFilename());
+//                    Files.write(path, bytes);
+//                };
+//            }
+//
+//            ImageUser imageUser = new ImageUser(
+//                    user.getUsername() + file.getOriginalFilename(), user, null, null
+//            );
+//            imageUserRepository.save(imageUser);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private String createImageProfileReference(User user) {
         ImageUser imageProfile = user.getImageProfile();
@@ -88,32 +105,22 @@ public class ImageUserService {
         }
     }
 
-    private void deleteImageOfCurrentUser(User user) {
-//        log.info("----------- user: " + user.getImageProfile().getImageReference());
-//        Optional<String> nameFileForDelete = user.getImageProfile().getImageReference().describeConstable();
-//        log.info("----------- nome da imagem: " + nameFileForDelete);
+    private void deleteImageOfCurrentUser(User user, String imageProfileReference) {
+        deleteImageReferenceToDatabase(imageProfileReference);
 
-//        if (nameFileForDelete.get().isEmpty()) {
-        String imageProfileReference = createImageProfileReference(user);
-        deleteByImageReference(imageProfileReference);
-            try {
-                Path path = Paths.get(pathImages + "/" + imageProfileReference);
-                log.info("----------- nome do path: " + path);
-                Files.delete(path);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+//        try {
+//            Path path = Paths.get(pathImages + "/" + imageProfileReference);
+//            log.info("----------- nome do path: " + path);
+//            Files.delete(path);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
 //        }
     }
 
-//    private void saveUserWithImageProfileNull(User user) {
-//        user.setImageProfile(null);
-//        userRepository.save(user);
-//    }
-
-    public void deleteByImageReference(String imageReference) {
+    public void deleteImageReferenceToDatabase(String imageReference) {
         ImageUser imageUser = imageUserRepository.findByImageReference(imageReference);
         this.delete(imageUser.getId());
+        log.info("----------------------- deletou id: " + imageUser.getId());
     }
 
     public void delete(Long id) {
