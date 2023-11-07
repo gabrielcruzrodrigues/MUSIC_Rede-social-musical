@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -70,15 +71,41 @@ public class ImageUserService {
         imageUserRepository.deleteById(imageUser.getId());
     }
 
+//    private void writeFileInDirectory(MultipartFile file, User user) throws IOException {
+//        byte[] bytes = file.getBytes();
+//        Path path = Paths.get(pathImages + "\\" + user.getUsername() + file.getOriginalFilename());
+//
+//        Files.write(path, bytes);
+//        saveFileReferenceInDatabase(file, user);
+//    }
+
     private void writeFileInDirectory(MultipartFile file, User user) throws IOException {
         byte[] bytes = file.getBytes();
-        Path path = Paths.get(pathImages + "\\" + user.getUsername() + file.getOriginalFilename());
+        String newFileName = generateNewFileName(file, user);
+        Path path = Paths.get(pathImages + "\\" + newFileName);
         Files.write(path, bytes);
-        saveFileReferenceInDatabase(file, user);
+        saveFileReferenceInDatabase(newFileName, user);
     }
 
-    private void saveFileReferenceInDatabase(MultipartFile file, User user) {
-        ImageUser imageUser = new ImageUser(user.getUsername() + file.getOriginalFilename(), user, null, null);
+    private String generateNewFileName(MultipartFile file, User user) {
+        String randomId = generateRandomId();
+        String originalFileName = file.getOriginalFilename();
+        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+        String newFileName = user.getUsername() + "_" + randomId + fileExtension;
+
+        if (imageUserRepository.findByImageReference(newFileName) == null) {
+            return newFileName;
+        } else {
+            return newFileName + UUID.randomUUID().toString().substring(0, 5);
+        }
+    }
+
+    private String generateRandomId() {
+        return UUID.randomUUID().toString().substring(0, 30);
+    }
+
+    private void saveFileReferenceInDatabase(String newFileName, User user) {
+        ImageUser imageUser = new ImageUser(newFileName, user, null, null);
         imageUserRepository.save(imageUser);
     }
 
