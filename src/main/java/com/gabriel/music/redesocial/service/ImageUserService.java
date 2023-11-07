@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -38,45 +39,24 @@ public class ImageUserService {
     public void saveAndWriteImageProfile(MultipartFile file, User user) throws IOException {
         if (!file.isEmpty()) {
             if (user.getImageProfile() != null) {
-                this.deleteCurrentUserImage(user, file);
+                this.deleteCurrentUserImageProfile(user, file);
             } else {
-                this.writeFileInDirectory(file, user);
+                this.writeFileInDirectory(file, user, "profile");
             }
         }
     }
 
-    @Transactional
-    public void saveAndWriteBackgroundProfile(MultipartFile file, User user) throws IOException {
-//        try {
-//            if (!file.isEmpty()) {
-//                if (user.getImageBackground() != null) {
-//                    this.
-//                } else {
-//                    this.writeAndSaveFile(file, user);
-//                }
-//                byte[] bytes = file.getBytes();
-//                Path path = Paths.get(pathImages + "\\" + user.getUsername() + file.getOriginalFilename());
-//                Files.write(path, bytes);
-//            }
-//
-//            ImageUser imageUser = new ImageUser(user.getUsername() + file.getOriginalFilename(), null, user, null);
-//            imageUserRepository.save(imageUser);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-    }
-
-    public void deleteImageReferenceFromDatabase(User user) {
-        ImageUser imageUser = imageUserRepository.findByImageReference(user.getImageProfile().getImageReference());
+    public void deleteImageReferenceFromDatabase(String reference) {
+        ImageUser imageUser = imageUserRepository.findByImageReference(reference);
         imageUserRepository.deleteById(imageUser.getId());
     }
 
-    private void writeFileInDirectory(MultipartFile file, User user) throws IOException {
+    private void writeFileInDirectory(MultipartFile file, User user, String option) throws IOException {
         byte[] bytes = file.getBytes();
         String newFileName = generateNewFileName(file, user);
         Path path = Paths.get(pathImages + "\\" + newFileName);
         Files.write(path, bytes);
-        saveFileReferenceInDatabase(newFileName, user);
+        saveFileReferenceInDatabase(newFileName, user, option);
     }
 
     private String generateNewFileName(MultipartFile file, User user) {
@@ -96,30 +76,58 @@ public class ImageUserService {
         return UUID.randomUUID().toString().substring(0, 30);
     }
 
-    private void saveFileReferenceInDatabase(String newFileName, User user) {
-        ImageUser imageUser = new ImageUser(newFileName, user, null, null);
+    private void saveFileReferenceInDatabase(String newFileName, User user, String option) {
+        ImageUser imageUser = null;
+        if (Objects.equals(option, "profile")) {
+            imageUser = new ImageUser(newFileName, user, null, null);
+        } else if (Objects.equals(option, "background")) {
+            imageUser = new ImageUser(newFileName, null, user, null);
+        }
         imageUserRepository.save(imageUser);
     }
 
-    private void deleteCurrentUserImage(User user, MultipartFile file) throws IOException {
-        deleteImageReferenceFromDatabase(user);
+    private void deleteCurrentUserImageProfile(User user, MultipartFile file) throws IOException {
+        deleteImageReferenceFromDatabase(user.getImageProfile().getImageReference());
         if (imageUserRepository.findByImageReference(user.getImageProfile().getImageReference()) == null) {
-            Boolean verify = deleteFileFromDirectory(user, file);
+            Boolean verify = deleteFileFromDirectory(user.getImageProfile().getImageReference(), file);
             if (verify) {
-                writeFileInDirectory(file, user);
+                writeFileInDirectory(file, user, "profile");
             }
         }
     }
 
-    private Boolean deleteFileFromDirectory(User user, MultipartFile file) throws IOException {
-        Path path = Paths.get(pathImages + "/" + user.getImageProfile().getImageReference());
+    private Boolean deleteFileFromDirectory(String referenceForDelete, MultipartFile file) throws IOException {
+        Path path = Paths.get(pathImages + "/" + referenceForDelete);
         Files.delete(path);
-        return checkIfTheFileExists(user);
+        return checkIfTheFileExists(referenceForDelete);
     }
 
-    private Boolean checkIfTheFileExists(User user) {
-        File file = new File(pathImages, user.getImageProfile().getImageReference());
+    private Boolean checkIfTheFileExists(String referenceForCheck) {
+        File file = new File(pathImages, referenceForCheck);
         return file.exists() ? false : true;
+    }
+
+    //images backgrounds
+
+    @Transactional
+    public void saveAndWriteBackgroundProfile(MultipartFile file, User user) throws IOException {
+        if (!file.isEmpty()) {
+            if (user.getImageBackground() != null) {
+                this.deleteCurrentUserImageBackground(user, file);
+            } else {
+                this.writeFileInDirectory(file, user, "background");
+            }
+        }
+    }
+
+    private void deleteCurrentUserImageBackground(User user, MultipartFile file) throws IOException {
+        deleteImageReferenceFromDatabase(user.getImageBackground().getImageReference());
+        if (imageUserRepository.findByImageReference(user.getImageBackground().getImageReference()) == null) {
+            Boolean verify = deleteFileFromDirectory(user.getImageBackground().getImageReference(), file);
+            if (verify) {
+                writeFileInDirectory(file, user, "background");
+            }
+        }
     }
 
     public void deleteById(Long id) {
