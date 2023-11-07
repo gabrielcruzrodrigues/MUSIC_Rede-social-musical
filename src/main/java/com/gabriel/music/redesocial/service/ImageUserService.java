@@ -71,14 +71,6 @@ public class ImageUserService {
         imageUserRepository.deleteById(imageUser.getId());
     }
 
-//    private void writeFileInDirectory(MultipartFile file, User user) throws IOException {
-//        byte[] bytes = file.getBytes();
-//        Path path = Paths.get(pathImages + "\\" + user.getUsername() + file.getOriginalFilename());
-//
-//        Files.write(path, bytes);
-//        saveFileReferenceInDatabase(file, user);
-//    }
-
     private void writeFileInDirectory(MultipartFile file, User user) throws IOException {
         byte[] bytes = file.getBytes();
         String newFileName = generateNewFileName(file, user);
