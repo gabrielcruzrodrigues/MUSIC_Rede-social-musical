@@ -113,8 +113,10 @@ public class ImageUserService {
 
     public void deleteByImageReference(String imageReference) {
         ImageUser imageUser = imageUserRepository.findByImageReference(imageReference);
-        log.info("--------------passou" + imageUser.getImageReference());
-        imageUserRepository.delete(imageUser);
-        log.info("--------------passou" + imageUser.getId());
+        this.delete(imageUser.getId());
+    }
+
+    public void delete(Long id) {
+        imageUserRepository.deleteById(id);
     }
 }

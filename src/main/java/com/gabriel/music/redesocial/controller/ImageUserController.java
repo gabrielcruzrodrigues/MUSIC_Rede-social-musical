@@ -4,9 +4,7 @@ import com.gabriel.music.redesocial.domain.user.ImageUser;
 import com.gabriel.music.redesocial.service.ImageUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +23,11 @@ public class ImageUserController {
     @GetMapping("/getAll")
     public ResponseEntity<List<ImageUser>> getAll() {
         return ResponseEntity.ok().body(imageUserService.findAll());
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
+        imageUserService.delete(id);
+        return ResponseEntity.ok().build();
     }
 }
