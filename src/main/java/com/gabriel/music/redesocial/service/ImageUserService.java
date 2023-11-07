@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -108,21 +109,35 @@ public class ImageUserService {
     }
 
     private void deleteImageOfCurrentUser(User user, MultipartFile file) throws IOException {
-        log.info("=============passou===============");
+        log.info("=============inicio===============");
         //            deleteImageReferenceToDatabase(user.getImageProfile().getImageReference());
 
         ImageUser imageUser = imageUserRepository.findByImageReference(user.getImageProfile().getImageReference());
         imageUserRepository.deleteById(imageUser.getId());
 
+        if (imageUserRepository.findAll().size() == 0) {
+            Boolean verify = deleteFile(user, file);
+            log.info(String.valueOf(verify));
 
-        deleteFile(user);
-//        writeAndSaveFile(file, user);
+            if (verify == true) {
+                writeAndSaveFile(file, user);
+            }
+        }
+
         log.info("=============final===============");
     }
 
-    private void deleteFile(User user) throws IOException {
+    private Boolean deleteFile(User user, MultipartFile file) throws IOException {
         Path path = Paths.get(pathImages + "/" + user.getImageProfile().getImageReference());
         Files.delete(path);
+
+        //verificação
+        File arquivo = new File(pathImages, user.getImageProfile().getImageReference());
+        if (arquivo.exists()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 //    public void deleteImageReferenceToDatabase(String imageReference) {
