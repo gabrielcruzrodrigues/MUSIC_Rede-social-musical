@@ -5,11 +5,13 @@ import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.repository.ImageUserRepository;
 import com.gabriel.music.redesocial.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.*;
@@ -22,6 +24,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ImageUserService {
 
     @Value("${images-user-path}")
@@ -30,14 +33,10 @@ public class ImageUserService {
     @Autowired
     private ImageUserRepository imageUserRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     public List<ImageUser> findAll() {
         return imageUserRepository.findAll();
     }
 
-    @Transactional
     public void saveAndWriteImageProfile(MultipartFile file, User user) throws IOException {
         String imageProfileReference = createImageProfileReference(user);
         try {
@@ -96,20 +95,26 @@ public class ImageUserService {
 
 //        if (nameFileForDelete.get().isEmpty()) {
         String imageProfileReference = createImageProfileReference(user);
+        deleteByImageReference(imageProfileReference);
             try {
                 Path path = Paths.get(pathImages + "/" + imageProfileReference);
                 log.info("----------- nome do path: " + path);
                 Files.delete(path);
-                saveUserWithImageProfileNull(user);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 //        }
     }
 
-    private void saveUserWithImageProfileNull(User user) {
-        user.setImageProfile(null);
-        userRepository.save(user);
-    }
+//    private void saveUserWithImageProfileNull(User user) {
+//        user.setImageProfile(null);
+//        userRepository.save(user);
+//    }
 
+    public void deleteByImageReference(String imageReference) {
+        ImageUser imageUser = imageUserRepository.findByImageReference(imageReference);
+        log.info("--------------passou" + imageUser.getImageReference());
+        imageUserRepository.delete(imageUser);
+        log.info("--------------passou" + imageUser.getId());
+    }
 }
