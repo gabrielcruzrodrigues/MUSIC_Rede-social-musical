@@ -10,6 +10,7 @@ import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,5 +49,10 @@ public class SocialMediaService {
         SocialMedia socialMedia = findByusernameSocialMedia(username);
         socialMedia.setUsernameSocialMedia(socialMediaUpdate.username());
         return socialMediaRepository.save(socialMedia);
+    }
+
+    public void deleteByusername(String username) throws SocialMediaNotFoundException {
+        SocialMedia socialMedia = findByusernameSocialMedia(username);
+        socialMediaRepository.deleteById(socialMedia.getId());
     }
  }

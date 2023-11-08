@@ -7,6 +7,7 @@ import com.gabriel.music.redesocial.service.SocialMediaService;
 import com.gabriel.music.redesocial.service.exceptions.SocialMediaNotFoundException;
 import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +47,11 @@ public class SocialMediaController {
     @PutMapping("/update/{usernameSocial}")
     public ResponseEntity<SocialMedia> update(@RequestBody SocialMediaUpdate socialMediaUpdate, @PathVariable String usernameSocial) throws SocialMediaNotFoundException {
         return ResponseEntity.ok().body(socialMediaService.update(socialMediaUpdate, usernameSocial));
+    }
+
+    @DeleteMapping("/delete/{usernameSocialMedia}")
+    public ResponseEntity<Object> deleteByUsername(@PathVariable String usernameSocialMedia) throws SocialMediaNotFoundException {
+        socialMediaService.deleteByusername(usernameSocialMedia);
+        return ResponseEntity.ok().build();
     }
 }
