@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -103,6 +105,7 @@ public class UserService {
         newUser.setUsername(userDTO.username());
         newUser.setEmail(userDTO.email());
         newUser.setPassword(userDTO.password());
+        newUser.setEntryDate(LocalDate.now());
         return newUser;
     }
 

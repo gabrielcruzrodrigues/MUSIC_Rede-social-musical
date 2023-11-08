@@ -12,6 +12,7 @@ import com.gabriel.music.redesocial.domain.post.Post;
 import com.gabriel.music.redesocial.domain.user.ImageUser;
 import com.gabriel.music.redesocial.domain.user.VideoUser;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public record UserResponseRegisterToSearchForABand(
         String goals,
         String whatsapp,
         Date age,
-        Date EntryDate,
+        LocalDate EntryDate,
         Integer shows,
         List<GenreEnum> genre,
         List<InstrumentsEnum> instruments,
