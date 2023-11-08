@@ -32,9 +32,10 @@ public class UserService {
     }
 
     @Transactional
-    public User registrationToSearchForABand(UserRegisterToSearchForABandDTO userRegisterToSearchForABandDTO) throws UserNotFoundException {
+    public UserResponseRegisterToSearchForABandDTO registrationToSearchForABand(UserRegisterToSearchForABandDTO userRegisterToSearchForABandDTO) throws UserNotFoundException {
         User newUser = modelingNewRegistrationToSearchForABand(userRegisterToSearchForABandDTO);
-        return userRepository.save(newUser);
+        userRepository.save(newUser);
+        return transformUserToUserResponseRegisterToSearchForABandDTO(newUser);
     }
 
     public User findByUsername(String username) throws UserNotFoundException {
@@ -50,7 +51,7 @@ public class UserService {
     public List<UserResponseRegisterToSearchForABandDTO> findAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .map(this::mapUserToUserResponse)
+                .map(this::transformUserToUserResponseRegisterToSearchForABandDTO)
                 .collect(Collectors.toList());
     }
 
@@ -66,7 +67,7 @@ public class UserService {
         imageUserService.saveAndWriteBackgroundProfile(file, user);
     }
 
-    private UserResponseRegisterToSearchForABandDTO mapUserToUserResponse(User user) {
+    private UserResponseRegisterToSearchForABandDTO transformUserToUserResponseRegisterToSearchForABandDTO(User user) {
         return new UserResponseRegisterToSearchForABandDTO(
                 user.getId(),
                 user.getName(),

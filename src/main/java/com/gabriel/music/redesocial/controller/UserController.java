@@ -48,12 +48,12 @@ public class UserController {
     }
 
     @PostMapping("/registration-search-a-band")
-    public ResponseEntity<User> saveRegisterSearchABand(@RequestBody @Valid UserRegisterToSearchForABandDTO userRegisterToSearchForABandDTO) throws UserNotFoundException {
-        User user = userService.registrationToSearchForABand(userRegisterToSearchForABandDTO);
+    public ResponseEntity<UserResponseRegisterToSearchForABandDTO> saveRegisterSearchABand(@RequestBody @Valid UserRegisterToSearchForABandDTO userRegisterToSearchForABandDTO) throws UserNotFoundException {
+        UserResponseRegisterToSearchForABandDTO user = userService.registrationToSearchForABand(userRegisterToSearchForABandDTO);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{username}")
-                .buildAndExpand(user.getUsername())
+                .buildAndExpand(user.username())
                 .toUri();
         return ResponseEntity.created(uri).body(user);
     }
