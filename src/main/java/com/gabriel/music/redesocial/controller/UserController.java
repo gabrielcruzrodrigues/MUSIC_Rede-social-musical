@@ -71,6 +71,13 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/upload-photo")
+    public ResponseEntity<Object> updatePhotoUser(@RequestParam("file") MultipartFile file,
+                                                        @RequestParam("username") String username) throws UserNotFoundException, IOException {
+        userService.uploadPhotoUser(file, username);
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping("/about/{username}")
     public ResponseEntity<Object> updateAbout(@PathVariable String username, @RequestBody AboutUpdateDTO about) throws UserNotFoundException {
         userService.updateAbout(about, username);
@@ -78,7 +85,7 @@ public class UserController {
     }
 
     @PutMapping("/whatsapp/{username}")
-    public ResponseEntity<Object> updatewhatsapp(@PathVariable String username, @RequestBody WhatsAppUpdateDTO whatsAppUpdateDTO) throws UserNotFoundException {
+    public ResponseEntity<Object> updateWhatsapp(@PathVariable String username, @RequestBody WhatsAppUpdateDTO whatsAppUpdateDTO) throws UserNotFoundException {
         userService.updateWhatsapp(whatsAppUpdateDTO, username);
         return ResponseEntity.ok().build();
     }

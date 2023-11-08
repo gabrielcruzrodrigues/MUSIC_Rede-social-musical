@@ -78,10 +78,13 @@ public class ImageUserService {
 
     private void saveFileReferenceInDatabase(String newFileName, User user, String option) {
         ImageUser imageUser = null;
+
         if (Objects.equals(option, "profile")) {
             imageUser = new ImageUser(newFileName, user, null, null);
         } else if (Objects.equals(option, "background")) {
             imageUser = new ImageUser(newFileName, null, user, null);
+        } else if (Objects.equals(option, "photo")) {
+            imageUser = new ImageUser(newFileName, null, null, user);
         }
         imageUserRepository.save(imageUser);
     }
@@ -127,6 +130,15 @@ public class ImageUserService {
             if (verify) {
                 writeFileInDirectory(file, user, "background");
             }
+        }
+    }
+
+    // photos
+
+    @Transactional
+    public void saveAndWritePhotoUser(MultipartFile file, User user) throws IOException {
+        if (!file.isEmpty()) {
+                this.writeFileInDirectory(file, user, "photo");
         }
     }
 

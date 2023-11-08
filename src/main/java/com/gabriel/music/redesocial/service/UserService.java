@@ -70,6 +70,12 @@ public class UserService {
         imageUserService.saveAndWriteBackgroundProfile(file, user);
     }
 
+    @Transactional
+    public void uploadPhotoUser(MultipartFile file, String username) throws UserNotFoundException, IOException {
+        User user = findByUsername(username);
+        imageUserService.saveAndWritePhotoUser(file, user);
+    }
+
     private UserResponseRegisterToSearchForABandDTO transformUserToUserResponseRegisterToSearchForABandDTO(User user) {
         return new UserResponseRegisterToSearchForABandDTO(
                 user.getId(),
