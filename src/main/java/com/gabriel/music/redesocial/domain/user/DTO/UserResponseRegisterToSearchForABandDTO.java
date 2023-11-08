@@ -21,7 +21,7 @@ public record UserResponseRegisterToSearchForABandDTO(
         String username,
         String email,
         String cep,
-        String goals,
+        String about,
         String whatsapp,
         LocalDate age,
         LocalDate EntryDate,

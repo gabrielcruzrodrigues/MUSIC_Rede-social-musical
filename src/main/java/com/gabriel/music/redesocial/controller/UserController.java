@@ -77,4 +77,10 @@ public class UserController {
         userService.updateAbout(about, username);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/whatsapp/{username}")
+    public ResponseEntity<Object> updatewhatsapp(@PathVariable String username, @RequestBody WhatsAppUpdateDTO whatsAppUpdateDTO) throws UserNotFoundException {
+        userService.updateWhatsapp(whatsAppUpdateDTO, username);
+        return ResponseEntity.ok().build();
+    }
 }

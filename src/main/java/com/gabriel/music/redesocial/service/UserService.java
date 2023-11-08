@@ -43,10 +43,10 @@ public class UserService {
         return user.orElseThrow(UserNotFoundException::new);
     }
 
-    public User findByEmail(String email) throws UserNotFoundException {
-        Optional<User> user = userRepository.findByEmail(email);
-        return user.orElseThrow(UserNotFoundException::new);
-    }
+//    public User findByEmail(String email) throws UserNotFoundException {
+//        Optional<User> user = userRepository.findByEmail(email);
+//        return user.orElseThrow(UserNotFoundException::new);
+//    }
 
     public List<UserResponseRegisterToSearchForABandDTO> findAllUsers() {
         return userRepository.findAll()
@@ -124,9 +124,17 @@ public class UserService {
         );
     }
 
+    @Transactional
     public void updateAbout(AboutUpdateDTO aboutUpdateDTO, String username) throws UserNotFoundException {
         User user = findByUsername(username);
         user.setAbout(aboutUpdateDTO.about());
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void updateWhatsapp(WhatsAppUpdateDTO whatsAppUpdateDTO, String username) throws UserNotFoundException {
+        User user = findByUsername(username);
+        user.setWhatsapp(whatsAppUpdateDTO.whatsapp());
         userRepository.save(user);
     }
 }
