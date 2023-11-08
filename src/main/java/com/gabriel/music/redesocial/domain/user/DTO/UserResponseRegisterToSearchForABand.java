@@ -24,7 +24,7 @@ public record UserResponseRegisterToSearchForABand(
         String cep,
         String goals,
         String whatsapp,
-        Date age,
+        LocalDate age,
         LocalDate EntryDate,
         Integer shows,
         List<GenreEnum> genre,

@@ -6,6 +6,7 @@ import com.gabriel.music.redesocial.domain.enums.InstrumentsEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public record UserRegisterToSearchForABand(
         @NotNull @NotBlank(message = "O seu cep não pode estar em branco")
         String cep,
         @NotNull(message = "O seu age não pode estar em branco")
-        Date age,
+        LocalDate age,
         @NotNull(message = "Os seus shows não podem estar em branco")
         Integer shows,
         @NotNull(message = "Os seus generos não podem estar em branco")

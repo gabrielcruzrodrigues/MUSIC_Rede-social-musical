@@ -1,9 +1,6 @@
 package com.gabriel.music.redesocial.controller;
 
-import com.gabriel.music.redesocial.domain.user.DTO.UserInitialRegistration;
-import com.gabriel.music.redesocial.domain.user.DTO.UserRegisterToSearchForABand;
-import com.gabriel.music.redesocial.domain.user.DTO.UserResponseInitialRegister;
-import com.gabriel.music.redesocial.domain.user.DTO.UserResponseRegisterToSearchForABand;
+import com.gabriel.music.redesocial.domain.user.DTO.*;
 import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.service.ImageUserService;
 import com.gabriel.music.redesocial.service.UserService;
@@ -72,6 +69,12 @@ public class UserController {
     public ResponseEntity<Object> updateBackgroundImage(@RequestParam("file") MultipartFile file,
                                                         @RequestParam("username") String username) throws UserNotFoundException, IOException {
         userService.uploadBackgroundProfileUser(file, username);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/about/{username}")
+    public ResponseEntity<Object> updateAbout(@PathVariable String username, @RequestBody AboutUpdate about) throws UserNotFoundException {
+        userService.updateAbout(about, username);
         return ResponseEntity.ok().build();
     }
 }

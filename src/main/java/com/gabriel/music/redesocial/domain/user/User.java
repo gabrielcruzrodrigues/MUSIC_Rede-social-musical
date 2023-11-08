@@ -18,7 +18,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -49,9 +48,9 @@ public class User {
     private String password;
 
     private String cep;
-    private String goals;
+    private String about;
     private String whatsapp;
-    private Date age;
+    private LocalDate age;
     private LocalDate entryDate;
     private Integer shows;
 
@@ -104,7 +103,7 @@ public class User {
     public String toString() {
         Long var10000 = this.getId();
         return "User(id=" + var10000 + ", name=" + this.getName() + ", username=" + this.getUsername() + ", email=" + this.getEmail()
-                + ", password=" + this.getPassword() + ", cep=" + this.getCep() + ", goals=" + this.getGoals() + ", whatsapp=" + this.getWhatsapp()
+                + ", password=" + this.getPassword() + ", cep=" + this.getCep() + ", goals=" + this.getAbout() + ", whatsapp=" + this.getWhatsapp()
                 + ", age=" + this.getAge() + ", entryDate=" + this.getEntryDate() + ", shows=" + this.getShows() + ", genre=" + this.getGenre()
                 + ", instruments=" + this.getInstruments() + ", availability=" + this.getAvailability() + ", socialMedia=" + this.getSocialMedia()
                 + ", posts=" + this.getPosts() + ", imageProfile=" + this.getImageProfile().getImageReference() + ", imageBackground=" + this.getImageBackground()

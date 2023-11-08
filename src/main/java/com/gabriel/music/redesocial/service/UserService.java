@@ -1,10 +1,7 @@
 package com.gabriel.music.redesocial.service;
 
 import com.gabriel.music.redesocial.domain.user.*;
-import com.gabriel.music.redesocial.domain.user.DTO.UserInitialRegistration;
-import com.gabriel.music.redesocial.domain.user.DTO.UserRegisterToSearchForABand;
-import com.gabriel.music.redesocial.domain.user.DTO.UserResponseInitialRegister;
-import com.gabriel.music.redesocial.domain.user.DTO.UserResponseRegisterToSearchForABand;
+import com.gabriel.music.redesocial.domain.user.DTO.*;
 import com.gabriel.music.redesocial.repository.UserRepository;
 import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
 import jakarta.transaction.Transactional;
@@ -14,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -77,7 +73,7 @@ public class UserService {
                 user.getUsername(),
                 user.getEmail(),
                 user.getCep(),
-                user.getGoals(),
+                user.getAbout(),
                 user.getWhatsapp(),
                 user.getAge(),
                 user.getEntryDate(),
@@ -125,5 +121,11 @@ public class UserService {
         return new UserResponseInitialRegister(
                 user.getId(), user.getUsername(), user.getEmail()
         );
+    }
+
+    public void updateAbout(AboutUpdate aboutUpdate, String username) throws UserNotFoundException {
+        User user = findByUsername(username);
+        user.setAbout(aboutUpdate.about());
+        userRepository.save(user);
     }
 }
