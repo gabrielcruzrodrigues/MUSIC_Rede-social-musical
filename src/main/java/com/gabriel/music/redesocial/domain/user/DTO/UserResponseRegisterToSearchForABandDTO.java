@@ -1,8 +1,8 @@
 package com.gabriel.music.redesocial.domain.user.DTO;
 
 import com.gabriel.music.redesocial.domain.Friend;
-import com.gabriel.music.redesocial.domain.PhoneNumber;
-import com.gabriel.music.redesocial.domain.SocialMedia;
+import com.gabriel.music.redesocial.domain.user.PhoneNumber;
+import com.gabriel.music.redesocial.domain.user.SocialMedia;
 import com.gabriel.music.redesocial.domain.enums.AvaliabityEnum;
 import com.gabriel.music.redesocial.domain.enums.GenreEnum;
 import com.gabriel.music.redesocial.domain.enums.InstrumentsEnum;
@@ -12,19 +12,19 @@ import com.gabriel.music.redesocial.domain.post.Post;
 import com.gabriel.music.redesocial.domain.user.ImageUser;
 import com.gabriel.music.redesocial.domain.user.VideoUser;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
-public record UserResponseRegisterToSearchForABand(
+public record UserResponseRegisterToSearchForABandDTO(
         Long id,
         String name,
         String username,
         String email,
         String cep,
-        String goals,
+        String about,
         String whatsapp,
-        Date age,
-        Date EntryDate,
+        LocalDate age,
+        LocalDate EntryDate,
         Integer shows,
         List<GenreEnum> genre,
         List<InstrumentsEnum> instruments,

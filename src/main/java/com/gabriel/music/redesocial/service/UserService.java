@@ -1,10 +1,7 @@
 package com.gabriel.music.redesocial.service;
 
 import com.gabriel.music.redesocial.domain.user.*;
-import com.gabriel.music.redesocial.domain.user.DTO.UserInitialRegistration;
-import com.gabriel.music.redesocial.domain.user.DTO.UserRegisterToSearchForABand;
-import com.gabriel.music.redesocial.domain.user.DTO.UserResponseInitialRegister;
-import com.gabriel.music.redesocial.domain.user.DTO.UserResponseRegisterToSearchForABand;
+import com.gabriel.music.redesocial.domain.user.DTO.*;
 import com.gabriel.music.redesocial.repository.UserRepository;
 import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
 import jakarta.transaction.Transactional;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,17 +24,21 @@ public class UserService {
     @Autowired
     private ImageUserService imageUserService;
 
+    @Autowired
+    private PhoneNumberService phoneNumberService;
+
     @Transactional
-    public UserResponseInitialRegister initialRegistration(UserInitialRegistration user) throws UserNotFoundException {
+    public UserResponseInitialRegisterDTO initialRegistration(UserInitialRegistrationDTO user) throws UserNotFoundException {
         User newUser = modelingNewInitialRegistrationUser(user);
         User responseUser = userRepository.save(newUser);
         return modelingUserResponseInitialRegisterDto(responseUser);
     }
 
     @Transactional
-    public User registrationToSearchForABand(UserRegisterToSearchForABand userRegisterToSearchForABand) throws UserNotFoundException {
-        User newUser = modelingNewRegistrationToSearchForABand(userRegisterToSearchForABand);
-        return userRepository.save(newUser);
+    public UserResponseRegisterToSearchForABandDTO registrationToSearchForABand(UserRegisterToSearchForABandDTO userRegisterToSearchForABandDTO) throws UserNotFoundException {
+        User newUser = modelingNewRegistrationToSearchForABand(userRegisterToSearchForABandDTO);
+        userRepository.save(newUser);
+        return transformUserToUserResponseRegisterToSearchForABandDTO(newUser);
     }
 
     public User findByUsername(String username) throws UserNotFoundException {
@@ -44,15 +46,15 @@ public class UserService {
         return user.orElseThrow(UserNotFoundException::new);
     }
 
-    public User findByEmail(String email) throws UserNotFoundException {
-        Optional<User> user = userRepository.findByEmail(email);
-        return user.orElseThrow(UserNotFoundException::new);
-    }
+//    public User findByEmail(String email) throws UserNotFoundException {
+//        Optional<User> user = userRepository.findByEmail(email);
+//        return user.orElseThrow(UserNotFoundException::new);
+//    }
 
-    public List<UserResponseRegisterToSearchForABand> findAllUsers() {
+    public List<UserResponseRegisterToSearchForABandDTO> findAllUsers() {
         return userRepository.findAll()
                 .stream()
-                .map(this::mapUserToUserResponse)
+                .map(this::transformUserToUserResponseRegisterToSearchForABandDTO)
                 .collect(Collectors.toList());
     }
 
@@ -68,14 +70,20 @@ public class UserService {
         imageUserService.saveAndWriteBackgroundProfile(file, user);
     }
 
-    private UserResponseRegisterToSearchForABand mapUserToUserResponse(User user) {
-        return new UserResponseRegisterToSearchForABand(
+    @Transactional
+    public void uploadPhotoUser(MultipartFile file, String username) throws UserNotFoundException, IOException {
+        User user = findByUsername(username);
+        imageUserService.saveAndWritePhotoUser(file, user);
+    }
+
+    private UserResponseRegisterToSearchForABandDTO transformUserToUserResponseRegisterToSearchForABandDTO(User user) {
+        return new UserResponseRegisterToSearchForABandDTO(
                 user.getId(),
                 user.getName(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getCep(),
-                user.getGoals(),
+                user.getAbout(),
                 user.getWhatsapp(),
                 user.getAge(),
                 user.getEntryDate(),
@@ -98,16 +106,18 @@ public class UserService {
         );
     }
 
-    private User modelingNewInitialRegistrationUser(UserInitialRegistration userDTO) {
+    private User modelingNewInitialRegistrationUser(UserInitialRegistrationDTO userDTO) {
         var newUser = new User();
         newUser.setUsername(userDTO.username());
         newUser.setEmail(userDTO.email());
         newUser.setPassword(userDTO.password());
+        newUser.setEntryDate(LocalDate.now());
         return newUser;
     }
 
-    private User modelingNewRegistrationToSearchForABand(UserRegisterToSearchForABand user) throws UserNotFoundException {
+    private User modelingNewRegistrationToSearchForABand(UserRegisterToSearchForABandDTO user) throws UserNotFoundException {
         User existingUser = this.findByUsername(user.username());
+        existingUser.setName(user.name());
         existingUser.setCep(user.cep());
         existingUser.setAge(user.age());
         existingUser.setShows(user.shows());
@@ -117,9 +127,29 @@ public class UserService {
         return existingUser;
     }
 
-    private UserResponseInitialRegister modelingUserResponseInitialRegisterDto(User user) {
-        return new UserResponseInitialRegister(
+    private UserResponseInitialRegisterDTO modelingUserResponseInitialRegisterDto(User user) {
+        return new UserResponseInitialRegisterDTO(
                 user.getId(), user.getUsername(), user.getEmail()
         );
+    }
+
+    @Transactional
+    public void updateAbout(AboutUpdateDTO aboutUpdateDTO, String username) throws UserNotFoundException {
+        User user = findByUsername(username);
+        user.setAbout(aboutUpdateDTO.about());
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void updateWhatsapp(WhatsAppUpdateDTO whatsAppUpdateDTO, String username) throws UserNotFoundException {
+        User user = findByUsername(username);
+        user.setWhatsapp(whatsAppUpdateDTO.whatsapp());
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void registerPhoneNumber(PhoneNumberRegistrationDTO phoneNumberRegistrationDTO) throws UserNotFoundException {
+        User user = findByUsername(phoneNumberRegistrationDTO.username());
+        phoneNumberService.save(phoneNumberRegistrationDTO, user);
     }
 }

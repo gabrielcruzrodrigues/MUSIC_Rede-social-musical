@@ -1,10 +1,6 @@
 package com.gabriel.music.redesocial.controller;
 
-import com.gabriel.music.redesocial.domain.user.DTO.UserInitialRegistration;
-import com.gabriel.music.redesocial.domain.user.DTO.UserRegisterToSearchForABand;
-import com.gabriel.music.redesocial.domain.user.DTO.UserResponseInitialRegister;
-import com.gabriel.music.redesocial.domain.user.DTO.UserResponseRegisterToSearchForABand;
-import com.gabriel.music.redesocial.domain.user.User;
+import com.gabriel.music.redesocial.domain.user.DTO.*;
 import com.gabriel.music.redesocial.service.ImageUserService;
 import com.gabriel.music.redesocial.service.UserService;
 import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
@@ -35,13 +31,13 @@ public class UserController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<UserResponseRegisterToSearchForABand>> findAll() {
+    public ResponseEntity<List<UserResponseRegisterToSearchForABandDTO>> findAll() {
         return ResponseEntity.ok().body(userService.findAllUsers());
     }
 
     @PostMapping("/initial-registration")
-    public ResponseEntity<UserResponseInitialRegister> saveInitialUserRegistration(@RequestBody @Valid UserInitialRegistration userInitialRegistration) throws UserNotFoundException {
-        UserResponseInitialRegister user = userService.initialRegistration(userInitialRegistration);
+    public ResponseEntity<UserResponseInitialRegisterDTO> saveInitialUserRegistration(@RequestBody @Valid UserInitialRegistrationDTO userInitialRegistrationDTO) throws UserNotFoundException {
+        UserResponseInitialRegisterDTO user = userService.initialRegistration(userInitialRegistrationDTO);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{username}")
@@ -51,12 +47,12 @@ public class UserController {
     }
 
     @PostMapping("/registration-search-a-band")
-    public ResponseEntity<User> saveRegisterSearchABand(@RequestBody @Valid UserRegisterToSearchForABand userRegisterToSearchForABand) throws UserNotFoundException {
-        User user = userService.registrationToSearchForABand(userRegisterToSearchForABand);
+    public ResponseEntity<UserResponseRegisterToSearchForABandDTO> saveRegisterSearchABand(@RequestBody @Valid UserRegisterToSearchForABandDTO userRegisterToSearchForABandDTO) throws UserNotFoundException {
+        UserResponseRegisterToSearchForABandDTO user = userService.registrationToSearchForABand(userRegisterToSearchForABandDTO);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{username}")
-                .buildAndExpand(user.getUsername())
+                .buildAndExpand(user.username())
                 .toUri();
         return ResponseEntity.created(uri).body(user);
     }
@@ -72,6 +68,31 @@ public class UserController {
     public ResponseEntity<Object> updateBackgroundImage(@RequestParam("file") MultipartFile file,
                                                         @RequestParam("username") String username) throws UserNotFoundException, IOException {
         userService.uploadBackgroundProfileUser(file, username);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/upload-photo")
+    public ResponseEntity<Object> updatePhotoUser(@RequestParam("file") MultipartFile file,
+                                                        @RequestParam("username") String username) throws UserNotFoundException, IOException {
+        userService.uploadPhotoUser(file, username);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/about/{username}")
+    public ResponseEntity<Object> updateAbout(@PathVariable String username, @RequestBody AboutUpdateDTO about) throws UserNotFoundException {
+        userService.updateAbout(about, username);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/whatsapp/{username}")
+    public ResponseEntity<Object> updateWhatsapp(@PathVariable String username, @RequestBody WhatsAppUpdateDTO whatsAppUpdateDTO) throws UserNotFoundException {
+        userService.updateWhatsapp(whatsAppUpdateDTO, username);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/phone-number")
+    public ResponseEntity<Object> updatePhoneNumber(@RequestBody PhoneNumberRegistrationDTO phoneNumberRegistrationDTO) throws UserNotFoundException {
+        userService.registerPhoneNumber(phoneNumberRegistrationDTO);
         return ResponseEntity.ok().build();
     }
 }
