@@ -1,6 +1,7 @@
 package com.gabriel.music.redesocial.service;
 
-import com.gabriel.music.redesocial.domain.SocialMedia;
+import com.gabriel.music.redesocial.domain.user.DTO.SocialMediaUpdate;
+import com.gabriel.music.redesocial.domain.user.SocialMedia;
 import com.gabriel.music.redesocial.domain.user.DTO.SocialMediaRegistration;
 import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.repository.SocialMediaRepository;
@@ -30,7 +31,7 @@ public class SocialMediaService {
 
     private SocialMedia modelingNewSocialMedia(SocialMediaRegistration socialMedia) throws UserNotFoundException {
         User user = userService.findByUsername(socialMedia.user());
-        return new SocialMedia(null, socialMedia.socialMediaEnum(), socialMedia.username(), user);
+        return new SocialMedia(null, socialMedia.socialMedia(), socialMedia.username(), user);
     }
 
     public List<SocialMedia> findAll() {
@@ -43,9 +44,9 @@ public class SocialMediaService {
     }
 
     @Transactional
-    public void update(SocialMedia socialMedia) throws SocialMediaNotFoundException {
-        if (findByusernameSocialMedia(socialMedia.getUsernameSocialMedia()) == null) {
-            socialMediaRepository.save(socialMedia);
-        }
+    public SocialMedia update(SocialMediaUpdate socialMediaUpdate, String username) throws SocialMediaNotFoundException {
+        SocialMedia socialMedia = findByusernameSocialMedia(username);
+        socialMedia.setUsernameSocialMedia(socialMediaUpdate.username());
+        return socialMediaRepository.save(socialMedia);
     }
  }

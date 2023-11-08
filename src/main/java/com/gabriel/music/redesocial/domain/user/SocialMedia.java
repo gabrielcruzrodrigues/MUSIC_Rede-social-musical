@@ -1,5 +1,6 @@
-package com.gabriel.music.redesocial.domain;
+package com.gabriel.music.redesocial.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gabriel.music.redesocial.domain.enums.SocialMediaEnum;
 import com.gabriel.music.redesocial.domain.user.User;
 import jakarta.persistence.*;
@@ -23,11 +24,12 @@ public class SocialMedia {
     @Column(nullable = false)
     private SocialMediaEnum socialMedia;
 
-    @Column(length = 60, nullable = false)
+    @Column(length = 60, nullable = false, unique = true)
     @NotNull
     @NotBlank(message = "O username da sua rede social não pode ser nulo")
     private String usernameSocialMedia;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

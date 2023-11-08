@@ -1,6 +1,6 @@
 package com.gabriel.music.redesocial.repository;
 
-import com.gabriel.music.redesocial.domain.SocialMedia;
+import com.gabriel.music.redesocial.domain.user.SocialMedia;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
