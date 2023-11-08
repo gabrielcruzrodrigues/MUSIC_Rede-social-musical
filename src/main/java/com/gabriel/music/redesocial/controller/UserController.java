@@ -1,7 +1,6 @@
 package com.gabriel.music.redesocial.controller;
 
 import com.gabriel.music.redesocial.domain.user.DTO.*;
-import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.service.ImageUserService;
 import com.gabriel.music.redesocial.service.UserService;
 import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
@@ -81,6 +80,12 @@ public class UserController {
     @PutMapping("/whatsapp/{username}")
     public ResponseEntity<Object> updatewhatsapp(@PathVariable String username, @RequestBody WhatsAppUpdateDTO whatsAppUpdateDTO) throws UserNotFoundException {
         userService.updateWhatsapp(whatsAppUpdateDTO, username);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/phone-number")
+    public ResponseEntity<Object> updatePhoneNumber(@RequestBody PhoneNumberRegistrationDTO phoneNumberRegistrationDTO) throws UserNotFoundException {
+        userService.registerPhoneNumber(phoneNumberRegistrationDTO);
         return ResponseEntity.ok().build();
     }
 }

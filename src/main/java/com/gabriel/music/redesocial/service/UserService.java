@@ -24,6 +24,9 @@ public class UserService {
     @Autowired
     private ImageUserService imageUserService;
 
+    @Autowired
+    private PhoneNumberService phoneNumberService;
+
     @Transactional
     public UserResponseInitialRegisterDTO initialRegistration(UserInitialRegistrationDTO user) throws UserNotFoundException {
         User newUser = modelingNewInitialRegistrationUser(user);
@@ -136,5 +139,11 @@ public class UserService {
         User user = findByUsername(username);
         user.setWhatsapp(whatsAppUpdateDTO.whatsapp());
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void registerPhoneNumber(PhoneNumberRegistrationDTO phoneNumberRegistrationDTO) throws UserNotFoundException {
+        User user = findByUsername(phoneNumberRegistrationDTO.username());
+        phoneNumberService.save(phoneNumberRegistrationDTO, user);
     }
 }
