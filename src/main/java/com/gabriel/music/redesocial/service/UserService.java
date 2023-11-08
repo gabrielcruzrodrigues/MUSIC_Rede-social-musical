@@ -108,6 +108,7 @@ public class UserService {
 
     private User modelingNewRegistrationToSearchForABand(UserRegisterToSearchForABand user) throws UserNotFoundException {
         User existingUser = this.findByUsername(user.username());
+        existingUser.setName(user.name());
         existingUser.setCep(user.cep());
         existingUser.setAge(user.age());
         existingUser.setShows(user.shows());
