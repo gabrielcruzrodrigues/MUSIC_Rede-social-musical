@@ -1,13 +1,12 @@
 package com.gabriel.music.redesocial.controller;
 
-import com.gabriel.music.redesocial.domain.user.DTO.SocialMediaUpdate;
+import com.gabriel.music.redesocial.domain.user.DTO.SocialMediaUpdateDTO;
 import com.gabriel.music.redesocial.domain.user.SocialMedia;
-import com.gabriel.music.redesocial.domain.user.DTO.SocialMediaRegistration;
+import com.gabriel.music.redesocial.domain.user.DTO.SocialMediaRegistrationDTO;
 import com.gabriel.music.redesocial.service.SocialMediaService;
 import com.gabriel.music.redesocial.service.exceptions.SocialMediaNotFoundException;
 import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,8 +28,8 @@ public class SocialMediaController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<SocialMedia> save(@RequestBody @Valid SocialMediaRegistration socialMediaRegistration) throws UserNotFoundException {
-        SocialMedia socialMedia = socialMediaService.save(socialMediaRegistration);
+    public ResponseEntity<SocialMedia> save(@RequestBody @Valid SocialMediaRegistrationDTO socialMediaRegistrationDTO) throws UserNotFoundException {
+        SocialMedia socialMedia = socialMediaService.save(socialMediaRegistrationDTO);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("{username}")
@@ -45,8 +44,8 @@ public class SocialMediaController {
     }
 
     @PutMapping("/update/{usernameSocial}")
-    public ResponseEntity<SocialMedia> update(@RequestBody SocialMediaUpdate socialMediaUpdate, @PathVariable String usernameSocial) throws SocialMediaNotFoundException {
-        return ResponseEntity.ok().body(socialMediaService.update(socialMediaUpdate, usernameSocial));
+    public ResponseEntity<SocialMedia> update(@RequestBody SocialMediaUpdateDTO socialMediaUpdateDTO, @PathVariable String usernameSocial) throws SocialMediaNotFoundException {
+        return ResponseEntity.ok().body(socialMediaService.update(socialMediaUpdateDTO, usernameSocial));
     }
 
     @DeleteMapping("/delete/{usernameSocialMedia}")

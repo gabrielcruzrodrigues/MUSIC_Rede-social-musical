@@ -13,10 +13,9 @@ import com.gabriel.music.redesocial.domain.user.ImageUser;
 import com.gabriel.music.redesocial.domain.user.VideoUser;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
-public record UserResponseRegisterToSearchForABand(
+public record UserResponseRegisterToSearchForABandDTO(
         Long id,
         String name,
         String username,

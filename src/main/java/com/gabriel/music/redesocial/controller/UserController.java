@@ -32,13 +32,13 @@ public class UserController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<UserResponseRegisterToSearchForABand>> findAll() {
+    public ResponseEntity<List<UserResponseRegisterToSearchForABandDTO>> findAll() {
         return ResponseEntity.ok().body(userService.findAllUsers());
     }
 
     @PostMapping("/initial-registration")
-    public ResponseEntity<UserResponseInitialRegister> saveInitialUserRegistration(@RequestBody @Valid UserInitialRegistration userInitialRegistration) throws UserNotFoundException {
-        UserResponseInitialRegister user = userService.initialRegistration(userInitialRegistration);
+    public ResponseEntity<UserResponseInitialRegisterDTO> saveInitialUserRegistration(@RequestBody @Valid UserInitialRegistrationDTO userInitialRegistrationDTO) throws UserNotFoundException {
+        UserResponseInitialRegisterDTO user = userService.initialRegistration(userInitialRegistrationDTO);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{username}")
@@ -48,8 +48,8 @@ public class UserController {
     }
 
     @PostMapping("/registration-search-a-band")
-    public ResponseEntity<User> saveRegisterSearchABand(@RequestBody @Valid UserRegisterToSearchForABand userRegisterToSearchForABand) throws UserNotFoundException {
-        User user = userService.registrationToSearchForABand(userRegisterToSearchForABand);
+    public ResponseEntity<User> saveRegisterSearchABand(@RequestBody @Valid UserRegisterToSearchForABandDTO userRegisterToSearchForABandDTO) throws UserNotFoundException {
+        User user = userService.registrationToSearchForABand(userRegisterToSearchForABandDTO);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{username}")
@@ -73,7 +73,7 @@ public class UserController {
     }
 
     @PutMapping("/about/{username}")
-    public ResponseEntity<Object> updateAbout(@PathVariable String username, @RequestBody AboutUpdate about) throws UserNotFoundException {
+    public ResponseEntity<Object> updateAbout(@PathVariable String username, @RequestBody AboutUpdateDTO about) throws UserNotFoundException {
         userService.updateAbout(about, username);
         return ResponseEntity.ok().build();
     }

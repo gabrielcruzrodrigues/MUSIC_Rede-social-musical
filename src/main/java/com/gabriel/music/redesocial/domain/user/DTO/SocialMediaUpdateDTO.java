@@ -1,4 +1,4 @@
 package com.gabriel.music.redesocial.domain.user.DTO;
 
-public record AboutUpdate(String about) {
+public record SocialMediaUpdateDTO(String username) {
 }

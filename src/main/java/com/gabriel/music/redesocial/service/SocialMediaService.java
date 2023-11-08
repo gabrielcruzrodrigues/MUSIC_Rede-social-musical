@@ -1,8 +1,8 @@
 package com.gabriel.music.redesocial.service;
 
-import com.gabriel.music.redesocial.domain.user.DTO.SocialMediaUpdate;
+import com.gabriel.music.redesocial.domain.user.DTO.SocialMediaUpdateDTO;
 import com.gabriel.music.redesocial.domain.user.SocialMedia;
-import com.gabriel.music.redesocial.domain.user.DTO.SocialMediaRegistration;
+import com.gabriel.music.redesocial.domain.user.DTO.SocialMediaRegistrationDTO;
 import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.repository.SocialMediaRepository;
 import com.gabriel.music.redesocial.service.exceptions.SocialMediaNotFoundException;
@@ -10,7 +10,6 @@ import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,12 +24,12 @@ public class SocialMediaService {
     private UserService userService;
 
     @Transactional
-    public SocialMedia save(SocialMediaRegistration socialMediaRegistration) throws UserNotFoundException {
-        SocialMedia socialMediaForSave = modelingNewSocialMedia(socialMediaRegistration);
+    public SocialMedia save(SocialMediaRegistrationDTO socialMediaRegistrationDTO) throws UserNotFoundException {
+        SocialMedia socialMediaForSave = modelingNewSocialMedia(socialMediaRegistrationDTO);
         return socialMediaRepository.save(socialMediaForSave);
     }
 
-    private SocialMedia modelingNewSocialMedia(SocialMediaRegistration socialMedia) throws UserNotFoundException {
+    private SocialMedia modelingNewSocialMedia(SocialMediaRegistrationDTO socialMedia) throws UserNotFoundException {
         User user = userService.findByUsername(socialMedia.user());
         return new SocialMedia(null, socialMedia.socialMedia(), socialMedia.username(), user);
     }
@@ -45,9 +44,9 @@ public class SocialMediaService {
     }
 
     @Transactional
-    public SocialMedia update(SocialMediaUpdate socialMediaUpdate, String username) throws SocialMediaNotFoundException {
+    public SocialMedia update(SocialMediaUpdateDTO socialMediaUpdateDTO, String username) throws SocialMediaNotFoundException {
         SocialMedia socialMedia = findByusernameSocialMedia(username);
-        socialMedia.setUsernameSocialMedia(socialMediaUpdate.username());
+        socialMedia.setUsernameSocialMedia(socialMediaUpdateDTO.username());
         return socialMediaRepository.save(socialMedia);
     }
 

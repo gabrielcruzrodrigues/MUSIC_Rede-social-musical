@@ -7,10 +7,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
-public record UserRegisterToSearchForABand(
+public record UserRegisterToSearchForABandDTO(
         @NotNull @NotBlank(message = "O seu nome não pode estar em branco")
         String name,
         @NotNull @NotBlank(message = "O seu username não pode estar em branco")

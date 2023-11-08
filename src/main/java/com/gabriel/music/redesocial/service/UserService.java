@@ -25,15 +25,15 @@ public class UserService {
     private ImageUserService imageUserService;
 
     @Transactional
-    public UserResponseInitialRegister initialRegistration(UserInitialRegistration user) throws UserNotFoundException {
+    public UserResponseInitialRegisterDTO initialRegistration(UserInitialRegistrationDTO user) throws UserNotFoundException {
         User newUser = modelingNewInitialRegistrationUser(user);
         User responseUser = userRepository.save(newUser);
         return modelingUserResponseInitialRegisterDto(responseUser);
     }
 
     @Transactional
-    public User registrationToSearchForABand(UserRegisterToSearchForABand userRegisterToSearchForABand) throws UserNotFoundException {
-        User newUser = modelingNewRegistrationToSearchForABand(userRegisterToSearchForABand);
+    public User registrationToSearchForABand(UserRegisterToSearchForABandDTO userRegisterToSearchForABandDTO) throws UserNotFoundException {
+        User newUser = modelingNewRegistrationToSearchForABand(userRegisterToSearchForABandDTO);
         return userRepository.save(newUser);
     }
 
@@ -47,7 +47,7 @@ public class UserService {
         return user.orElseThrow(UserNotFoundException::new);
     }
 
-    public List<UserResponseRegisterToSearchForABand> findAllUsers() {
+    public List<UserResponseRegisterToSearchForABandDTO> findAllUsers() {
         return userRepository.findAll()
                 .stream()
                 .map(this::mapUserToUserResponse)
@@ -66,8 +66,8 @@ public class UserService {
         imageUserService.saveAndWriteBackgroundProfile(file, user);
     }
 
-    private UserResponseRegisterToSearchForABand mapUserToUserResponse(User user) {
-        return new UserResponseRegisterToSearchForABand(
+    private UserResponseRegisterToSearchForABandDTO mapUserToUserResponse(User user) {
+        return new UserResponseRegisterToSearchForABandDTO(
                 user.getId(),
                 user.getName(),
                 user.getUsername(),
@@ -96,7 +96,7 @@ public class UserService {
         );
     }
 
-    private User modelingNewInitialRegistrationUser(UserInitialRegistration userDTO) {
+    private User modelingNewInitialRegistrationUser(UserInitialRegistrationDTO userDTO) {
         var newUser = new User();
         newUser.setUsername(userDTO.username());
         newUser.setEmail(userDTO.email());
@@ -105,7 +105,7 @@ public class UserService {
         return newUser;
     }
 
-    private User modelingNewRegistrationToSearchForABand(UserRegisterToSearchForABand user) throws UserNotFoundException {
+    private User modelingNewRegistrationToSearchForABand(UserRegisterToSearchForABandDTO user) throws UserNotFoundException {
         User existingUser = this.findByUsername(user.username());
         existingUser.setName(user.name());
         existingUser.setCep(user.cep());
@@ -117,15 +117,15 @@ public class UserService {
         return existingUser;
     }
 
-    private UserResponseInitialRegister modelingUserResponseInitialRegisterDto(User user) {
-        return new UserResponseInitialRegister(
+    private UserResponseInitialRegisterDTO modelingUserResponseInitialRegisterDto(User user) {
+        return new UserResponseInitialRegisterDTO(
                 user.getId(), user.getUsername(), user.getEmail()
         );
     }
 
-    public void updateAbout(AboutUpdate aboutUpdate, String username) throws UserNotFoundException {
+    public void updateAbout(AboutUpdateDTO aboutUpdateDTO, String username) throws UserNotFoundException {
         User user = findByUsername(username);
-        user.setAbout(aboutUpdate.about());
+        user.setAbout(aboutUpdateDTO.about());
         userRepository.save(user);
     }
 }
