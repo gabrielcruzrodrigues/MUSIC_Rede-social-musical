@@ -2,8 +2,8 @@ package com.gabriel.music.redesocial.controller;
 
 import com.gabriel.music.redesocial.domain.user.DTO.*;
 import com.gabriel.music.redesocial.domain.user.User;
-import com.gabriel.music.redesocial.service.ImageUserService;
-import com.gabriel.music.redesocial.service.UserService;
+import com.gabriel.music.redesocial.service.user.ImageUserService;
+import com.gabriel.music.redesocial.service.user.UserService;
 import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
 import jakarta.validation.Valid;
 import org.apache.coyote.Response;
@@ -82,6 +82,13 @@ public class UserController {
     public ResponseEntity<Object> updatePhotoUser(@RequestParam("file") MultipartFile file,
                                                         @RequestParam("username") String username) throws UserNotFoundException, IOException {
         userService.uploadPhotoUser(file, username);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/upload-video")
+    public ResponseEntity<Object> updateVideUser(@RequestParam("file") MultipartFile file,
+                                                 @RequestParam("username") String username) throws UserNotFoundException, IOException {
+        userService.uploadVideoUser(file, username);
         return ResponseEntity.ok().build();
     }
 

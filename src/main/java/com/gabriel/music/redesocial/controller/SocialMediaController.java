@@ -3,7 +3,7 @@ package com.gabriel.music.redesocial.controller;
 import com.gabriel.music.redesocial.domain.user.DTO.SocialMediaUpdateDTO;
 import com.gabriel.music.redesocial.domain.user.SocialMedia;
 import com.gabriel.music.redesocial.domain.user.DTO.SocialMediaRegistrationDTO;
-import com.gabriel.music.redesocial.service.SocialMediaService;
+import com.gabriel.music.redesocial.service.user.SocialMediaService;
 import com.gabriel.music.redesocial.service.exceptions.SocialMediaNotFoundException;
 import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
 import jakarta.validation.Valid;

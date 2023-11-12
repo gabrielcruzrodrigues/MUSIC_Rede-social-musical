@@ -1,4 +1,4 @@
-package com.gabriel.music.redesocial.service;
+package com.gabriel.music.redesocial.service.user;
 
 import com.gabriel.music.redesocial.domain.user.DTO.PhoneNumberRegistrationDTO;
 import com.gabriel.music.redesocial.domain.user.PhoneNumber;

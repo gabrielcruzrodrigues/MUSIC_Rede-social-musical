@@ -1,7 +1,7 @@
 package com.gabriel.music.redesocial.controller;
 
 import com.gabriel.music.redesocial.domain.user.ImageUser;
-import com.gabriel.music.redesocial.service.ImageUserService;
+import com.gabriel.music.redesocial.service.user.ImageUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

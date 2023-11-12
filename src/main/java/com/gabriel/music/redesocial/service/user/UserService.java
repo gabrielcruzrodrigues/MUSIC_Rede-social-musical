@@ -1,4 +1,4 @@
-package com.gabriel.music.redesocial.service;
+package com.gabriel.music.redesocial.service.user;
 
 import com.gabriel.music.redesocial.domain.user.*;
 import com.gabriel.music.redesocial.domain.user.DTO.*;
@@ -23,6 +23,9 @@ public class UserService {
 
     @Autowired
     private ImageUserService imageUserService;
+
+    @Autowired
+    private VideoUserService videoUserService;
 
     @Autowired
     private PhoneNumberService phoneNumberService;
@@ -74,6 +77,12 @@ public class UserService {
     public void uploadPhotoUser(MultipartFile file, String username) throws UserNotFoundException, IOException {
         User user = findByUsername(username);
         imageUserService.saveAndWritePhotoUser(file, user);
+    }
+
+    @Transactional
+    public void uploadVideoUser(MultipartFile file, String username) throws UserNotFoundException, IOException {
+        User user = findByUsername(username);
+        videoUserService.saveAndWriteVideoProfile(file, user);
     }
 
     private UserResponseRegisterToSearchForABandDTO transformUserToUserResponseRegisterToSearchForABandDTO(User user) {
@@ -152,4 +161,5 @@ public class UserService {
         User user = findByUsername(phoneNumberRegistrationDTO.username());
         phoneNumberService.save(phoneNumberRegistrationDTO, user);
     }
+
 }
