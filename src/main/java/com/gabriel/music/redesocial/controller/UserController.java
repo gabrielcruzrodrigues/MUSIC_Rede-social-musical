@@ -1,10 +1,12 @@
 package com.gabriel.music.redesocial.controller;
 
 import com.gabriel.music.redesocial.domain.user.DTO.*;
-import com.gabriel.music.redesocial.service.ImageUserService;
-import com.gabriel.music.redesocial.service.UserService;
+import com.gabriel.music.redesocial.domain.user.User;
+import com.gabriel.music.redesocial.service.user.ImageUserService;
+import com.gabriel.music.redesocial.service.user.UserService;
 import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +35,11 @@ public class UserController {
     @GetMapping("/findAll")
     public ResponseEntity<List<UserResponseRegisterToSearchForABandDTO>> findAll() {
         return ResponseEntity.ok().body(userService.findAllUsers());
+    }
+
+    @GetMapping("/search/{username}")
+    public ResponseEntity<User> findByUsername(@PathVariable String username) throws UserNotFoundException {
+        return ResponseEntity.ok().body(userService.findByUsername(username));
     }
 
     @PostMapping("/initial-registration")
@@ -75,6 +82,13 @@ public class UserController {
     public ResponseEntity<Object> updatePhotoUser(@RequestParam("file") MultipartFile file,
                                                         @RequestParam("username") String username) throws UserNotFoundException, IOException {
         userService.uploadPhotoUser(file, username);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/upload-video")
+    public ResponseEntity<Object> updateVideUser(@RequestParam("file") MultipartFile file,
+                                                 @RequestParam("username") String username) throws UserNotFoundException, IOException {
+        userService.uploadVideoUser(file, username);
         return ResponseEntity.ok().build();
     }
 

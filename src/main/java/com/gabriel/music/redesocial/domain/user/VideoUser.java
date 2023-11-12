@@ -15,9 +15,16 @@ public class VideoUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true, nullable = false)
     private String videoReference;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public VideoUser(String videoReference, User user) {
+        this.videoReference = videoReference;
+        this.user = user;
+    }
 }

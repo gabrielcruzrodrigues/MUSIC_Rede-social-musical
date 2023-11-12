@@ -1,4 +1,4 @@
-package com.gabriel.music.redesocial.service;
+package com.gabriel.music.redesocial.service.user;
 
 import com.gabriel.music.redesocial.domain.user.ImageUser;
 import com.gabriel.music.redesocial.domain.user.User;
@@ -54,7 +54,7 @@ public class ImageUserService {
     private void writeFileInDirectory(MultipartFile file, User user, String option) throws IOException {
         byte[] bytes = file.getBytes();
         String newFileName = generateNewFileName(file, user);
-        Path path = Paths.get(pathImages + "\\" + newFileName);
+        Path path = Paths.get(pathImages + "/" + newFileName);
         Files.write(path, bytes);
         saveFileReferenceInDatabase(newFileName, user, option);
     }
