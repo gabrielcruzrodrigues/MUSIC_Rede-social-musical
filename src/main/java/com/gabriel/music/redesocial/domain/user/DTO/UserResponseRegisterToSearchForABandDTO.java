@@ -1,6 +1,6 @@
 package com.gabriel.music.redesocial.domain.user.DTO;
 
-import com.gabriel.music.redesocial.domain.Friend;
+import com.gabriel.music.redesocial.domain.user.Friend;
 import com.gabriel.music.redesocial.domain.user.PhoneNumber;
 import com.gabriel.music.redesocial.domain.user.SocialMedia;
 import com.gabriel.music.redesocial.domain.enums.AvaliabityEnum;

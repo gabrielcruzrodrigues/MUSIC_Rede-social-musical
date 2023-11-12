@@ -1,4 +1,4 @@
-package com.gabriel.music.redesocial.domain;
+package com.gabriel.music.redesocial.domain.user;
 
 import com.gabriel.music.redesocial.domain.user.User;
 import jakarta.persistence.*;

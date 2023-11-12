@@ -2,12 +2,17 @@ package com.gabriel.music.redesocial.controller;
 
 import com.gabriel.music.redesocial.domain.user.DTO.*;
 import com.gabriel.music.redesocial.domain.user.User;
+import com.gabriel.music.redesocial.service.exceptions.FileNotFoundException;
 import com.gabriel.music.redesocial.service.user.ImageUserService;
 import com.gabriel.music.redesocial.service.user.UserService;
 import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
 import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -69,6 +74,15 @@ public class UserController {
                                                      @RequestParam("username") String username) throws UserNotFoundException, IOException {
         userService.uploadImageProfileUser(file, username);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/media/image-profile/{username}")
+    public ResponseEntity<Resource> getImageProfile(@PathVariable String username) throws UserNotFoundException, FileNotFoundException {
+        Resource imageProfile = userService.getImageProfile(username);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + imageProfile + "_profile.jpg")
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(imageProfile);
     }
 
     @PostMapping("/update-background-profile")
