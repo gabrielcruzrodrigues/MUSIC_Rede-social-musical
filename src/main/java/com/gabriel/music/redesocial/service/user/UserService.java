@@ -175,9 +175,21 @@ public class UserService {
     public Resource getImageProfile(String username) throws UserNotFoundException, FileNotFoundException {
         User user = findByUsername(username);
         if (user.getImageProfile().getImageReference() != null) {
-            log.info(user.getImageProfile().getImageReference());
             Resource resource = new FileSystemResource(pathImages + "/" + user.getImageProfile().getImageReference());
-            if (resource != null) {
+            if (resource.exists() && resource.isReadable()) {
+                return resource;
+            } else {
+                throw new FileNotFoundException();
+            }
+        }
+        return null;
+    }
+
+    public Resource getBackgroundProfile(String username) throws UserNotFoundException, FileNotFoundException {
+        User user = findByUsername(username);
+        if (user.getImageBackground().getImageReference() != null) {
+            Resource resource = new FileSystemResource(pathImages + "/" + user.getImageBackground().getImageReference());
+            if (resource.exists() && resource.isReadable()) {
                 return resource;
             } else {
                 throw new FileNotFoundException();

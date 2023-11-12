@@ -80,7 +80,7 @@ public class UserController {
     public ResponseEntity<Resource> getImageProfile(@PathVariable String username) throws UserNotFoundException, FileNotFoundException {
         Resource imageProfile = userService.getImageProfile(username);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + imageProfile + "_profile.jpg")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + imageProfile.getFilename())
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(imageProfile);
     }
@@ -90,6 +90,15 @@ public class UserController {
                                                         @RequestParam("username") String username) throws UserNotFoundException, IOException {
         userService.uploadBackgroundProfileUser(file, username);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/media/image-background/{username}")
+    public ResponseEntity<Resource> getBackgroundProfile(@PathVariable String username) throws UserNotFoundException, FileNotFoundException {
+        Resource backgroundProfile = userService.getBackgroundProfile(username);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + backgroundProfile.getFilename())
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(backgroundProfile);
     }
 
     @PostMapping("/upload-photo")
