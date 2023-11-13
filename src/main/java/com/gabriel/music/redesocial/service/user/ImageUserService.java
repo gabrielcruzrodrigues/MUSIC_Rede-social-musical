@@ -5,6 +5,8 @@ import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.repository.ImageUserRepository;
 import com.gabriel.music.redesocial.service.exceptions.ErrorDeleteFileException;
 import com.gabriel.music.redesocial.service.exceptions.FileNotFoundException;
+import com.gabriel.music.redesocial.service.exceptions.TypeFileErrorException;
+import com.gabriel.music.redesocial.util.MediaFileTypeChecker;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.jcodec.api.JCodecException;
+import org.jcodec.common.Demuxer;
+import org.jcodec.common.DemuxerTrack;
+import org.jcodec.common.io.NIOUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -92,7 +98,7 @@ public class ImageUserService {
         return checkIfTheFileExists(referenceForDelete);
     }
 
-    //imageprofile
+    //images profile
 
     public void deleteImageUser(String filename) throws FileNotFoundException, IOException, ErrorDeleteFileException {
         deleteImageReferenceFromDatabase(filename);
@@ -104,13 +110,15 @@ public class ImageUserService {
     }
 
     @Transactional
-    public void saveAndWriteImageProfile(MultipartFile file, User user) throws IOException, FileNotFoundException {
-        if (!file.isEmpty()) {
+    public void saveAndWriteImageProfile(MultipartFile file, User user) throws IOException, FileNotFoundException, TypeFileErrorException {
+        if (MediaFileTypeChecker.verifyIfIsAPhoto(file)) {
             if (user.getImageProfile() != null) {
                 this.deleteCurrentUserImageProfile(user, file);
             } else {
                 this.writeFileInDirectory(file, user, "profile");
             }
+        } else {
+            throw new TypeFileErrorException();
         }
     }
 
@@ -132,13 +140,15 @@ public class ImageUserService {
     //images backgrounds
 
     @Transactional
-    public void saveAndWriteBackgroundProfile(MultipartFile file, User user) throws IOException, FileNotFoundException {
-        if (!file.isEmpty()) {
+    public void saveAndWriteBackgroundProfile(MultipartFile file, User user) throws IOException, FileNotFoundException, TypeFileErrorException {
+        if (MediaFileTypeChecker.verifyIfIsAPhoto(file)) {
             if (user.getImageBackground() != null) {
                 this.deleteCurrentUserImageBackground(user, file);
             } else {
                 this.writeFileInDirectory(file, user, "background");
             }
+        } else {
+            throw new TypeFileErrorException();
         }
     }
 

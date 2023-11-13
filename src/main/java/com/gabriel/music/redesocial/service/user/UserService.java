@@ -4,6 +4,7 @@ import com.gabriel.music.redesocial.domain.user.*;
 import com.gabriel.music.redesocial.domain.user.DTO.*;
 import com.gabriel.music.redesocial.repository.UserRepository;
 import com.gabriel.music.redesocial.service.exceptions.FileNotFoundException;
+import com.gabriel.music.redesocial.service.exceptions.TypeFileErrorException;
 import com.gabriel.music.redesocial.service.exceptions.UserMidiaNotFoundException;
 import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
 import jakarta.transaction.Transactional;
@@ -140,13 +141,13 @@ public class UserService {
     //midias
 
     @Transactional
-    public void uploadImageProfileUser(MultipartFile file, String username) throws UserNotFoundException, IOException, FileNotFoundException {
+    public void uploadImageProfileUser(MultipartFile file, String username) throws UserNotFoundException, IOException, FileNotFoundException, TypeFileErrorException {
         User user = findByUsername(username);
         imageUserService.saveAndWriteImageProfile(file, user);
     }
 
     @Transactional
-    public void uploadBackgroundProfileUser(MultipartFile file, String username) throws UserNotFoundException, IOException, FileNotFoundException {
+    public void uploadBackgroundProfileUser(MultipartFile file, String username) throws UserNotFoundException, IOException, FileNotFoundException, TypeFileErrorException {
         User user = findByUsername(username);
         imageUserService.saveAndWriteBackgroundProfile(file, user);
     }

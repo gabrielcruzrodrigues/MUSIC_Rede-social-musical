@@ -3,12 +3,9 @@ package com.gabriel.music.redesocial.controller;
 import com.gabriel.music.redesocial.domain.user.DTO.*;
 import com.gabriel.music.redesocial.domain.user.Friend;
 import com.gabriel.music.redesocial.domain.user.User;
-import com.gabriel.music.redesocial.service.exceptions.ErrorDeleteFileException;
-import com.gabriel.music.redesocial.service.exceptions.FileNotFoundException;
-import com.gabriel.music.redesocial.service.exceptions.UserMidiaNotFoundException;
+import com.gabriel.music.redesocial.service.exceptions.*;
 import com.gabriel.music.redesocial.service.user.ImageUserService;
 import com.gabriel.music.redesocial.service.user.UserService;
-import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -78,7 +75,7 @@ public class UserController {
 
     @PostMapping("/update-image-profile")
     public ResponseEntity<Object> updateImageProfile(@RequestParam("file") MultipartFile file,
-                                                     @RequestParam("username") String username) throws UserNotFoundException, IOException, FileNotFoundException {
+                                                     @RequestParam("username") String username) throws UserNotFoundException, IOException, FileNotFoundException, TypeFileErrorException {
         userService.uploadImageProfileUser(file, username);
         return ResponseEntity.ok().build();
     }
@@ -100,7 +97,7 @@ public class UserController {
 
     @PostMapping("/update-background-profile")
     public ResponseEntity<Object> updateBackgroundImage(@RequestParam("file") MultipartFile file,
-                                                        @RequestParam("username") String username) throws UserNotFoundException, IOException, FileNotFoundException {
+                                                        @RequestParam("username") String username) throws UserNotFoundException, IOException, FileNotFoundException, TypeFileErrorException {
         userService.uploadBackgroundProfileUser(file, username);
         return ResponseEntity.ok().build();
     }
