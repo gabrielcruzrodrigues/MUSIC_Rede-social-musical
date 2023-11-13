@@ -3,6 +3,8 @@ package com.gabriel.music.redesocial.service.user;
 import com.gabriel.music.redesocial.domain.user.ImageUser;
 import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.repository.ImageUserRepository;
+import com.gabriel.music.redesocial.service.exceptions.ErrorDeleteFileException;
+import com.gabriel.music.redesocial.service.exceptions.FileNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -35,19 +38,8 @@ public class ImageUserService {
         return imageUserRepository.findAll();
     }
 
-    @Transactional
-    public void saveAndWriteImageProfile(MultipartFile file, User user) throws IOException {
-        if (!file.isEmpty()) {
-            if (user.getImageProfile() != null) {
-                this.deleteCurrentUserImageProfile(user, file);
-            } else {
-                this.writeFileInDirectory(file, user, "profile");
-            }
-        }
-    }
-
-    public void deleteImageReferenceFromDatabase(String reference) {
-        ImageUser imageUser = imageUserRepository.findByImageReference(reference);
+    public void deleteImageReferenceFromDatabase(String reference) throws FileNotFoundException {
+        ImageUser imageUser = this.findImageByFilename(reference);
         imageUserRepository.deleteById(imageUser.getId());
     }
 
@@ -65,7 +57,7 @@ public class ImageUserService {
         String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
         String newFileName = user.getUsername() + "_" + randomId + fileExtension;
 
-        if (imageUserRepository.findByImageReference(newFileName) == null) {
+        if (imageUserRepository.findByImageReference(newFileName).isEmpty()) {
             return newFileName;
         } else {
             return newFileName + UUID.randomUUID().toString().substring(0, 5);
@@ -89,20 +81,47 @@ public class ImageUserService {
         imageUserRepository.save(imageUser);
     }
 
-    private void deleteCurrentUserImageProfile(User user, MultipartFile file) throws IOException {
-        deleteImageReferenceFromDatabase(user.getImageProfile().getImageReference());
-        if (imageUserRepository.findByImageReference(user.getImageProfile().getImageReference()) == null) {
-            Boolean verify = deleteFileFromDirectory(user.getImageProfile().getImageReference(), file);
-            if (verify) {
-                writeFileInDirectory(file, user, "profile");
+    private ImageUser findImageByFilename(String filename) throws FileNotFoundException {
+        Optional<ImageUser> imageUser = imageUserRepository.findByImageReference(filename);
+        return imageUser.orElseThrow(FileNotFoundException::new);
+    }
+
+    private Boolean deleteFileInDirectory(String referenceForDelete) throws IOException {
+        Path path = Paths.get(pathImages + "/" + referenceForDelete);
+        Files.delete(path);
+        return checkIfTheFileExists(referenceForDelete);
+    }
+
+    //imageprofile
+
+    public void deleteImageUser(String filename) throws FileNotFoundException, IOException, ErrorDeleteFileException {
+        deleteImageReferenceFromDatabase(filename);
+        if (imageUserRepository.findByImageReference(filename).isEmpty()) {
+            deleteFileInDirectory(filename);
+        } else {
+            throw new ErrorDeleteFileException();
+        }
+    }
+
+    @Transactional
+    public void saveAndWriteImageProfile(MultipartFile file, User user) throws IOException, FileNotFoundException {
+        if (!file.isEmpty()) {
+            if (user.getImageProfile() != null) {
+                this.deleteCurrentUserImageProfile(user, file);
+            } else {
+                this.writeFileInDirectory(file, user, "profile");
             }
         }
     }
 
-    private Boolean deleteFileFromDirectory(String referenceForDelete, MultipartFile file) throws IOException {
-        Path path = Paths.get(pathImages + "/" + referenceForDelete);
-        Files.delete(path);
-        return checkIfTheFileExists(referenceForDelete);
+    private void deleteCurrentUserImageProfile(User user, MultipartFile file) throws IOException, FileNotFoundException {
+        deleteImageReferenceFromDatabase(user.getImageProfile().getImageReference());
+        if (imageUserRepository.findByImageReference(user.getImageProfile().getImageReference()).isEmpty()) {
+            Boolean verify = deleteFileInDirectory(user.getImageProfile().getImageReference());
+            if (verify) {
+                writeFileInDirectory(file, user, "profile");
+            }
+        }
     }
 
     private Boolean checkIfTheFileExists(String referenceForCheck) {
@@ -113,7 +132,7 @@ public class ImageUserService {
     //images backgrounds
 
     @Transactional
-    public void saveAndWriteBackgroundProfile(MultipartFile file, User user) throws IOException {
+    public void saveAndWriteBackgroundProfile(MultipartFile file, User user) throws IOException, FileNotFoundException {
         if (!file.isEmpty()) {
             if (user.getImageBackground() != null) {
                 this.deleteCurrentUserImageBackground(user, file);
@@ -123,10 +142,10 @@ public class ImageUserService {
         }
     }
 
-    private void deleteCurrentUserImageBackground(User user, MultipartFile file) throws IOException {
+    private void deleteCurrentUserImageBackground(User user, MultipartFile file) throws IOException, FileNotFoundException {
         deleteImageReferenceFromDatabase(user.getImageBackground().getImageReference());
-        if (imageUserRepository.findByImageReference(user.getImageBackground().getImageReference()) == null) {
-            Boolean verify = deleteFileFromDirectory(user.getImageBackground().getImageReference(), file);
+        if (imageUserRepository.findByImageReference(user.getImageBackground().getImageReference()).isEmpty()) {
+            Boolean verify = deleteFileInDirectory(user.getImageBackground().getImageReference());
             if (verify) {
                 writeFileInDirectory(file, user, "background");
             }

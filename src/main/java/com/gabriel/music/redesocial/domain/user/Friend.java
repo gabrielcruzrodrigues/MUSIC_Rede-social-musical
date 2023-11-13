@@ -1,5 +1,6 @@
-package com.gabriel.music.redesocial.domain;
+package com.gabriel.music.redesocial.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gabriel.music.redesocial.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,10 +19,19 @@ public class Friend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false)
+    private String username;
+    @Column(unique = true)
+    private String imageProfile;
 
-//    private List<User> userFriend;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Friend(String username, String imageProfile, User user) {
+        this.username = username;
+        this.imageProfile = imageProfile;
+        this.user = user;
+    }
 }

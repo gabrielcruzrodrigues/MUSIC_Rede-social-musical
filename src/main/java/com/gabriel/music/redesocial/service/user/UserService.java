@@ -3,9 +3,15 @@ package com.gabriel.music.redesocial.service.user;
 import com.gabriel.music.redesocial.domain.user.*;
 import com.gabriel.music.redesocial.domain.user.DTO.*;
 import com.gabriel.music.redesocial.repository.UserRepository;
+import com.gabriel.music.redesocial.service.exceptions.FileNotFoundException;
+import com.gabriel.music.redesocial.service.exceptions.UserMidiaNotFoundException;
 import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +22,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UserService {
 
     @Autowired
@@ -29,6 +36,16 @@ public class UserService {
 
     @Autowired
     private PhoneNumberService phoneNumberService;
+
+    @Autowired
+    private FriendService friendService;
+
+    @Value("${images-user-path}")
+    private String pathImages;
+
+    public UserService() {}
+
+    //registration
 
     @Transactional
     public UserResponseInitialRegisterDTO initialRegistration(UserInitialRegistrationDTO user) throws UserNotFoundException {
@@ -44,45 +61,31 @@ public class UserService {
         return transformUserToUserResponseRegisterToSearchForABandDTO(newUser);
     }
 
-    public User findByUsername(String username) throws UserNotFoundException {
-        Optional<User> user = userRepository.findByUsername(username);
-        return user.orElseThrow(UserNotFoundException::new);
+    private User modelingNewInitialRegistrationUser(UserInitialRegistrationDTO userDTO) {
+        var newUser = new User();
+        newUser.setUsername(userDTO.username());
+        newUser.setEmail(userDTO.email());
+        newUser.setPassword(userDTO.password());
+        newUser.setEntryDate(LocalDate.now());
+        return newUser;
     }
 
-//    public User findByEmail(String email) throws UserNotFoundException {
-//        Optional<User> user = userRepository.findByEmail(email);
-//        return user.orElseThrow(UserNotFoundException::new);
-//    }
-
-    public List<UserResponseRegisterToSearchForABandDTO> findAllUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(this::transformUserToUserResponseRegisterToSearchForABandDTO)
-                .collect(Collectors.toList());
+    private User modelingNewRegistrationToSearchForABand(UserRegisterToSearchForABandDTO user) throws UserNotFoundException {
+        User existingUser = this.findByUsername(user.username());
+        existingUser.setName(user.name());
+        existingUser.setCep(user.cep());
+        existingUser.setAge(user.age());
+        existingUser.setShows(user.shows());
+        existingUser.setGenre(user.genre());
+        existingUser.setInstruments(user.instruments());
+        existingUser.setAvailability(user.avaliabity());
+        return existingUser;
     }
 
-    @Transactional
-    public void uploadImageProfileUser(MultipartFile file, String username) throws UserNotFoundException, IOException {
-        User user = findByUsername(username);
-        imageUserService.saveAndWriteImageProfile(file, user);
-    }
-
-    @Transactional
-    public void uploadBackgroundProfileUser(MultipartFile file, String username) throws UserNotFoundException, IOException {
-        User user = findByUsername(username);
-        imageUserService.saveAndWriteBackgroundProfile(file, user);
-    }
-
-    @Transactional
-    public void uploadPhotoUser(MultipartFile file, String username) throws UserNotFoundException, IOException {
-        User user = findByUsername(username);
-        imageUserService.saveAndWritePhotoUser(file, user);
-    }
-
-    @Transactional
-    public void uploadVideoUser(MultipartFile file, String username) throws UserNotFoundException, IOException {
-        User user = findByUsername(username);
-        videoUserService.saveAndWriteVideoProfile(file, user);
+    private UserResponseInitialRegisterDTO modelingUserResponseInitialRegisterDto(User user) {
+        return new UserResponseInitialRegisterDTO(
+                user.getId(), user.getUsername(), user.getEmail()
+        );
     }
 
     private UserResponseRegisterToSearchForABandDTO transformUserToUserResponseRegisterToSearchForABandDTO(User user) {
@@ -115,32 +118,80 @@ public class UserService {
         );
     }
 
-    private User modelingNewInitialRegistrationUser(UserInitialRegistrationDTO userDTO) {
-        var newUser = new User();
-        newUser.setUsername(userDTO.username());
-        newUser.setEmail(userDTO.email());
-        newUser.setPassword(userDTO.password());
-        newUser.setEntryDate(LocalDate.now());
-        return newUser;
+    //search
+
+    public User findByUsername(String username) throws UserNotFoundException {
+        Optional<User> user = userRepository.findByUsername(username);
+        return user.orElseThrow(UserNotFoundException::new);
     }
 
-    private User modelingNewRegistrationToSearchForABand(UserRegisterToSearchForABandDTO user) throws UserNotFoundException {
-        User existingUser = this.findByUsername(user.username());
-        existingUser.setName(user.name());
-        existingUser.setCep(user.cep());
-        existingUser.setAge(user.age());
-        existingUser.setShows(user.shows());
-        existingUser.setGenre(user.genre());
-        existingUser.setInstruments(user.instruments());
-        existingUser.setAvailability(user.avaliabity());
-        return existingUser;
+//    public User findByEmail(String email) throws UserNotFoundException {
+//        Optional<User> user = userRepository.findByEmail(email);
+//        return user.orElseThrow(UserNotFoundException::new);
+//    }
+
+    public List<UserResponseRegisterToSearchForABandDTO> findAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(this::transformUserToUserResponseRegisterToSearchForABandDTO)
+                .collect(Collectors.toList());
     }
 
-    private UserResponseInitialRegisterDTO modelingUserResponseInitialRegisterDto(User user) {
-        return new UserResponseInitialRegisterDTO(
-                user.getId(), user.getUsername(), user.getEmail()
-        );
+    //midias
+
+    @Transactional
+    public void uploadImageProfileUser(MultipartFile file, String username) throws UserNotFoundException, IOException, FileNotFoundException {
+        User user = findByUsername(username);
+        imageUserService.saveAndWriteImageProfile(file, user);
     }
+
+    @Transactional
+    public void uploadBackgroundProfileUser(MultipartFile file, String username) throws UserNotFoundException, IOException, FileNotFoundException {
+        User user = findByUsername(username);
+        imageUserService.saveAndWriteBackgroundProfile(file, user);
+    }
+
+    @Transactional
+    public void uploadPhotoUser(MultipartFile file, String username) throws UserNotFoundException, IOException {
+        User user = findByUsername(username);
+        imageUserService.saveAndWritePhotoUser(file, user);
+    }
+
+    @Transactional
+    public void uploadVideoUser(MultipartFile file, String username) throws UserNotFoundException, IOException {
+        User user = findByUsername(username);
+        videoUserService.saveAndWriteVideoProfile(file, user);
+    }
+
+    public Resource getImageProfile(String username) throws UserNotFoundException, FileNotFoundException, UserMidiaNotFoundException {
+        User user = findByUsername(username);
+        if (user.getImageProfile().getImageReference() != null) {
+            Resource resource = new FileSystemResource(pathImages + "/" + user.getImageProfile().getImageReference());
+            if (resource.exists() && resource.isReadable()) {
+                return resource;
+            } else {
+                throw new FileNotFoundException();
+            }
+        } else {
+            throw new UserMidiaNotFoundException();
+        }
+    }
+
+    public Resource getBackgroundProfile(String username) throws UserNotFoundException, FileNotFoundException, UserMidiaNotFoundException {
+        User user = findByUsername(username);
+        if (user.getImageBackground().getImageReference() != null) {
+            Resource resource = new FileSystemResource(pathImages + "/" + user.getImageBackground().getImageReference());
+            if (resource.exists() && resource.isReadable()) {
+                return resource;
+            } else {
+                throw new FileNotFoundException();
+            }
+        } else {
+            throw new UserMidiaNotFoundException();
+        }
+    }
+
+    //updates
 
     @Transactional
     public void updateAbout(AboutUpdateDTO aboutUpdateDTO, String username) throws UserNotFoundException {
@@ -162,4 +213,11 @@ public class UserService {
         phoneNumberService.save(phoneNumberRegistrationDTO, user);
     }
 
+   //friends
+
+    public Friend addFriend(String username, String friendUsername) throws UserNotFoundException {
+        User user = findByUsername(username);
+        User userFriend = findByUsername(friendUsername);
+        return friendService.save(user, userFriend);
+    }
 }
