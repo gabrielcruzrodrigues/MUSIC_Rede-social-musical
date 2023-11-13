@@ -75,7 +75,7 @@ public class UserController {
 
     @PostMapping("/update-image-profile")
     public ResponseEntity<Object> updateImageProfile(@RequestParam("file") MultipartFile file,
-                                                     @RequestParam("username") String username) throws UserNotFoundException, IOException, FileNotFoundException, TypeFileErrorException {
+                                                     @RequestParam("username") String username) throws UserNotFoundException, IOException, FileNotFoundException, TypeFileErrorException, FileNullContentException {
         userService.uploadImageProfileUser(file, username);
         return ResponseEntity.ok().build();
     }
@@ -97,7 +97,7 @@ public class UserController {
 
     @PostMapping("/update-background-profile")
     public ResponseEntity<Object> updateBackgroundImage(@RequestParam("file") MultipartFile file,
-                                                        @RequestParam("username") String username) throws UserNotFoundException, IOException, FileNotFoundException, TypeFileErrorException {
+                                                        @RequestParam("username") String username) throws UserNotFoundException, IOException, FileNotFoundException, TypeFileErrorException, FileNullContentException {
         userService.uploadBackgroundProfileUser(file, username);
         return ResponseEntity.ok().build();
     }
@@ -126,7 +126,7 @@ public class UserController {
 
     @PostMapping("/upload-video")
     public ResponseEntity<Object> updateVideUser(@RequestParam("file") MultipartFile file,
-                                                 @RequestParam("username") String username) throws UserNotFoundException, IOException {
+                                                 @RequestParam("username") String username) throws UserNotFoundException, IOException, TypeFileErrorException, FileNullContentException {
         userService.uploadVideoUser(file, username);
         return ResponseEntity.ok().build();
     }

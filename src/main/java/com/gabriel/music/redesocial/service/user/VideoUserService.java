@@ -3,6 +3,9 @@ package com.gabriel.music.redesocial.service.user;
 import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.domain.user.VideoUser;
 import com.gabriel.music.redesocial.repository.VideoUserRepository;
+import com.gabriel.music.redesocial.service.exceptions.FileNullContentException;
+import com.gabriel.music.redesocial.service.exceptions.TypeFileErrorException;
+import com.gabriel.music.redesocial.util.MediaFileTypeChecker;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,9 +27,11 @@ public class VideoUserService {
     @Autowired
     private VideoUserRepository videoUserRepository;
 
-    public void saveAndWriteVideoProfile(MultipartFile file, User user) throws IOException {
-        if (!file.isEmpty()) {
+    public void saveAndWriteVideoProfile(MultipartFile file, User user) throws IOException, TypeFileErrorException, FileNullContentException {
+        if (MediaFileTypeChecker.verifyIfIsAVideo(file)) {
             this.writeVideoInDirectory(file, user);
+        } else {
+            throw new TypeFileErrorException();
         }
     }
 

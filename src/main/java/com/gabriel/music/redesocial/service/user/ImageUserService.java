@@ -5,6 +5,7 @@ import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.repository.ImageUserRepository;
 import com.gabriel.music.redesocial.service.exceptions.ErrorDeleteFileException;
 import com.gabriel.music.redesocial.service.exceptions.FileNotFoundException;
+import com.gabriel.music.redesocial.service.exceptions.FileNullContentException;
 import com.gabriel.music.redesocial.service.exceptions.TypeFileErrorException;
 import com.gabriel.music.redesocial.util.MediaFileTypeChecker;
 import jakarta.transaction.Transactional;
@@ -110,7 +111,7 @@ public class ImageUserService {
     }
 
     @Transactional
-    public void saveAndWriteImageProfile(MultipartFile file, User user) throws IOException, FileNotFoundException, TypeFileErrorException {
+    public void saveAndWriteImageProfile(MultipartFile file, User user) throws IOException, FileNotFoundException, TypeFileErrorException, FileNullContentException {
         if (MediaFileTypeChecker.verifyIfIsAPhoto(file)) {
             if (user.getImageProfile() != null) {
                 this.deleteCurrentUserImageProfile(user, file);
@@ -140,7 +141,7 @@ public class ImageUserService {
     //images backgrounds
 
     @Transactional
-    public void saveAndWriteBackgroundProfile(MultipartFile file, User user) throws IOException, FileNotFoundException, TypeFileErrorException {
+    public void saveAndWriteBackgroundProfile(MultipartFile file, User user) throws IOException, FileNotFoundException, TypeFileErrorException, FileNullContentException {
         if (MediaFileTypeChecker.verifyIfIsAPhoto(file)) {
             if (user.getImageBackground() != null) {
                 this.deleteCurrentUserImageBackground(user, file);
