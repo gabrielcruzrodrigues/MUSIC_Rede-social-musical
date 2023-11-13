@@ -114,6 +114,12 @@ public class UserController {
                 .body(backgroundProfile);
     }
 
+    @DeleteMapping("/media/background-profile/delete/{filename}")
+    public ResponseEntity<Object> deleteBackgroundProfile(@PathVariable String filename) throws FileNotFoundException, IOException, ErrorDeleteFileException {
+        imageUserService.deleteImageUser(filename);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/upload-photo")
     public ResponseEntity<Object> updatePhotoUser(@RequestParam("file") MultipartFile file,
                                                         @RequestParam("username") String username) throws UserNotFoundException, IOException {
