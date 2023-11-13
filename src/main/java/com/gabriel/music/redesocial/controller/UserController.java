@@ -1,8 +1,10 @@
 package com.gabriel.music.redesocial.controller;
 
 import com.gabriel.music.redesocial.domain.user.DTO.*;
+import com.gabriel.music.redesocial.domain.user.Friend;
 import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.service.exceptions.FileNotFoundException;
+import com.gabriel.music.redesocial.service.exceptions.UserMidiaNotFoundException;
 import com.gabriel.music.redesocial.service.user.ImageUserService;
 import com.gabriel.music.redesocial.service.user.UserService;
 import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
@@ -77,7 +79,7 @@ public class UserController {
     }
 
     @GetMapping("/media/image-profile/{username}")
-    public ResponseEntity<Resource> getImageProfile(@PathVariable String username) throws UserNotFoundException, FileNotFoundException {
+    public ResponseEntity<Resource> getImageProfile(@PathVariable String username) throws UserNotFoundException, FileNotFoundException, UserMidiaNotFoundException {
         Resource imageProfile = userService.getImageProfile(username);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + imageProfile.getFilename())
@@ -93,7 +95,7 @@ public class UserController {
     }
 
     @GetMapping("/media/image-background/{username}")
-    public ResponseEntity<Resource> getBackgroundProfile(@PathVariable String username) throws UserNotFoundException, FileNotFoundException {
+    public ResponseEntity<Resource> getBackgroundProfile(@PathVariable String username) throws UserNotFoundException, FileNotFoundException, UserMidiaNotFoundException {
         Resource backgroundProfile = userService.getBackgroundProfile(username);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + backgroundProfile.getFilename())
@@ -131,5 +133,11 @@ public class UserController {
     public ResponseEntity<Object> updatePhoneNumber(@RequestBody PhoneNumberRegistrationDTO phoneNumberRegistrationDTO) throws UserNotFoundException {
         userService.registerPhoneNumber(phoneNumberRegistrationDTO);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/new-friend")
+    public ResponseEntity<Friend> addNewFriend(@RequestBody @Valid FriendRegistrationDTO friendRegistrationDTO) throws UserNotFoundException {
+        Friend friend = userService.addFriend(friendRegistrationDTO.username(), friendRegistrationDTO.friend());
+        return ResponseEntity.ok().body(friend);
     }
 }

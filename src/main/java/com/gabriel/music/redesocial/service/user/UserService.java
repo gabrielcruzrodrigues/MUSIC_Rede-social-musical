@@ -4,12 +4,12 @@ import com.gabriel.music.redesocial.domain.user.*;
 import com.gabriel.music.redesocial.domain.user.DTO.*;
 import com.gabriel.music.redesocial.repository.UserRepository;
 import com.gabriel.music.redesocial.service.exceptions.FileNotFoundException;
+import com.gabriel.music.redesocial.service.exceptions.UserMidiaNotFoundException;
 import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -37,8 +37,13 @@ public class UserService {
     @Autowired
     private PhoneNumberService phoneNumberService;
 
+    @Autowired
+    private FriendService friendService;
+
     @Value("${images-user-path}")
     private String pathImages;
+
+    public UserService() {}
 
     @Transactional
     public UserResponseInitialRegisterDTO initialRegistration(UserInitialRegistrationDTO user) throws UserNotFoundException {
@@ -172,7 +177,7 @@ public class UserService {
         phoneNumberService.save(phoneNumberRegistrationDTO, user);
     }
 
-    public Resource getImageProfile(String username) throws UserNotFoundException, FileNotFoundException {
+    public Resource getImageProfile(String username) throws UserNotFoundException, FileNotFoundException, UserMidiaNotFoundException {
         User user = findByUsername(username);
         if (user.getImageProfile().getImageReference() != null) {
             Resource resource = new FileSystemResource(pathImages + "/" + user.getImageProfile().getImageReference());
@@ -181,11 +186,12 @@ public class UserService {
             } else {
                 throw new FileNotFoundException();
             }
+        } else {
+            throw new UserMidiaNotFoundException();
         }
-        return null;
     }
 
-    public Resource getBackgroundProfile(String username) throws UserNotFoundException, FileNotFoundException {
+    public Resource getBackgroundProfile(String username) throws UserNotFoundException, FileNotFoundException, UserMidiaNotFoundException {
         User user = findByUsername(username);
         if (user.getImageBackground().getImageReference() != null) {
             Resource resource = new FileSystemResource(pathImages + "/" + user.getImageBackground().getImageReference());
@@ -194,7 +200,14 @@ public class UserService {
             } else {
                 throw new FileNotFoundException();
             }
+        } else {
+            throw new UserMidiaNotFoundException();
         }
-        return null;
+    }
+
+    public Friend addFriend(String username, String friendUsername) throws UserNotFoundException {
+        User user = findByUsername(username);
+        User userFriend = findByUsername(friendUsername);
+        return friendService.save(user, userFriend);
     }
 }
