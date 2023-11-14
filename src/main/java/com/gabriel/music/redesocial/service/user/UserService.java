@@ -3,9 +3,7 @@ package com.gabriel.music.redesocial.service.user;
 import com.gabriel.music.redesocial.domain.user.*;
 import com.gabriel.music.redesocial.domain.user.DTO.*;
 import com.gabriel.music.redesocial.repository.UserRepository;
-import com.gabriel.music.redesocial.service.exceptions.FileNotFoundException;
-import com.gabriel.music.redesocial.service.exceptions.UserMidiaNotFoundException;
-import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
+import com.gabriel.music.redesocial.service.exceptions.*;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,13 +138,13 @@ public class UserService {
     //midias
 
     @Transactional
-    public void uploadImageProfileUser(MultipartFile file, String username) throws UserNotFoundException, IOException, FileNotFoundException {
+    public void uploadImageProfileUser(MultipartFile file, String username) throws UserNotFoundException, IOException, FileNotFoundException, TypeFileErrorException, FileNullContentException {
         User user = findByUsername(username);
         imageUserService.saveAndWriteImageProfile(file, user);
     }
 
     @Transactional
-    public void uploadBackgroundProfileUser(MultipartFile file, String username) throws UserNotFoundException, IOException, FileNotFoundException {
+    public void uploadBackgroundProfileUser(MultipartFile file, String username) throws UserNotFoundException, IOException, FileNotFoundException, TypeFileErrorException, FileNullContentException {
         User user = findByUsername(username);
         imageUserService.saveAndWriteBackgroundProfile(file, user);
     }
@@ -158,7 +156,7 @@ public class UserService {
     }
 
     @Transactional
-    public void uploadVideoUser(MultipartFile file, String username) throws UserNotFoundException, IOException {
+    public void uploadVideoUser(MultipartFile file, String username) throws UserNotFoundException, IOException, TypeFileErrorException, FileNullContentException {
         User user = findByUsername(username);
         videoUserService.saveAndWriteVideoProfile(file, user);
     }
