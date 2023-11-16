@@ -218,4 +218,13 @@ public class UserService {
         User userFriend = findByUsername(friendUsername);
         return friendService.save(user, userFriend);
     }
+
+//    public List<Resource> getAllPhotosUser(String username) throws UserNotFoundException, java.io.FileNotFoundException {
+//        User user = this.findByUsername(username);
+//        if (user.getPhotos() != null) {
+//            return imageUserService.convertReferenceInFiles(user.getPhotos());
+//        } else {
+//            throw new RuntimeException();
+//        }
+//    }
 }

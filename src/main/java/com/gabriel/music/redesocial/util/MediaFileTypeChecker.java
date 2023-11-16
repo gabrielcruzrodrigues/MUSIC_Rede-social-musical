@@ -17,7 +17,7 @@ public class MediaFileTypeChecker {
     private static boolean isPhoto(MultipartFile file) throws FileNullContentException {
         String fileName = file.getOriginalFilename();
         if (file != null) {
-            return fileName.endsWith(".jpg") || fileName.endsWith("jpeg") || fileName.endsWith(".png");
+            return fileName.endsWith(".JPG") || fileName.endsWith(".jpg") || fileName.endsWith("jpeg") || fileName.endsWith(".png");
         } else {
             throw new FileNullContentException();
         }
