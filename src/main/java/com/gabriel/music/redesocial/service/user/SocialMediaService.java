@@ -4,7 +4,7 @@ import com.gabriel.music.redesocial.domain.user.DTO.SocialMediaUpdateDTO;
 import com.gabriel.music.redesocial.domain.user.SocialMedia;
 import com.gabriel.music.redesocial.domain.user.DTO.SocialMediaRegistrationDTO;
 import com.gabriel.music.redesocial.domain.user.User;
-import com.gabriel.music.redesocial.repository.SocialMediaRepository;
+import com.gabriel.music.redesocial.repository.user.SocialMediaRepository;
 import com.gabriel.music.redesocial.service.exceptions.SocialMediaNotFoundException;
 import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
 import jakarta.transaction.Transactional;

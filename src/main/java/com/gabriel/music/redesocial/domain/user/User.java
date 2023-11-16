@@ -14,6 +14,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,6 +29,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Size(min = 2, max = 100)
     private String name;
 
     @Column(unique = true, nullable = false)
@@ -45,9 +48,13 @@ public class User {
     @Size(min = 8, max = 60)
     private String password;
 
+    @CPF
     private String cep;
     private String about;
+
+    @Size(min = 11, max = 11)
     private String whatsapp;
+
     private LocalDate age;
     private LocalDate entryDate;
     private Integer shows;

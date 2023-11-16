@@ -1,4 +1,4 @@
-package com.gabriel.music.redesocial.repository;
+package com.gabriel.music.redesocial.repository.user;
 
 import com.gabriel.music.redesocial.domain.user.PhoneNumber;
 import org.springframework.data.jpa.repository.JpaRepository;

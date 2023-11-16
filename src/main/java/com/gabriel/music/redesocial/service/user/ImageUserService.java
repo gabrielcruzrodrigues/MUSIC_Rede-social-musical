@@ -2,7 +2,7 @@ package com.gabriel.music.redesocial.service.user;
 
 import com.gabriel.music.redesocial.domain.user.ImageUser;
 import com.gabriel.music.redesocial.domain.user.User;
-import com.gabriel.music.redesocial.repository.ImageUserRepository;
+import com.gabriel.music.redesocial.repository.user.ImageUserRepository;
 import com.gabriel.music.redesocial.service.exceptions.*;
 import com.gabriel.music.redesocial.util.MediaFileTypeChecker;
 import jakarta.transaction.Transactional;
@@ -10,20 +10,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.jcodec.api.JCodecException;
-import org.jcodec.common.Demuxer;
-import org.jcodec.common.DemuxerTrack;
-import org.jcodec.common.io.NIOUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -183,7 +174,7 @@ public class ImageUserService {
 //        }
 //        return photosUser;
 //    }
-    ]
+
 
     public void deleteById(Long id) {
         imageUserRepository.deleteById(id);

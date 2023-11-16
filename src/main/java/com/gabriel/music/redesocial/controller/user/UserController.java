@@ -1,4 +1,4 @@
-package com.gabriel.music.redesocial.controller;
+package com.gabriel.music.redesocial.controller.user;
 
 import com.gabriel.music.redesocial.domain.user.DTO.*;
 import com.gabriel.music.redesocial.domain.user.Friend;

@@ -2,7 +2,7 @@ package com.gabriel.music.redesocial.service.user;
 
 import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.domain.user.VideoUser;
-import com.gabriel.music.redesocial.repository.VideoUserRepository;
+import com.gabriel.music.redesocial.repository.user.VideoUserRepository;
 import com.gabriel.music.redesocial.service.exceptions.FileNullContentException;
 import com.gabriel.music.redesocial.service.exceptions.TypeFileErrorException;
 import com.gabriel.music.redesocial.util.MediaFileTypeChecker;
