@@ -119,7 +119,7 @@ public class UserController {
 
     @PostMapping("/upload-photo")
     public ResponseEntity<Object> updatePhotoUser(@RequestParam("file") MultipartFile file,
-                                                        @RequestParam("username") String username) throws UserNotFoundException, IOException {
+                                                        @RequestParam("username") String username) throws UserNotFoundException, IOException, FileNullContentException, TypeFileErrorException {
         userService.uploadPhotoUser(file, username);
         return ResponseEntity.ok().build();
     }

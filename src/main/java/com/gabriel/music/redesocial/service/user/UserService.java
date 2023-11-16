@@ -150,7 +150,7 @@ public class UserService {
     }
 
     @Transactional
-    public void uploadPhotoUser(MultipartFile file, String username) throws UserNotFoundException, IOException {
+    public void uploadPhotoUser(MultipartFile file, String username) throws UserNotFoundException, IOException, FileNullContentException, TypeFileErrorException {
         User user = findByUsername(username);
         imageUserService.saveAndWritePhotoUser(file, user);
     }

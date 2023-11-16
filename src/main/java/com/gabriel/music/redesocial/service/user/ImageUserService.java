@@ -166,9 +166,11 @@ public class ImageUserService {
     // photos
 
     @Transactional
-    public void saveAndWritePhotoUser(MultipartFile file, User user) throws IOException {
-        if (!file.isEmpty()) {
+    public void saveAndWritePhotoUser(MultipartFile file, User user) throws IOException, FileNullContentException, TypeFileErrorException {
+        if (MediaFileTypeChecker.verifyIfIsAPhoto(file) == true) {
                 this.writeFileInDirectory(file, user, "photo");
+        } else {
+            throw new TypeFileErrorException();
         }
     }
 
