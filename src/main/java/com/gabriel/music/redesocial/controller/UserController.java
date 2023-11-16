@@ -2,6 +2,7 @@ package com.gabriel.music.redesocial.controller;
 
 import com.gabriel.music.redesocial.domain.user.DTO.*;
 import com.gabriel.music.redesocial.domain.user.Friend;
+import com.gabriel.music.redesocial.domain.user.ImageUser;
 import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.service.exceptions.*;
 import com.gabriel.music.redesocial.service.user.ImageUserService;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -42,7 +44,7 @@ public class UserController {
         return ResponseEntity.ok().body(userService.findAllUsers());
     }
 
-    @GetMapping("/search/{username}")
+    @GetMapping("/profile/{username}")
     public ResponseEntity<User> findByUsername(@PathVariable String username) throws UserNotFoundException {
         return ResponseEntity.ok().body(userService.findByUsername(username));
     }
@@ -119,10 +121,20 @@ public class UserController {
 
     @PostMapping("/upload-photo")
     public ResponseEntity<Object> updatePhotoUser(@RequestParam("file") MultipartFile file,
-                                                        @RequestParam("username") String username) throws UserNotFoundException, IOException {
+                                                        @RequestParam("username") String username) throws UserNotFoundException, IOException, FileNullContentException, TypeFileErrorException {
         userService.uploadPhotoUser(file, username);
         return ResponseEntity.ok().build();
     }
+
+//    @GetMapping("/media/photos/profile/{username}")
+//    public ResponseEntity<List<Resource>> getAllPhotosUser(@PathVariable String username) throws UserNotFoundException, java.io.FileNotFoundException {
+//        List<Resource> photosUser = userService.getAllPhotosUser(username);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.IMAGE_JPEG);
+//        return ResponseEntity.ok()
+//                .headers(headers)
+//                .body(photosUser);
+//    }
 
     @PostMapping("/upload-video")
     public ResponseEntity<Object> updateVideUser(@RequestParam("file") MultipartFile file,
