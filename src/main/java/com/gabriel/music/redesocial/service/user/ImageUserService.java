@@ -183,6 +183,7 @@ public class ImageUserService {
 //        }
 //        return photosUser;
 //    }
+    ]
 
     public void deleteById(Long id) {
         imageUserRepository.deleteById(id);
