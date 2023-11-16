@@ -12,4 +12,12 @@ public class StandardError {
     private Integer status;
     private String fieldError;
     private String path;
+    private String error;
+
+    public StandardError(LocalDateTime timeStamp, Integer status, String fieldError, String path) {
+        this.timeStamp = timeStamp;
+        this.status = status;
+        this.fieldError = fieldError;
+        this.path = path;
+    }
 }

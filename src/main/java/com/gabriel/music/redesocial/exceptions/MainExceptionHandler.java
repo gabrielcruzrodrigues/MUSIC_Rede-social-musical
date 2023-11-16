@@ -3,6 +3,7 @@ package com.gabriel.music.redesocial.exceptions;
 import com.gabriel.music.redesocial.service.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
-
+@Slf4j
 @ControllerAdvice
 public class MainExceptionHandler {
 
@@ -24,7 +25,8 @@ public class MainExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getCause().toString(),
-                request.getRequestURI()
+                request.getRequestURI(),
+                "Exception"
         );
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
@@ -35,7 +37,9 @@ public class MainExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getCause().toString(),
-                request.getRequestURI());
+                request.getRequestURI(),
+                "RuntimeException"
+        );
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -45,7 +49,8 @@ public class MainExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
                 ex.getMessage(),
-                request.getRequestURI());
+                request.getRequestURI(),
+                "ObjectNotFoundException");
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
@@ -65,7 +70,8 @@ public class MainExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.CONFLICT.value(),
                 ex.getBindingResult().getFieldError().getField() + " " + ex.getFieldError().getDefaultMessage(),
-                request.getRequestURI());
+                request.getRequestURI(),
+                "MethodArgumentNotValidException");
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
@@ -75,7 +81,8 @@ public class MainExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.CONFLICT.value(),
                 ex.getMessage(),
-                request.getRequestURI());
+                request.getRequestURI(),
+                "ConstraintViolationException");
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
@@ -85,7 +92,8 @@ public class MainExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
-                request.getRequestURI());
+                request.getRequestURI(),
+                "HttpMessageNotReadableException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -95,7 +103,8 @@ public class MainExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMostSpecificCause().getMessage(),
-                request.getRequestURI());
+                request.getRequestURI(),
+                "DataIntegrityViolationException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -105,7 +114,8 @@ public class MainExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getLocalizedMessage(),
-                request.getRequestURI());
+                request.getRequestURI(),
+                "TransactionSystemException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -115,7 +125,8 @@ public class MainExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
-                request.getRequestURI());
+                request.getRequestURI(),
+                "ErrorDeleteFileException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -125,7 +136,8 @@ public class MainExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
-                request.getRequestURI());
+                request.getRequestURI(),
+                "FileNotFoundException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -135,7 +147,8 @@ public class MainExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
-                request.getRequestURI());
+                request.getRequestURI(),
+                "FileNullContentException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -145,7 +158,8 @@ public class MainExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
-                request.getRequestURI());
+                request.getRequestURI(),
+                "SocialMediaNotFoundException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -155,7 +169,8 @@ public class MainExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
-                request.getRequestURI());
+                request.getRequestURI(),
+                "TypeFileErrorException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -165,7 +180,8 @@ public class MainExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
-                request.getRequestURI());
+                request.getRequestURI(),
+                "UserMidiaNotFoundException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -175,7 +191,8 @@ public class MainExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
-                request.getRequestURI());
+                request.getRequestURI(),
+                "UserNotFoundException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }
