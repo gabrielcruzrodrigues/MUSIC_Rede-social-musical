@@ -1,4 +1,4 @@
-package com.gabriel.music.redesocial.service.exceptions;
+package com.gabriel.music.redesocial.service.user.exceptions;
 
 public class TypeFileErrorException extends Exception{
     public TypeFileErrorException() {

@@ -1,6 +1,8 @@
 package com.gabriel.music.redesocial.exceptions;
 
 import com.gabriel.music.redesocial.service.exceptions.*;
+import com.gabriel.music.redesocial.service.post.exceptions.*;
+import com.gabriel.music.redesocial.service.user.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -193,6 +195,17 @@ public class MainExceptionHandler {
                 ex.getMessage(),
                 request.getRequestURI(),
                 "UserNotFoundException");
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<StandardError> postNotFoundException(PostNotFoundException ex, HttpServletRequest request) {
+        StandardError error = new StandardError(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                request.getRequestURI(),
+                "PostNotFoundException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }

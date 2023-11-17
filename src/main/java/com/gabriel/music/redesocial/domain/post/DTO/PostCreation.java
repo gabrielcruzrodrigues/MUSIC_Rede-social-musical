@@ -1,4 +1,6 @@
 package com.gabriel.music.redesocial.domain.post.DTO;
 
-public record PostCreation(String title, String description, String creator) {
+import org.springframework.web.multipart.MultipartFile;
+
+public record PostCreation(String title, String description, String creator, MultipartFile image, MultipartFile video) {
 }

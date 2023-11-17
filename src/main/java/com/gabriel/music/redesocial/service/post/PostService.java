@@ -1,16 +1,15 @@
 package com.gabriel.music.redesocial.service.post;
 
-import com.gabriel.music.redesocial.domain.post.DTO.PostCreation;
 import com.gabriel.music.redesocial.domain.post.Post;
-import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.repository.post.PostRepository;
-import com.gabriel.music.redesocial.service.exceptions.UserNotFoundException;
+import com.gabriel.music.redesocial.service.post.exceptions.PostNotFoundException;
 import com.gabriel.music.redesocial.service.user.UserService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostService {
@@ -21,18 +20,18 @@ public class PostService {
     @Autowired
     private UserService userService;
 
-    @Transactional
-    public Post save(PostCreation postCreation) throws UserNotFoundException {
-        Post post = modelingNewPost(postCreation);
-        return postRepository.save(post);
+    @Autowired
+    private ImagePostService imagePostService;
+
+    public void save(String title, String description, String creator, List<MultipartFile> images, List<MultipartFile> videos) {
+        Post post = criationNewPostNoMedias(title, description, creator);
+        if (post.getCodec() != null) {
+            Boolean verify = saveMidiasInPost(post, images, videos);
+        }
     }
 
-    public List<Post> findAll() {
-        return postRepository.findAll();
-    }
-
-    private Post modelingNewPost(PostCreation postCreation) throws UserNotFoundException {
-        User user = userService.findByUsername(postCreation.creator());
-        return new Post(postCreation.title(), postCreation.description(), user);
+    public Post findByCodec(String codec) throws PostNotFoundException {
+        Optional<Post> post = postRepository.findByCodec(codec);
+        return post.orElseThrow(PostNotFoundException::new);
     }
 }

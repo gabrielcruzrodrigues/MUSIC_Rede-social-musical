@@ -6,10 +6,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 @Entity
 @Table
@@ -22,12 +26,14 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 10)
+    private String codec;
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
     private String description;
     @Column(nullable = false)
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
 //    private List<Tag> tags;
     private Long numbersClick;
     private Long likes;
@@ -51,9 +57,19 @@ public class Post {
 
     //basic post
     public Post(String title, String description, User user) {
+        this.codec = UUID.randomUUID().toString().substring(0, 10);
         this.title = title;
         this.description = description;
         this.creator = user;
+        this.createdDate = LocalDateTime.now();
+    }
+
+    public Post(String title, String description, User user, List<ImagePost> image, List<VideosPost> video) {
+        this.title = title;
+        this.description = description;
+        this.creator = user;
+        this.images = image;
+        this.videos = video;
     }
 }
 
