@@ -8,7 +8,9 @@ import com.gabriel.music.redesocial.service.Exceptions.TypeFileErrorException;
 import com.gabriel.music.redesocial.service.post.exceptions.PostNotFoundException;
 import com.gabriel.music.redesocial.service.user.UserService;
 import com.gabriel.music.redesocial.service.user.exceptions.UserNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +20,10 @@ import java.util.Optional;
 
 @Service
 public class PostService {
+
+    @Value("${host-path}")
+    private String hostPath;
+    private String findByCodecUrlEndPoint = "/post/search/";
 
     @Autowired
     private PostRepository postRepository;
@@ -68,15 +74,28 @@ public class PostService {
 //        postRepository.delete(post);
 //    }
 
+    @Transactional
     public void addLike(String codec) throws PostNotFoundException {
         Post post = this.findByCodec(codec);
         post.setLikes(post.getLikes() + 1);
         postRepository.save(post);
     }
 
+    @Transactional
     public void removeLike(String codec) throws PostNotFoundException {
         Post post = this.findByCodec(codec);
         post.setLikes(post.getLikes() - 1);
         postRepository.save(post);
+    }
+
+    public String sharedPost(String codec) throws PostNotFoundException {
+        Post post = this.findByCodec(codec);
+        post.setShares(post.getShares() + 1);
+        Post postSaved = postRepository.save(post);
+        return createLinkForToSharePost(postSaved.getCodec());
+    }
+
+    private String createLinkForToSharePost(String codec) {
+        return hostPath + findByCodecUrlEndPoint + codec;
     }
 }

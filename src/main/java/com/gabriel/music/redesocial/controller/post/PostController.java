@@ -59,4 +59,9 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/toshare/{codec}")
+    public ResponseEntity<String> toShare(@PathVariable String codec) throws PostNotFoundException {
+        return ResponseEntity.ok().body(postService.sharedPost(codec));
+    }
+
 }
