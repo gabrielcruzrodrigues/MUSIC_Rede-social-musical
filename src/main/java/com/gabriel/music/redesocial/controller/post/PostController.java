@@ -47,4 +47,16 @@ public class PostController {
 //        return ResponseEntity.noContent().build();
 //    }
 
+    @PutMapping("/add-like/{codec}")
+    public ResponseEntity<Object> addLike(@PathVariable String codec) throws PostNotFoundException {
+        postService.addLike(codec);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/remove-like/{codec}")
+    public ResponseEntity<Object> removeLike(@PathVariable String codec) throws PostNotFoundException {
+        postService.removeLike(codec);
+        return ResponseEntity.noContent().build();
+    }
+
 }

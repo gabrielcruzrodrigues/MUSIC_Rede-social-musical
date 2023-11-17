@@ -67,4 +67,16 @@ public class PostService {
 //        Post post = this.findByCodec(codec);
 //        postRepository.delete(post);
 //    }
+
+    public void addLike(String codec) throws PostNotFoundException {
+        Post post = this.findByCodec(codec);
+        post.setLikes(post.getLikes() + 1);
+        postRepository.save(post);
+    }
+
+    public void removeLike(String codec) throws PostNotFoundException {
+        Post post = this.findByCodec(codec);
+        post.setLikes(post.getLikes() - 1);
+        postRepository.save(post);
+    }
 }

@@ -22,7 +22,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 10)
+    @Column(length = 15)
     private String codec;
     @Column(nullable = false)
     private String title;
@@ -31,7 +31,6 @@ public class Post {
     @Column(nullable = false)
     private LocalDateTime createdDate;
 //    private List<Tag> tags;
-    private Long numbersClick;
     private Long likes;
     private Integer shares;
     private Integer amountSaved;
@@ -50,14 +49,16 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
 
-
-    //basic post
     public Post(String title, String description, User user) {
         this.codec = UUID.randomUUID().toString().substring(0, 15);
         this.title = title;
         this.description = description;
         this.creator = user;
+
         this.createdDate = LocalDateTime.now();
+        this.likes = 0L;
+        this.shares = 0;
+        this.amountSaved = 0;
     }
 
     public Post(String title, String description, User user, List<ImagePost> image, List<VideoPost> video) {
@@ -66,6 +67,11 @@ public class Post {
         this.creator = user;
         this.images = image;
         this.videos = video;
+
+        this.createdDate = LocalDateTime.now();
+        this.likes = 0L;
+        this.shares = 0;
+        this.amountSaved = 0;
     }
 }
 
