@@ -4,7 +4,7 @@ import com.gabriel.music.redesocial.domain.user.DTO.SocialMediaUpdateDTO;
 import com.gabriel.music.redesocial.domain.user.SocialMedia;
 import com.gabriel.music.redesocial.domain.user.DTO.SocialMediaRegistrationDTO;
 import com.gabriel.music.redesocial.service.user.SocialMediaService;
-import com.gabriel.music.redesocial.service.user.exceptions.SocialMediaNotFoundException;
+import com.gabriel.music.redesocial.service.Exceptions.SocialMediaNotFoundException;
 import com.gabriel.music.redesocial.service.user.exceptions.UserNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

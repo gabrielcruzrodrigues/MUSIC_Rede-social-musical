@@ -22,4 +22,9 @@ public class ImagePost {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public ImagePost(String newFileName, Post post) {
+        this.imageReference = newFileName;
+        this.post = post;
+    }
 }

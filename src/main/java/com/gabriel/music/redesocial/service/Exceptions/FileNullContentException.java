@@ -1,4 +1,4 @@
-package com.gabriel.music.redesocial.service.user.exceptions;
+package com.gabriel.music.redesocial.service.Exceptions;
 
 public class FileNullContentException extends Exception{
     public FileNullContentException() {

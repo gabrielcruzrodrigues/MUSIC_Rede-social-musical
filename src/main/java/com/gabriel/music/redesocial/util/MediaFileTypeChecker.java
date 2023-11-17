@@ -1,6 +1,6 @@
 package com.gabriel.music.redesocial.util;
 
-import com.gabriel.music.redesocial.service.user.exceptions.FileNullContentException;
+import com.gabriel.music.redesocial.service.Exceptions.FileNullContentException;
 import org.springframework.web.multipart.MultipartFile;
 
 public class MediaFileTypeChecker {

@@ -3,11 +3,10 @@ package com.gabriel.music.redesocial.service.user;
 import com.gabriel.music.redesocial.domain.user.ImageUser;
 import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.repository.user.ImageUserRepository;
-import com.gabriel.music.redesocial.service.exceptions.*;
-import com.gabriel.music.redesocial.service.user.exceptions.ErrorDeleteFileException;
-import com.gabriel.music.redesocial.service.user.exceptions.FileNotFoundException;
-import com.gabriel.music.redesocial.service.user.exceptions.FileNullContentException;
-import com.gabriel.music.redesocial.service.user.exceptions.TypeFileErrorException;
+import com.gabriel.music.redesocial.service.Exceptions.ErrorDeleteFileException;
+import com.gabriel.music.redesocial.service.Exceptions.FileNotFoundException;
+import com.gabriel.music.redesocial.service.Exceptions.FileNullContentException;
+import com.gabriel.music.redesocial.service.Exceptions.TypeFileErrorException;
 import com.gabriel.music.redesocial.util.MediaFileTypeChecker;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
