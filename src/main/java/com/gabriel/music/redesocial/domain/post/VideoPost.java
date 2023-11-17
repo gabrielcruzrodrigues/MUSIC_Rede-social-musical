@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VideosPost {
+public class VideoPost {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

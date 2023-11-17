@@ -6,13 +6,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 @Entity
@@ -46,7 +42,7 @@ public class Post {
     private User creator;
 
     @OneToMany(mappedBy = "post")
-    private List<VideosPost> videos;
+    private List<VideoPost> videos;
 
     @OneToMany(mappedBy = "post")
     private List<ImagePost> images;
@@ -64,7 +60,7 @@ public class Post {
         this.createdDate = LocalDateTime.now();
     }
 
-    public Post(String title, String description, User user, List<ImagePost> image, List<VideosPost> video) {
+    public Post(String title, String description, User user, List<ImagePost> image, List<VideoPost> video) {
         this.title = title;
         this.description = description;
         this.creator = user;

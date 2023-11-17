@@ -1,10 +1,9 @@
 package com.gabriel.music.redesocial.service.user;
 
-import com.gabriel.music.redesocial.domain.user.*;
 import com.gabriel.music.redesocial.domain.user.DTO.*;
+import com.gabriel.music.redesocial.domain.user.Friend;
+import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.repository.user.UserRepository;
-import com.gabriel.music.redesocial.service.exceptions.*;
-import com.gabriel.music.redesocial.service.post.exceptions.*;
 import com.gabriel.music.redesocial.service.user.exceptions.*;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;

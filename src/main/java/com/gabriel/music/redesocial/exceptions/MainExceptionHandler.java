@@ -1,6 +1,5 @@
 package com.gabriel.music.redesocial.exceptions;
 
-import com.gabriel.music.redesocial.service.exceptions.*;
 import com.gabriel.music.redesocial.service.post.exceptions.*;
 import com.gabriel.music.redesocial.service.user.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
