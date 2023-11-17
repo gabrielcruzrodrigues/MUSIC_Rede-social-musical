@@ -53,7 +53,7 @@ public class Post {
 
     //basic post
     public Post(String title, String description, User user) {
-        this.codec = UUID.randomUUID().toString().substring(0, 10);
+        this.codec = UUID.randomUUID().toString().substring(0, 15);
         this.title = title;
         this.description = description;
         this.creator = user;

@@ -40,9 +40,11 @@ public class PostService {
     }
 
     private void saveMediasInPost(Post post, List<MultipartFile> images, List<MultipartFile> videos) throws FileNullContentException, TypeFileErrorException, IOException {
-        boolean verify = imagePostService.saveAndWriteImage(post, images);
-        if (verify) {
-            videoPostService.saveAndWriteVideo(post, videos);
+        if (images != null) {
+            boolean verify = imagePostService.saveAndWriteImage(post, images);
+            if (verify && videos != null) {
+                videoPostService.saveAndWriteVideo(post, videos);
+            }
         }
     }
 

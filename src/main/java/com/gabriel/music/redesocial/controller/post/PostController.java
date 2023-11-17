@@ -26,8 +26,11 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Post> create(@RequestParam("title") String title, @RequestParam("description") String description,
-                                       @RequestParam("creator") String creator, @RequestParam("image") List<MultipartFile> images, @RequestParam("video") List<MultipartFile> videos) throws UserNotFoundException, FileNullContentException, TypeFileErrorException, IOException {
+    public ResponseEntity<Post> create(@RequestParam("title") String title,
+                                       @RequestParam("description") String description,
+                                       @RequestParam("creator") String creator,
+                                       @RequestParam(value = "image", required = false) List<MultipartFile> images,
+                                       @RequestParam(value = "video", required = false) List<MultipartFile> videos) throws UserNotFoundException, FileNullContentException, TypeFileErrorException, IOException {
         postService.save(title, description, creator, images, videos);
         return ResponseEntity.ok().build();
     }
