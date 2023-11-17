@@ -1,12 +1,16 @@
-package com.gabriel.music.redesocial.controller;
+package com.gabriel.music.redesocial.controller.user;
 
 import com.gabriel.music.redesocial.domain.user.DTO.*;
 import com.gabriel.music.redesocial.domain.user.Friend;
-import com.gabriel.music.redesocial.domain.user.ImageUser;
 import com.gabriel.music.redesocial.domain.user.User;
-import com.gabriel.music.redesocial.service.exceptions.*;
+import com.gabriel.music.redesocial.service.Exceptions.ErrorDeleteFileException;
+import com.gabriel.music.redesocial.service.Exceptions.FileNotFoundException;
+import com.gabriel.music.redesocial.service.Exceptions.FileNullContentException;
+import com.gabriel.music.redesocial.service.Exceptions.TypeFileErrorException;
 import com.gabriel.music.redesocial.service.user.ImageUserService;
 import com.gabriel.music.redesocial.service.user.UserService;
+import com.gabriel.music.redesocial.service.user.exceptions.UserMidiaNotFoundException;
+import com.gabriel.music.redesocial.service.user.exceptions.UserNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -19,7 +23,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 
 @RestController

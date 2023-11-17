@@ -2,7 +2,7 @@ package com.gabriel.music.redesocial.service.user;
 
 import com.gabriel.music.redesocial.domain.user.Friend;
 import com.gabriel.music.redesocial.domain.user.User;
-import com.gabriel.music.redesocial.repository.FriendRepository;
+import com.gabriel.music.redesocial.repository.user.FriendRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

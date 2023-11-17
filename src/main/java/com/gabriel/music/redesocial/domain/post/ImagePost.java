@@ -1,5 +1,6 @@
 package com.gabriel.music.redesocial.domain.post;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,13 @@ public class ImagePost {
     private Long id;
     private String imageReference;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public ImagePost(String newFileName, Post post) {
+        this.imageReference = newFileName;
+        this.post = post;
+    }
 }

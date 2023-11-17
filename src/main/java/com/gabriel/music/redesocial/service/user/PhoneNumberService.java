@@ -3,7 +3,7 @@ package com.gabriel.music.redesocial.service.user;
 import com.gabriel.music.redesocial.domain.user.DTO.PhoneNumberRegistrationDTO;
 import com.gabriel.music.redesocial.domain.user.PhoneNumber;
 import com.gabriel.music.redesocial.domain.user.User;
-import com.gabriel.music.redesocial.repository.PhoneNumberRepository;
+import com.gabriel.music.redesocial.repository.user.PhoneNumberRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

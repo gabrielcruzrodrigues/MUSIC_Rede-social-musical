@@ -1,9 +1,13 @@
 package com.gabriel.music.redesocial.service.user;
 
-import com.gabriel.music.redesocial.domain.user.*;
 import com.gabriel.music.redesocial.domain.user.DTO.*;
-import com.gabriel.music.redesocial.repository.UserRepository;
-import com.gabriel.music.redesocial.service.exceptions.*;
+import com.gabriel.music.redesocial.domain.user.Friend;
+import com.gabriel.music.redesocial.domain.user.User;
+import com.gabriel.music.redesocial.repository.user.UserRepository;
+import com.gabriel.music.redesocial.service.Exceptions.FileNotFoundException;
+import com.gabriel.music.redesocial.service.Exceptions.FileNullContentException;
+import com.gabriel.music.redesocial.service.Exceptions.TypeFileErrorException;
+import com.gabriel.music.redesocial.service.user.exceptions.*;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

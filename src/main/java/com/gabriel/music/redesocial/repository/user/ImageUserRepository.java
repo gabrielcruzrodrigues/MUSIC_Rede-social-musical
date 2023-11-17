@@ -1,4 +1,4 @@
-package com.gabriel.music.redesocial.repository;
+package com.gabriel.music.redesocial.repository.user;
 
 import com.gabriel.music.redesocial.domain.user.ImageUser;
 import lombok.extern.slf4j.Slf4j;

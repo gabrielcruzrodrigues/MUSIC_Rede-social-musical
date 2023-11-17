@@ -1,13 +1,15 @@
 package com.gabriel.music.redesocial.domain.post;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gabriel.music.redesocial.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table
@@ -19,29 +21,51 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(length = 10)
+    private String codec;
+    @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
     private String description;
-    private Date CreatedDate;
+    @Column(nullable = false)
+    private LocalDateTime createdDate;
+//    private List<Tag> tags;
     private Long numbersClick;
     private Long likes;
     private Integer shares;
     private Integer amountSaved;
 
-//    @ManyToMany
-//    @JoinTable(name = "post_tags", joinColumns = @JoinColumn(name = ))
-//    private List<Tags> tags;
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User creator;
 
     @OneToMany(mappedBy = "post")
-    private List<VideosPost> videos;
+    private List<VideoPost> videos;
 
     @OneToMany(mappedBy = "post")
     private List<ImagePost> images;
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
+
+
+    //basic post
+    public Post(String title, String description, User user) {
+        this.codec = UUID.randomUUID().toString().substring(0, 15);
+        this.title = title;
+        this.description = description;
+        this.creator = user;
+        this.createdDate = LocalDateTime.now();
+    }
+
+    public Post(String title, String description, User user, List<ImagePost> image, List<VideoPost> video) {
+        this.title = title;
+        this.description = description;
+        this.creator = user;
+        this.images = image;
+        this.videos = video;
+    }
 }
 

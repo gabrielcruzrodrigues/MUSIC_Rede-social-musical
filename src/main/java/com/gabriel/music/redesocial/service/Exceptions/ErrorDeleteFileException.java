@@ -1,4 +1,4 @@
-package com.gabriel.music.redesocial.service.exceptions;
+package com.gabriel.music.redesocial.service.Exceptions;
 
 public class ErrorDeleteFileException extends Exception{
     public ErrorDeleteFileException() {

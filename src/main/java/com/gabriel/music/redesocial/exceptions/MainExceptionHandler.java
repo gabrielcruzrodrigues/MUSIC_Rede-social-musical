@@ -1,6 +1,8 @@
 package com.gabriel.music.redesocial.exceptions;
 
-import com.gabriel.music.redesocial.service.exceptions.*;
+import com.gabriel.music.redesocial.service.Exceptions.*;
+import com.gabriel.music.redesocial.service.post.exceptions.*;
+import com.gabriel.music.redesocial.service.user.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -19,17 +22,17 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class MainExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<StandardError> exception(Exception ex, HttpServletRequest request) {
-        StandardError error = new StandardError(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                ex.getMessage(),
-                request.getRequestURI(),
-                "Exception"
-        );
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<StandardError> exception(Exception ex, HttpServletRequest request) {
+//        StandardError error = new StandardError(
+//                LocalDateTime.now(),
+//                HttpStatus.BAD_REQUEST.value(),
+//                ex.getMessage(),
+//                request.getRequestURI(),
+//                "Exception"
+//        );
+//        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+//    }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<StandardError> runTimeException(RuntimeException ex, HttpServletRequest request) {
@@ -193,6 +196,28 @@ public class MainExceptionHandler {
                 ex.getMessage(),
                 request.getRequestURI(),
                 "UserNotFoundException");
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<StandardError> postNotFoundException(PostNotFoundException ex, HttpServletRequest request) {
+        StandardError error = new StandardError(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                request.getRequestURI(),
+                "PostNotFoundException");
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<StandardError> missingServletRequestParameterException(MissingServletRequestParameterException ex, HttpServletRequest request) {
+        StandardError error = new StandardError(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                request.getRequestURI(),
+                "MissingServletRequestParameterException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }
