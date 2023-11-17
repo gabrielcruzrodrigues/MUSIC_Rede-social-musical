@@ -22,4 +22,9 @@ public class VideoPost {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public VideoPost(String newFileName, Post post) {
+        this.videoReference = newFileName;
+        this.post = post;
+    }
 }

@@ -42,6 +42,7 @@ public class ImagePostService {
                 throw new TypeFileErrorException();
             }
         }
+        this.writeFileInDirectory(images, post);
         return true;
     }
 
