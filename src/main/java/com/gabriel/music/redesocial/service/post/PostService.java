@@ -31,6 +31,7 @@ public class PostService {
     @Autowired
     private VideoPostService videoPostService;
 
+
     public void save(String title, String description, String creator, List<MultipartFile> images, List<MultipartFile> videos) throws UserNotFoundException, FileNullContentException, TypeFileErrorException, IOException {
         Post post = creationNewPostNoMedias(title, description, creator);
         Post postSaved = postRepository.save(post);
@@ -61,4 +62,9 @@ public class PostService {
     public List<Post> findAll() {
         return postRepository.findAll();
     }
+
+//    public void deleteByCodec(String codec) throws PostNotFoundException {
+//        Post post = this.findByCodec(codec);
+//        postRepository.delete(post);
+//    }
 }
