@@ -1,6 +1,5 @@
 package com.gabriel.music.redesocial.service.post;
 
-import com.gabriel.music.redesocial.domain.post.ImagePost;
 import com.gabriel.music.redesocial.domain.post.Post;
 import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.repository.post.PostRepository;
@@ -15,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -35,8 +33,9 @@ public class PostService {
 
     public void save(String title, String description, String creator, List<MultipartFile> images, List<MultipartFile> videos) throws UserNotFoundException, FileNullContentException, TypeFileErrorException, IOException {
         Post post = creationNewPostNoMedias(title, description, creator);
-        if (post.getCodec() != null) {
-            saveMediasInPost(post, images, videos);
+        Post postSaved = postRepository.save(post);
+        if (postSaved.getCodec() != null) {
+            saveMediasInPost(postSaved, images, videos);
         }
     }
 
@@ -55,5 +54,9 @@ public class PostService {
     public Post findByCodec(String codec) throws PostNotFoundException {
         Optional<Post> post = postRepository.findByCodec(codec);
         return post.orElseThrow(PostNotFoundException::new);
+    }
+
+    public List<Post> findAll() {
+        return postRepository.findAll();
     }
 }

@@ -20,10 +20,10 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-//    @GetMapping("/all")
-//    public ResponseEntity<List<Post>> findAll() {
-//        return ResponseEntity.ok().body(postService.findAll());
-//    }
+    @GetMapping("/all")
+    public ResponseEntity<List<Post>> findAll() {
+        return ResponseEntity.ok().body(postService.findAll());
+    }
 
     @PostMapping("/create")
     public ResponseEntity<Post> create(@RequestParam("title") String title, @RequestParam("description") String description,

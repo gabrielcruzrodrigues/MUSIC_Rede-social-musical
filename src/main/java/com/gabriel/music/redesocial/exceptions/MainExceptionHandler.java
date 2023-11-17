@@ -21,17 +21,17 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class MainExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<StandardError> exception(Exception ex, HttpServletRequest request) {
-        StandardError error = new StandardError(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                ex.getMessage(),
-                request.getRequestURI(),
-                "Exception"
-        );
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<StandardError> exception(Exception ex, HttpServletRequest request) {
+//        StandardError error = new StandardError(
+//                LocalDateTime.now(),
+//                HttpStatus.BAD_REQUEST.value(),
+//                ex.getMessage(),
+//                request.getRequestURI(),
+//                "Exception"
+//        );
+//        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+//    }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<StandardError> runTimeException(RuntimeException ex, HttpServletRequest request) {
