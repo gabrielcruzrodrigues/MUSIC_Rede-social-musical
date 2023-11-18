@@ -1,5 +1,6 @@
 package com.gabriel.music.redesocial.controller.post;
 
+import com.gabriel.music.redesocial.domain.post.DTO.CompletePostResponseDTO;
 import com.gabriel.music.redesocial.domain.post.Post;
 import com.gabriel.music.redesocial.service.Exceptions.FileNullContentException;
 import com.gabriel.music.redesocial.service.Exceptions.TypeFileErrorException;
@@ -37,15 +38,9 @@ public class PostController {
     }
 
     @GetMapping("/search/{codec}")
-    public ResponseEntity<Post> findByCodec(@PathVariable String codec) throws PostNotFoundException {
-        return ResponseEntity.ok().body(postService.findByCodec(codec));
+    public ResponseEntity<CompletePostResponseDTO> findPostByCodec(@PathVariable String codec) throws PostNotFoundException, UserNotFoundException {
+        return ResponseEntity.ok().body(postService.findCompletePostByCodec(codec));
     }
-
-//    @DeleteMapping("/delete/{codec}")
-//    public ResponseEntity<Object> delete(@PathVariable String codec) throws PostNotFoundException {
-//        postService.deleteByCodec(codec);
-//        return ResponseEntity.noContent().build();
-//    }
 
     @PutMapping("/add-like/{codec}")
     public ResponseEntity<Object> addLike(@PathVariable String codec) throws PostNotFoundException {
@@ -63,5 +58,4 @@ public class PostController {
     public ResponseEntity<String> toShare(@PathVariable String codec) throws PostNotFoundException {
         return ResponseEntity.ok().body(postService.sharedPost(codec));
     }
-
 }

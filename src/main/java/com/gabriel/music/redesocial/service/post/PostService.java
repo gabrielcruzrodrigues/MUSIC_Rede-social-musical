@@ -1,6 +1,8 @@
 package com.gabriel.music.redesocial.service.post;
 
+import com.gabriel.music.redesocial.domain.post.DTO.CompletePostResponseDTO;
 import com.gabriel.music.redesocial.domain.post.Post;
+import com.gabriel.music.redesocial.domain.user.DTO.UserForPostDTO;
 import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.repository.post.PostRepository;
 import com.gabriel.music.redesocial.service.Exceptions.FileNullContentException;
@@ -65,6 +67,23 @@ public class PostService {
         return post.orElseThrow(PostNotFoundException::new);
     }
 
+    public CompletePostResponseDTO findCompletePostByCodec(String codec) throws UserNotFoundException, PostNotFoundException {
+        Post post = this.findByCodec(codec);
+        User user = this.userService.findByUsername(post.getUsernameCreator());
+        UserForPostDTO userForPost = modelingNewUserForPost(user);
+        return modelingNewCompletePostResponseDTO(post, userForPost);
+    }
+
+    private UserForPostDTO modelingNewUserForPost(User user) {
+        return new UserForPostDTO(user.getId(), user.getName(), user.getUsername(), user.getImageProfile(), user.getImageBackground());
+    }
+
+    private CompletePostResponseDTO modelingNewCompletePostResponseDTO(Post post, UserForPostDTO user) {
+        return new CompletePostResponseDTO(
+                post.getId(), post.getCodec(), post.getTitle(), post.getDescription(), post.getCreatedDate(), post.getLikes(),
+                post.getShares(), user, post.getImages(), post.getVideos(), post.getComments());
+    }
+
     public List<Post> findAll() {
         return postRepository.findAll();
     }
@@ -98,4 +117,6 @@ public class PostService {
     private String createLinkForToSharePost(String codec) {
         return hostPath + findByCodecUrlEndPoint + codec;
     }
+
+
 }

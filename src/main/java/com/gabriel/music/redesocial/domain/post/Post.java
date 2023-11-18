@@ -1,5 +1,6 @@
 package com.gabriel.music.redesocial.domain.post;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gabriel.music.redesocial.domain.user.User;
 import jakarta.persistence.*;
@@ -33,7 +34,8 @@ public class Post {
 //    private List<Tag> tags;
     private Long likes;
     private Integer shares;
-    private Integer amountSaved;
+    @Column(nullable = false)
+    private String usernameCreator;
 
     @JsonIgnore
     @ManyToOne
@@ -54,11 +56,11 @@ public class Post {
         this.title = title;
         this.description = description;
         this.creator = user;
+        this.usernameCreator = user.getUsername();
 
         this.createdDate = LocalDateTime.now();
         this.likes = 0L;
         this.shares = 0;
-        this.amountSaved = 0;
     }
 
     public Post(String title, String description, User user, List<ImagePost> image, List<VideoPost> video) {
@@ -71,7 +73,6 @@ public class Post {
         this.createdDate = LocalDateTime.now();
         this.likes = 0L;
         this.shares = 0;
-        this.amountSaved = 0;
     }
 }
 
