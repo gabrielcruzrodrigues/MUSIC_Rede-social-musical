@@ -232,4 +232,26 @@ public class MainExceptionHandler {
                 "HttpRequestMethodNotSupportedException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<StandardError> commentNotFoundException(CommentNotFoundException ex, HttpServletRequest request) {
+        StandardError error = new StandardError(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                request.getRequestURI(),
+                "CommentNotFoundException");
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ErrorDeleteException.class)
+    public ResponseEntity<StandardError> errorDeleteException(ErrorDeleteException ex, HttpServletRequest request) {
+        StandardError error = new StandardError(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                request.getRequestURI(),
+                "ErrorDeleteException");
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 }
