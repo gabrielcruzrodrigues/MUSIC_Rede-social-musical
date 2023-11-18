@@ -30,4 +30,11 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public Comment(String comment, User user, Post post) {
+        this.comment = comment;
+        this.user = user;
+        this.post = post;
+        this.likes = 0L;
+    }
 }
