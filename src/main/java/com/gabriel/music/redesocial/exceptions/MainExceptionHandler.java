@@ -265,4 +265,15 @@ public class MainExceptionHandler {
                 "UserWithoutRequiredInformationException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<StandardError> illegalStateException(IllegalStateException ex, HttpServletRequest request) {
+        StandardError error = new StandardError(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                request.getRequestURI(),
+                "IllegalStateException");
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 }
