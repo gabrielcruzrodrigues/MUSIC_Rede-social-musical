@@ -113,9 +113,7 @@ public class UserService {
                 user.getPhotos(),
                 user.getVideos(),
                 user.getFriends(),
-                user.getPurchasedMaterials(),
                 user.getCreatedMaterials(),
-                user.getSaves(),
                 user.getComments()
         );
     }

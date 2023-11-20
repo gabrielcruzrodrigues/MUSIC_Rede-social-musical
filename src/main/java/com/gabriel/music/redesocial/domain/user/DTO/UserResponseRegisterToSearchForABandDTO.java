@@ -37,9 +37,7 @@ public record UserResponseRegisterToSearchForABandDTO(
         List<ImageUser> photos,
         List<VideoUser> videos,
         List<Friend> friends,
-        List<Material> purchasedMaterials,
         List<Material> createdMaterials,
-        List<Material> saves,
         List<Comment> comments
 ) {
 }

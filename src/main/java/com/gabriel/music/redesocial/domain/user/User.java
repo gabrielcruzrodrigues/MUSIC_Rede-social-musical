@@ -1,6 +1,5 @@
 package com.gabriel.music.redesocial.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.gabriel.music.redesocial.domain.enums.AvaliabityEnum;
 import com.gabriel.music.redesocial.domain.enums.GenreEnum;
 import com.gabriel.music.redesocial.domain.enums.InstrumentsEnum;
@@ -93,14 +92,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Friend> friends;
 
-    @OneToMany(mappedBy = "purchasedMaterialsUser_id")
-    private List<Material> purchasedMaterials;
-
     @OneToMany(mappedBy = "createdMaterialsUser_id")
     private List<Material> createdMaterials;
-
-    @OneToMany(mappedBy = "savesUser_id")
-    private List<Material> saves;
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
@@ -114,6 +107,6 @@ public class User {
                 + ", instruments=" + this.getInstruments() + ", availability=" + this.getAvailability() + ", socialMedia=" + this.getSocialMedia()
                 + ", posts=" + this.getPosts() + ", imageProfile=" + this.getImageProfile().getImageReference() + ", imageBackground=" + this.getImageBackground()
                 + ", phoneNumber=" + this.getPhoneNumber() + ", photos=" + this.getPhotos() + ", videos=" + this.getVideos() + ", friends=" + this.getFriends()
-                + ", purchasedMaterials=" + this.getPurchasedMaterials() + ", createdMaterials=" + this.getCreatedMaterials() + ", saves=" + this.getSaves() + ", comments=" + this.getComments() + ")";
+                + ", createdMaterials=" + this.getCreatedMaterials() + ", comments=" + this.getComments() + ")";
     }
 }

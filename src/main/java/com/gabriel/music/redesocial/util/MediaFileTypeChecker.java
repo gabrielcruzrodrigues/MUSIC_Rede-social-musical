@@ -30,4 +30,17 @@ public class MediaFileTypeChecker {
             throw new FileNullContentException();
         }
     }
+
+    public static boolean verigyIfIsAFile(MultipartFile file) throws FileNullContentException {
+        return isFile(file);
+    }
+
+    private static Boolean isFile(MultipartFile file) throws FileNullContentException {
+        String fileName = file.getOriginalFilename();
+        if (file != null) {
+            return fileName.endsWith(".pdf") || fileName.endsWith(".docs");
+        } else {
+            throw new FileNullContentException();
+        }
+    }
 }
