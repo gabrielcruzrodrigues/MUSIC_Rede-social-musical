@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table
@@ -20,11 +21,16 @@ public class Material {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false, unique = true)
+    private String codec;
     @Column(length = 100, nullable = false)
     private String name;
     private String referenceFileName;
+    @Column(nullable = false)
     private LocalDateTime createdDate;
+    @Column(nullable = false)
     private String description;
+    @Column(nullable = false)
     private Long amountDownloads;
     private String size;
     @Column(nullable = false)
@@ -37,6 +43,7 @@ public class Material {
     private Genre genres;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private NivelEnum nivelEnum;
 
     @JsonIgnore
@@ -52,5 +59,10 @@ public class Material {
         this.genres = genre;
         this.nivelEnum = nivelEnum;
         this.createdMaterialsUserId = user;
+
+        //default configuration
+        this.createdDate = LocalDateTime.now();
+        this.amountDownloads = 0L;
+        this.codec = UUID.randomUUID().toString().substring(0, 15);
     }
 }
