@@ -41,8 +41,14 @@ public class MaterialService {
     @Transactional
     public Material prepareForSave(String name, String description, Float price, MultipartFile file, InstrumentsEnum instrumentsEnum, Genre genre, NivelEnum nivelEnum, String username) throws UserNotFoundException, IOException, TypeFileErrorException, FileNullContentException, UserWithoutRequiredInformationException {
         Material material = modelingNewMaterialObject(name, description, price, file, instrumentsEnum, genre, nivelEnum, username);
-        Material materialWithReferenceFileName = writeFileAndReturnObjectMaterialForSaveInDatabase(material, file);
-        return materialRepository.save(materialWithReferenceFileName);
+        Material materialObjectAlreadyWritten = writeFileAndReturnObjectMaterialForSaveInDatabase(material, file);
+        Material materialReadyToBeSaved = additionalInformation(materialObjectAlreadyWritten, file);
+        return materialRepository.save(materialReadyToBeSaved);
+    }
+
+    private Material additionalInformation(Material materialObjectAlreadyWritten, MultipartFile file) throws IOException {
+        materialObjectAlreadyWritten.setSize(calculateFileSize(file));
+        return materialObjectAlreadyWritten;
     }
 
     private Material modelingNewMaterialObject(String name, String description, Float price, MultipartFile file, InstrumentsEnum instrumentsEnum, Genre genre, NivelEnum nivelEnum, String username) throws UserNotFoundException, UserWithoutRequiredInformationException {
@@ -68,7 +74,6 @@ public class MaterialService {
             Path path = Paths.get(filesPath + "/" + newFileName);
             Files.write(path, bytes);
             material.setReferenceFileName(newFileName);
-            material.setSize(calculateFileSize(file));
             return material;
         } else {
             throw new TypeFileErrorException();
