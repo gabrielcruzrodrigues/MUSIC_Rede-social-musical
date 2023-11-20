@@ -40,7 +40,7 @@ public class MaterialService {
 
     @Transactional
     public Material prepareForSave(String name, String description, Float price, MultipartFile file, InstrumentsEnum instrumentsEnum, Genre genre, NivelEnum nivelEnum, String username) throws UserNotFoundException, IOException, TypeFileErrorException, FileNullContentException, UserWithoutRequiredInformationException {
-        Material material = modelingNewMaterialObject(name, description, price, file, instrumentsEnum, genre, nivelEnum, username);
+        Material material = modelingNewMaterialObject(name, description, price, instrumentsEnum, genre, nivelEnum, username);
         Material materialObjectAlreadyWritten = writeFileAndReturnObjectMaterialForSaveInDatabase(material, file);
         Material materialReadyToBeSaved = additionalInformation(materialObjectAlreadyWritten, file);
         return materialRepository.save(materialReadyToBeSaved);
@@ -51,10 +51,10 @@ public class MaterialService {
         return materialObjectAlreadyWritten;
     }
 
-    private Material modelingNewMaterialObject(String name, String description, Float price, MultipartFile file, InstrumentsEnum instrumentsEnum, Genre genre, NivelEnum nivelEnum, String username) throws UserNotFoundException, UserWithoutRequiredInformationException {
+    private Material modelingNewMaterialObject(String name, String description, Float price, InstrumentsEnum instrument, Genre genre, NivelEnum nivel, String username) throws UserNotFoundException, UserWithoutRequiredInformationException {
         User user = userService.findByUsername(username);
         if (checkingUserInformationToCreateMaterial(user)) {
-            return new Material(name, description, price, instrumentsEnum, genre, nivelEnum, user);
+            return new Material(name, description, price, instrument, genre, nivel, user);
         } else {
             throw new UserWithoutRequiredInformationException();
         }

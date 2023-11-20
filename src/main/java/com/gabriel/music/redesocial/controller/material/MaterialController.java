@@ -31,8 +31,8 @@ public class MaterialController {
                                                       @RequestParam("description") String description,
                                                       @RequestParam("price") Float price,
                                                       @RequestParam("file")MultipartFile file,
-                                                      @RequestParam(value = "instruments", required = false) InstrumentsEnum instrument,
-                                                      @RequestParam(value = "genres", required = false) Genre genre,
+                                                      @RequestParam(value = "instrument", required = false) InstrumentsEnum instrument,
+                                                      @RequestParam(value = "genre", required = false) Genre genre,
                                                       @RequestParam("nivel") NivelEnum nivelEnum,
                                                       @RequestParam("creatorUsername") String username) throws UserNotFoundException, IOException, TypeFileErrorException, FileNullContentException, UserWithoutRequiredInformationException {
         Material material = materialService.prepareForSave(name, description, price, file, instrument, genre, nivelEnum, username);

@@ -37,10 +37,11 @@ public class Material {
     private Float price;
 
     @Enumerated(EnumType.STRING)
-    private InstrumentsEnum instruments;
+    private InstrumentsEnum instrument;
 
     @Enumerated(EnumType.STRING)
-    private Genre genres;
+    private Genre genre;
+
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -55,8 +56,8 @@ public class Material {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.instruments = instrumentsEnum;
-        this.genres = genre;
+        this.instrument = instrumentsEnum;
+        this.genre = genre;
         this.nivelEnum = nivelEnum;
         this.createdMaterialsUserId = user;
 
