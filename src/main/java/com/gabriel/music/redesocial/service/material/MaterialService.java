@@ -6,9 +6,7 @@ import com.gabriel.music.redesocial.domain.enums.NivelEnum;
 import com.gabriel.music.redesocial.domain.material.Material;
 import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.repository.material.MaterialRepository;
-import com.gabriel.music.redesocial.service.Exceptions.FileNullContentException;
-import com.gabriel.music.redesocial.service.Exceptions.TypeFileErrorException;
-import com.gabriel.music.redesocial.service.Exceptions.UserWithoutRequiredInformationException;
+import com.gabriel.music.redesocial.service.Exceptions.*;
 import com.gabriel.music.redesocial.service.user.UserService;
 import com.gabriel.music.redesocial.service.user.exceptions.UserNotFoundException;
 import com.gabriel.music.redesocial.util.MediaFileTypeChecker;
@@ -23,6 +21,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -37,6 +37,32 @@ public class MaterialService {
 
     @Value("${files-materials-path}")
     private String filesPath;
+
+    public List<Material> findAll() {
+        return this.materialRepository.findAll();
+    }
+
+    public List<Material> findByName(String name) throws FileNotFoundException {
+        return this.materialRepository.findByName(name);
+    }
+
+    public Material findByCodec(String codec) throws FileNotFoundException {
+        Optional<Material> material = this.materialRepository.findByCodec(codec);
+        return material.orElseThrow(FileNotFoundException::new);
+    }
+
+    public void deleteMaterial(String codec) throws FileNotFoundException, ErrorDeleteFileException, ErrorDeleteException {
+        Material material = this.findByCodec(codec);
+        try {
+            Path path = Paths.get(filesPath + "/" + material.getReferenceFileName());
+            Files.delete(path);
+            this.materialRepository.delete(material);
+        } catch (Exception ex) {
+            throw new ErrorDeleteException(ex.getMessage());
+        }
+    }
+
+    //creating
 
     @Transactional
     public Material prepareForSave(String name, String description, Float price, MultipartFile file, InstrumentsEnum instrumentsEnum, Genre genre, NivelEnum nivelEnum, String username) throws UserNotFoundException, IOException, TypeFileErrorException, FileNullContentException, UserWithoutRequiredInformationException {
