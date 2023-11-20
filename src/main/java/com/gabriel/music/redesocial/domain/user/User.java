@@ -1,8 +1,7 @@
 package com.gabriel.music.redesocial.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.gabriel.music.redesocial.domain.enums.AvaliabityEnum;
-import com.gabriel.music.redesocial.domain.enums.GenreEnum;
+import com.gabriel.music.redesocial.domain.enums.Genre;
 import com.gabriel.music.redesocial.domain.enums.InstrumentsEnum;
 import com.gabriel.music.redesocial.domain.material.Material;
 import com.gabriel.music.redesocial.domain.post.Comment;
@@ -61,7 +60,7 @@ public class User {
     private Integer shows;
 
     @Enumerated(value = EnumType.STRING)
-    private List<GenreEnum> genre;
+    private List<Genre> genre;
 
     @Enumerated(EnumType.STRING)
     private List<InstrumentsEnum> instruments;
@@ -93,14 +92,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Friend> friends;
 
-    @OneToMany(mappedBy = "purchasedMaterialsUser_id")
-    private List<Material> purchasedMaterials;
-
-    @OneToMany(mappedBy = "createdMaterialsUser_id")
+    @OneToMany(mappedBy = "createdMaterialsUserId")
     private List<Material> createdMaterials;
-
-    @OneToMany(mappedBy = "savesUser_id")
-    private List<Material> saves;
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
@@ -112,8 +105,8 @@ public class User {
                 + ", password=" + this.getPassword() + ", cep=" + this.getCep() + ", goals=" + this.getAbout() + ", whatsapp=" + this.getWhatsapp()
                 + ", age=" + this.getAge() + ", entryDate=" + this.getEntryDate() + ", shows=" + this.getShows() + ", genre=" + this.getGenre()
                 + ", instruments=" + this.getInstruments() + ", availability=" + this.getAvailability() + ", socialMedia=" + this.getSocialMedia()
-                + ", posts=" + this.getPosts() + ", imageProfile=" + this.getImageProfile().getImageReference() + ", imageBackground=" + this.getImageBackground()
+                + ", posts=" + this.getPosts() + "imageReference()=" + getImageProfile().getImageReference() + ", imageProfile=" + this.getImageProfile() + ", imageBackground=" + this.getImageBackground()
                 + ", phoneNumber=" + this.getPhoneNumber() + ", photos=" + this.getPhotos() + ", videos=" + this.getVideos() + ", friends=" + this.getFriends()
-                + ", purchasedMaterials=" + this.getPurchasedMaterials() + ", createdMaterials=" + this.getCreatedMaterials() + ", saves=" + this.getSaves() + ", comments=" + this.getComments() + ")";
+                + ", createdMaterials=" + this.getCreatedMaterials() + ", comments=" + this.getComments() + ")";
     }
 }

@@ -1,6 +1,6 @@
 package com.gabriel.music.redesocial.domain.enums;
 
-public enum GenreEnum {
+public enum Genre {
     ROCK,
     JAZZ,
     SAMBA,
