@@ -4,7 +4,7 @@ import com.gabriel.music.redesocial.domain.user.Friend;
 import com.gabriel.music.redesocial.domain.user.PhoneNumber;
 import com.gabriel.music.redesocial.domain.user.SocialMedia;
 import com.gabriel.music.redesocial.domain.enums.AvaliabityEnum;
-import com.gabriel.music.redesocial.domain.enums.GenreEnum;
+import com.gabriel.music.redesocial.domain.enums.Genre;
 import com.gabriel.music.redesocial.domain.enums.InstrumentsEnum;
 import com.gabriel.music.redesocial.domain.material.Material;
 import com.gabriel.music.redesocial.domain.post.Comment;
@@ -26,7 +26,7 @@ public record UserResponseRegisterToSearchForABandDTO(
         LocalDate age,
         LocalDate EntryDate,
         Integer shows,
-        List<GenreEnum> genre,
+        List<Genre> genre,
         List<InstrumentsEnum> instruments,
         List<AvaliabityEnum> availability,
         List<SocialMedia> socialMedia,

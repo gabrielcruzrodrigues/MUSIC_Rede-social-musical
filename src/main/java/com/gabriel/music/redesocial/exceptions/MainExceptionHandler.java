@@ -254,4 +254,15 @@ public class MainExceptionHandler {
                 "ErrorDeleteException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(UserWithoutRequiredInformationException.class)
+    public ResponseEntity<StandardError> userWithoutRequiredInformationException(UserWithoutRequiredInformationException ex, HttpServletRequest request) {
+        StandardError error = new StandardError(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                request.getRequestURI(),
+                "UserWithoutRequiredInformationException");
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 }

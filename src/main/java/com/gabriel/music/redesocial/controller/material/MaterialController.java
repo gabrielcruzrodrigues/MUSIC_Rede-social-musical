@@ -1,11 +1,12 @@
 package com.gabriel.music.redesocial.controller.material;
 
-import com.gabriel.music.redesocial.domain.enums.GenreEnum;
+import com.gabriel.music.redesocial.domain.enums.Genre;
 import com.gabriel.music.redesocial.domain.enums.InstrumentsEnum;
 import com.gabriel.music.redesocial.domain.enums.NivelEnum;
 import com.gabriel.music.redesocial.domain.material.Material;
 import com.gabriel.music.redesocial.service.Exceptions.FileNullContentException;
 import com.gabriel.music.redesocial.service.Exceptions.TypeFileErrorException;
+import com.gabriel.music.redesocial.service.Exceptions.UserWithoutRequiredInformationException;
 import com.gabriel.music.redesocial.service.material.MaterialService;
 import com.gabriel.music.redesocial.service.user.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +31,11 @@ public class MaterialController {
                                                       @RequestParam("description") String description,
                                                       @RequestParam("price") Float price,
                                                       @RequestParam("file")MultipartFile file,
-                                                      @RequestParam(value = "instruments", required = false) InstrumentsEnum instrumentsEnum,
-                                                      @RequestParam(value = "genres", required = false) GenreEnum genreEnum,
+                                                      @RequestParam(value = "instruments", required = false) InstrumentsEnum instrument,
+                                                      @RequestParam(value = "genres", required = false) Genre genre,
                                                       @RequestParam("nivel") NivelEnum nivelEnum,
-                                                      @RequestParam("creatorUsername") String username) throws UserNotFoundException, IOException, TypeFileErrorException, FileNullContentException {
-        Material material = materialService.prepareForSave(name, description, price, file, instrumentsEnum, genreEnum, nivelEnum, username);
+                                                      @RequestParam("creatorUsername") String username) throws UserNotFoundException, IOException, TypeFileErrorException, FileNullContentException, UserWithoutRequiredInformationException {
+        Material material = materialService.prepareForSave(name, description, price, file, instrument, genre, nivelEnum, username);
         return ResponseEntity.ok().body(material);
     }
 }

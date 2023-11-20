@@ -9,8 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table
@@ -36,7 +34,7 @@ public class Material {
     private InstrumentsEnum instruments;
 
     @Enumerated(EnumType.STRING)
-    private GenreEnum genres;
+    private Genre genres;
 
     @Enumerated(EnumType.STRING)
     private NivelEnum nivelEnum;
@@ -44,20 +42,15 @@ public class Material {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "createdMaterialsUser_id")
-    private User createdMaterialsUser_id;
+    private User createdMaterialsUserId;
 
-    public Material(String name, String description, Float price, InstrumentsEnum instrumentsEnum, GenreEnum genreEnum, NivelEnum nivelEnum, User user) {
+    public Material(String name, String description, Float price, InstrumentsEnum instrumentsEnum, Genre genre, NivelEnum nivelEnum, User user) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.instruments = instrumentsEnum;
-        this.genres = genreEnum;
+        this.genres = genre;
         this.nivelEnum = nivelEnum;
-        this.createdMaterialsUser_id = user;
+        this.createdMaterialsUserId = user;
     }
-
-//    @JsonIgnore
-//    @ManyToMany
-//    @JoinColumn(name = "savesUser_id")
-//    private User savesUser_id;
 }

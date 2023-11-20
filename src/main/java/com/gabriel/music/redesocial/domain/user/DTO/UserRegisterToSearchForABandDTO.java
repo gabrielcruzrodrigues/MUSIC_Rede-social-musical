@@ -1,7 +1,7 @@
 package com.gabriel.music.redesocial.domain.user.DTO;
 
 import com.gabriel.music.redesocial.domain.enums.AvaliabityEnum;
-import com.gabriel.music.redesocial.domain.enums.GenreEnum;
+import com.gabriel.music.redesocial.domain.enums.Genre;
 import com.gabriel.music.redesocial.domain.enums.InstrumentsEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +21,7 @@ public record UserRegisterToSearchForABandDTO(
         @NotNull(message = "Os seus shows não podem estar em branco")
         Integer shows,
         @NotNull(message = "Os seus generos não podem estar em branco")
-        List<GenreEnum> genre,
+        List<Genre> genre,
         @NotNull(message = "Os seus instrumentos não podem estar em branco")
         List<InstrumentsEnum> instruments,
         @NotNull(message = "A sua disponibilidade não pode estar em branco")

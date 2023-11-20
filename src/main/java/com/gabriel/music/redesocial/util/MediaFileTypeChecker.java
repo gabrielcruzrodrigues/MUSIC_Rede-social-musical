@@ -31,7 +31,7 @@ public class MediaFileTypeChecker {
         }
     }
 
-    public static boolean verigyIfIsAFile(MultipartFile file) throws FileNullContentException {
+    public static boolean verifyIfIsAFile(MultipartFile file) throws FileNullContentException {
         return isFile(file);
     }
 
