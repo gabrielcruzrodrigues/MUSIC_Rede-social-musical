@@ -41,7 +41,7 @@ public class MaterialService {
     @Transactional
     public Material prepareForSave(String name, String description, Float price, MultipartFile file, InstrumentsEnum instrumentsEnum, Genre genre, NivelEnum nivelEnum, String username) throws UserNotFoundException, IOException, TypeFileErrorException, FileNullContentException, UserWithoutRequiredInformationException {
         Material material = modelingNewMaterialObject(name, description, price, file, instrumentsEnum, genre, nivelEnum, username);
-        Material materialWithReferenceFileName = saveAndWriteFile(material, file);
+        Material materialWithReferenceFileName = writeFileAndReturnObjectMaterialForSaveInDatabase(material, file);
         return materialRepository.save(materialWithReferenceFileName);
     }
 
@@ -61,17 +61,25 @@ public class MaterialService {
         return true;
     }
 
-    private Material saveAndWriteFile(Material material, MultipartFile file) throws IOException, FileNullContentException, TypeFileErrorException {
+    private Material writeFileAndReturnObjectMaterialForSaveInDatabase(Material material, MultipartFile file) throws IOException, FileNullContentException, TypeFileErrorException {
         if (MediaFileTypeChecker.verifyIfIsAFile(file)) {
             byte[] bytes = file.getBytes();
             String newFileName = this.generateNewFileName(file, material);
             Path path = Paths.get(filesPath + "/" + newFileName);
             Files.write(path, bytes);
             material.setReferenceFileName(newFileName);
+            material.setSize(calculateFileSize(file));
             return material;
         } else {
             throw new TypeFileErrorException();
         }
+    }
+
+    private String calculateFileSize(MultipartFile file) throws IOException {
+        long size = file.getBytes().length;
+        double sizeInKB = size / 1024.0;
+        double sizeInMB = sizeInKB / 1024.0;
+        return String.format("%.2f", sizeInMB);
     }
 
     private String generateNewFileName(MultipartFile file, Material material) {
