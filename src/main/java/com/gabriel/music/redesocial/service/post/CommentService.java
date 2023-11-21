@@ -34,7 +34,7 @@ public class CommentService {
 
     @Transactional
     public Comment save(String comment, String username, String codec) throws UserNotFoundException, PostNotFoundException {
-        User user = userService.findByUsername(username);
+        User user = userService.findByUsernameForServer(username);
         Post post = postService.findByCodec(codec);
         Comment newComment = new Comment(comment, user, post);
         return commentRepository.save(newComment);

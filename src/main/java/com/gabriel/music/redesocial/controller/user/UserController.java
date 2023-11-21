@@ -48,8 +48,8 @@ public class UserController {
     }
 
     @GetMapping("/profile/{username}")
-    public ResponseEntity<User> findByUsername(@PathVariable String username) throws UserNotFoundException {
-        return ResponseEntity.ok().body(userService.findByUsername(username));
+    public ResponseEntity<UserResponseRegisterToSearchForABandDTO> findByUsername(@PathVariable String username) throws UserNotFoundException {
+        return ResponseEntity.ok().body(userService.findByUsernameForResponseClient(username));
     }
 
     //registration
