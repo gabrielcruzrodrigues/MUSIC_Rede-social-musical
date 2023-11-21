@@ -1,5 +1,6 @@
 package com.gabriel.music.redesocial.exceptions;
 
+import com.gabriel.music.redesocial.infra.security.exception.GenerateTokenErrorException;
 import com.gabriel.music.redesocial.service.Exceptions.*;
 import com.gabriel.music.redesocial.service.post.exceptions.*;
 import com.gabriel.music.redesocial.service.user.exceptions.*;
@@ -35,17 +36,17 @@ public class MainExceptionHandler {
 //        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 //    }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<StandardError> runTimeException(RuntimeException ex, HttpServletRequest request) {
-        StandardError error = new StandardError(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                ex.getCause().toString(),
-                request.getRequestURI(),
-                "RuntimeException"
-        );
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler(RuntimeException.class)
+//    public ResponseEntity<StandardError> runTimeException(RuntimeException ex, HttpServletRequest request) {
+//        StandardError error = new StandardError(
+//                LocalDateTime.now(),
+//                HttpStatus.BAD_REQUEST.value(),
+//                ex.getMessage(),
+//                request.getRequestURI(),
+//                "RuntimeException"
+//        );
+//        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+//    }
 
     @ExceptionHandler(ObjectNotFoundException.class)
     public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException ex, HttpServletRequest request) {
@@ -274,6 +275,17 @@ public class MainExceptionHandler {
                 ex.getMessage(),
                 request.getRequestURI(),
                 "IllegalStateException");
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(GenerateTokenErrorException.class)
+    public ResponseEntity<StandardError> generateTokenErrorException(GenerateTokenErrorException ex, HttpServletRequest request) {
+        StandardError error = new StandardError(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                request.getRequestURI(),
+                "GenerateTokenErrorException");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }

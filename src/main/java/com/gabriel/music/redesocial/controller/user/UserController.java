@@ -54,17 +54,6 @@ public class UserController {
 
     //registration
 
-    @PostMapping("/initial-registration")
-    public ResponseEntity<UserResponseInitialRegisterDTO> saveInitialUserRegistration(@RequestBody @Valid UserInitialRegistrationDTO userInitialRegistrationDTO) throws UserNotFoundException {
-        UserResponseInitialRegisterDTO user = userService.initialRegistration(userInitialRegistrationDTO);
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{username}")
-                .buildAndExpand(user.username())
-                .toUri();
-        return ResponseEntity.created(uri).body(user);
-    }
-
     @PostMapping("/registration-search-a-band")
     public ResponseEntity<UserResponseRegisterToSearchForABandDTO> saveRegisterSearchABand(@RequestBody @Valid UserRegisterToSearchForABandDTO userRegisterToSearchForABandDTO) throws UserNotFoundException {
         UserResponseRegisterToSearchForABandDTO user = userService.registrationToSearchForABand(userRegisterToSearchForABandDTO);

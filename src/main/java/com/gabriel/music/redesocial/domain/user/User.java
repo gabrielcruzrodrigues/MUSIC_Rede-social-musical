@@ -6,6 +6,7 @@ import com.gabriel.music.redesocial.domain.enums.InstrumentsEnum;
 import com.gabriel.music.redesocial.domain.material.Material;
 import com.gabriel.music.redesocial.domain.post.Comment;
 import com.gabriel.music.redesocial.domain.post.Post;
+import com.gabriel.music.redesocial.infra.security.domain.authentication.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -97,6 +98,10 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
+
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
     @Override
     public String toString() {
