@@ -58,7 +58,7 @@ public class PostService {
     }
 
     private Post creationNewPostNoMedias(String title, String description, String creator) throws UserNotFoundException {
-        User user = userService.findByUsername(creator);
+        User user = userService.findByUsernameForServer(creator);
         return new Post(title, description, user);
     }
 
@@ -69,7 +69,7 @@ public class PostService {
 
     public CompletePostResponseDTO findCompletePostByCodec(String codec) throws UserNotFoundException, PostNotFoundException {
         Post post = this.findByCodec(codec);
-        User user = this.userService.findByUsername(post.getUsernameCreator());
+        User user = this.userService.findByUsernameForServer(post.getUsernameCreator());
         UserForPostDTO userForPost = modelingNewUserForPost(user);
         return modelingNewCompletePostResponseDTO(post, userForPost);
     }

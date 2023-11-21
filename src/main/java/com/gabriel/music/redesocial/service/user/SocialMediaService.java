@@ -30,7 +30,7 @@ public class SocialMediaService {
     }
 
     private SocialMedia modelingNewSocialMedia(SocialMediaRegistrationDTO socialMedia) throws UserNotFoundException {
-        User user = userService.findByUsername(socialMedia.user());
+        User user = userService.findByUsernameForServer(socialMedia.user());
         return new SocialMedia(null, socialMedia.socialMedia(), socialMedia.username(), user);
     }
 

@@ -78,7 +78,7 @@ public class MaterialService {
     }
 
     private Material modelingNewMaterialObject(String name, String description, Float price, InstrumentsEnum instrument, Genre genre, NivelEnum nivel, String username) throws UserNotFoundException, UserWithoutRequiredInformationException {
-        User user = userService.findByUsername(username);
+        User user = userService.findByUsernameForServer(username);
         if (checkingUserInformationToCreateMaterial(user)) {
             return new Material(name, description, price, instrument, genre, nivel, user);
         } else {

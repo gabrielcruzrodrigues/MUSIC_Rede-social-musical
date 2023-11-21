@@ -73,7 +73,7 @@ public class UserService {
     }
 
     private User modelingNewRegistrationToSearchForABand(UserRegisterToSearchForABandDTO user) throws UserNotFoundException {
-        User existingUser = this.findByUsername(user.username());
+        User existingUser = this.findByUsernameForServer(user.username());
         existingUser.setName(user.name());
         existingUser.setCep(user.cep());
         existingUser.setAge(user.age());
@@ -120,9 +120,18 @@ public class UserService {
 
     //search
 
-    public User findByUsername(String username) throws UserNotFoundException {
+    public User findByUsernameForServer(String username) throws UserNotFoundException {
         Optional<User> user = userRepository.findByUsername(username);
-        return user.orElseThrow(UserNotFoundException::new);
+       return user.orElseThrow(UserNotFoundException::new);
+    }
+
+    public UserResponseRegisterToSearchForABandDTO findByUsernameForResponseClient(String username) throws UserNotFoundException {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
+            return this.transformUserToUserResponseRegisterToSearchForABandDTO(user.get());
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
 //    public User findByEmail(String email) throws UserNotFoundException {
@@ -141,30 +150,30 @@ public class UserService {
 
     @Transactional
     public void uploadImageProfileUser(MultipartFile file, String username) throws UserNotFoundException, IOException, FileNotFoundException, TypeFileErrorException, FileNullContentException {
-        User user = findByUsername(username);
+        User user = findByUsernameForServer(username);
         imageUserService.saveAndWriteImageProfile(file, user);
     }
 
     @Transactional
     public void uploadBackgroundProfileUser(MultipartFile file, String username) throws UserNotFoundException, IOException, FileNotFoundException, TypeFileErrorException, FileNullContentException {
-        User user = findByUsername(username);
+        User user = findByUsernameForServer(username);
         imageUserService.saveAndWriteBackgroundProfile(file, user);
     }
 
     @Transactional
     public void uploadPhotoUser(MultipartFile file, String username) throws UserNotFoundException, IOException, FileNullContentException, TypeFileErrorException {
-        User user = findByUsername(username);
+        User user = findByUsernameForServer(username);
         imageUserService.saveAndWritePhotoUser(file, user);
     }
 
     @Transactional
     public void uploadVideoUser(MultipartFile file, String username) throws UserNotFoundException, IOException, TypeFileErrorException, FileNullContentException {
-        User user = findByUsername(username);
+        User user = findByUsernameForServer(username);
         videoUserService.saveAndWriteVideoProfile(file, user);
     }
 
     public Resource getImageProfile(String username) throws UserNotFoundException, FileNotFoundException, UserMidiaNotFoundException {
-        User user = findByUsername(username);
+        User user = findByUsernameForServer(username);
         if (user.getImageProfile().getImageReference() != null) {
             Resource resource = new FileSystemResource(pathImages + "/" + user.getImageProfile().getImageReference());
             if (resource.exists() && resource.isReadable()) {
@@ -178,7 +187,7 @@ public class UserService {
     }
 
     public Resource getBackgroundProfile(String username) throws UserNotFoundException, FileNotFoundException, UserMidiaNotFoundException {
-        User user = findByUsername(username);
+        User user = findByUsernameForServer(username);
         if (user.getImageBackground().getImageReference() != null) {
             Resource resource = new FileSystemResource(pathImages + "/" + user.getImageBackground().getImageReference());
             if (resource.exists() && resource.isReadable()) {
@@ -195,29 +204,29 @@ public class UserService {
 
     @Transactional
     public void updateAbout(AboutUpdateDTO aboutUpdateDTO, String username) throws UserNotFoundException {
-        User user = findByUsername(username);
+        User user = findByUsernameForServer(username);
         user.setAbout(aboutUpdateDTO.about());
         userRepository.save(user);
     }
 
     @Transactional
     public void updateWhatsapp(WhatsAppUpdateDTO whatsAppUpdateDTO, String username) throws UserNotFoundException {
-        User user = findByUsername(username);
+        User user = findByUsernameForServer(username);
         user.setWhatsapp(whatsAppUpdateDTO.whatsapp());
         userRepository.save(user);
     }
 
     @Transactional
     public void registerPhoneNumber(PhoneNumberRegistrationDTO phoneNumberRegistrationDTO) throws UserNotFoundException {
-        User user = findByUsername(phoneNumberRegistrationDTO.username());
+        User user = findByUsernameForServer(phoneNumberRegistrationDTO.username());
         phoneNumberService.save(phoneNumberRegistrationDTO, user);
     }
 
    //friends
 
     public Friend addFriend(String username, String friendUsername) throws UserNotFoundException {
-        User user = findByUsername(username);
-        User userFriend = findByUsername(friendUsername);
+        User user = findByUsernameForServer(username);
+        User userFriend = findByUsernameForServer(friendUsername);
         return friendService.save(user, userFriend);
     }
 
