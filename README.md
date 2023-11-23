@@ -8,6 +8,7 @@ Uma rede social para amantes da música! com o intuito de compartilhar materiais
 * upload de fotos de perfil e de background(fundo)
 * upload de fotos e videos.
 * sistema de posts, com likes, comentários e compartilhamentos.
+* authenticação e autorização
   
 
 <br>
