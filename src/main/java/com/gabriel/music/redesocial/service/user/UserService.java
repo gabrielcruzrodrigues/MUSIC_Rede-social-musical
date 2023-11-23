@@ -74,6 +74,7 @@ public class UserService {
     private User modelingNewInitialRegistrationUser(UserInitialRegistrationDTO userDTO) {
         var newUser = new User();
         newUser.setUsername(userDTO.username());
+        newUser.setLogin(userDTO.username());
         newUser.setEmail(userDTO.email());
         newUser.setPassword(new BCryptPasswordEncoder().encode(userDTO.password()));
         newUser.setEntryDate(LocalDate.now());

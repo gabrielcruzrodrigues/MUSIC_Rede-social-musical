@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.infra.security.exception.GenerateTokenErrorException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 @Service
+@Slf4j
 public class TokenService {
 
     @Value("${api.security.token.secret}")
@@ -24,7 +26,7 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
                     .withIssuer("rede_social_music")
-                    .withSubject(user.getUsername())
+                    .withSubject(user.getLogin())
                     .withExpiresAt(getExpirationDate())
                     .sign(algorithm);
             return token;

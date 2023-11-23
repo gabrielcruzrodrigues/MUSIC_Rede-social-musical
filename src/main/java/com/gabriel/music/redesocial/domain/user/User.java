@@ -44,6 +44,11 @@ public class User implements UserDetails {
     private String username;
 
     @Column(unique = true, nullable = false)
+    @NotNull
+    @NotBlank(message = "o campo login não pode estar nulo.")
+    private String login;
+
+    @Column(unique = true, nullable = false)
     @Email
     @NotNull(message = "o campo email não pode estar nulo.")
     private String email;

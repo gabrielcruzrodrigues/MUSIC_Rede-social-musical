@@ -30,7 +30,7 @@ public class SecurityConfiguration {
 
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/clients/{id}").hasRole("ADMIN")
                                 .anyRequest().permitAll()
 
                 ).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

@@ -2,6 +2,8 @@ package com.gabriel.music.redesocial.infra.security;
 
 import com.gabriel.music.redesocial.infra.security.service.TokenService;
 import com.gabriel.music.redesocial.repository.user.UserRepository;
+import com.gabriel.music.redesocial.service.user.UserService;
+import com.gabriel.music.redesocial.service.user.exceptions.UserNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,6 +42,6 @@ public class SecurityFilter extends OncePerRequestFilter {
     private String recoverToken(HttpServletRequest request) {
         var authHeader = request.getHeader("Authorization");
         if (authHeader == null) return null;
-        return authHeader.replace("Bearer", "");
+        return authHeader.replace("Bearer ", "");
     }
 }
