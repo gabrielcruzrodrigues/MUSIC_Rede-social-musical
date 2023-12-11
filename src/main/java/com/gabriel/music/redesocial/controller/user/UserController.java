@@ -2,7 +2,6 @@ package com.gabriel.music.redesocial.controller.user;
 
 import com.gabriel.music.redesocial.domain.user.DTO.*;
 import com.gabriel.music.redesocial.domain.user.Friend;
-import com.gabriel.music.redesocial.domain.user.User;
 import com.gabriel.music.redesocial.service.Exceptions.ErrorDeleteFileException;
 import com.gabriel.music.redesocial.service.Exceptions.FileNotFoundException;
 import com.gabriel.music.redesocial.service.Exceptions.FileNullContentException;
@@ -85,7 +84,7 @@ public class UserController {
 
     @DeleteMapping("/media/image-profile/delete/{filename}")
     public ResponseEntity<Object> deleteImageProfile(@PathVariable String filename) throws FileNotFoundException, IOException, ErrorDeleteFileException {
-        imageUserService.deleteImageUser(filename);
+        imageUserService.deleteImageProfileOrBackgroundOfUser(filename);
         return ResponseEntity.ok().build();
     }
 
@@ -107,7 +106,7 @@ public class UserController {
 
     @DeleteMapping("/media/background-profile/delete/{filename}")
     public ResponseEntity<Object> deleteBackgroundProfile(@PathVariable String filename) throws FileNotFoundException, IOException, ErrorDeleteFileException {
-        imageUserService.deleteImageUser(filename);
+        imageUserService.deleteImageProfileOrBackgroundOfUser(filename);
         return ResponseEntity.ok().build();
     }
 

@@ -89,7 +89,7 @@ public class ImageUserService {
         return imageUser.orElseThrow(FileNotFoundException::new);
     }
 
-    private Boolean deleteFileInDirectory(String referenceForDelete) throws IOException {
+    public Boolean deleteFileInDirectory(String referenceForDelete) throws IOException {
         Path path = Paths.get(pathImages + "/" + referenceForDelete);
         Files.delete(path);
         return checkIfTheFileExists(referenceForDelete);
@@ -97,7 +97,7 @@ public class ImageUserService {
 
     //images profile
 
-    public void deleteImageUser(String filename) throws FileNotFoundException, IOException, ErrorDeleteFileException {
+    public void deleteImageProfileOrBackgroundOfUser(String filename) throws FileNotFoundException, IOException, ErrorDeleteFileException {
         deleteImageReferenceFromDatabase(filename);
         if (imageUserRepository.findByImageReference(filename).isEmpty()) {
             deleteFileInDirectory(filename);
