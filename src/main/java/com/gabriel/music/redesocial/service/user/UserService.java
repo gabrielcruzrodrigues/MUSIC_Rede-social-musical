@@ -3,22 +3,18 @@ package com.gabriel.music.redesocial.service.user;
 import com.gabriel.music.redesocial.domain.user.DTO.*;
 import com.gabriel.music.redesocial.domain.user.Friend;
 import com.gabriel.music.redesocial.domain.user.User;
-import com.gabriel.music.redesocial.infra.security.domain.authentication.UserRole;
-import com.gabriel.music.redesocial.infra.security.exception.GenerateTokenErrorException;
-import com.gabriel.music.redesocial.infra.security.service.TokenService;
 import com.gabriel.music.redesocial.repository.user.UserRepository;
 import com.gabriel.music.redesocial.service.Exceptions.FileNotFoundException;
 import com.gabriel.music.redesocial.service.Exceptions.FileNullContentException;
 import com.gabriel.music.redesocial.service.Exceptions.TypeFileErrorException;
-import com.gabriel.music.redesocial.service.user.exceptions.*;
+import com.gabriel.music.redesocial.service.user.exceptions.UserMidiaNotFoundException;
+import com.gabriel.music.redesocial.service.user.exceptions.UserNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,8 +43,8 @@ public class UserService {
     @Autowired
     private FriendService friendService;
 
-    @Autowired
-    private TokenService tokenService;
+//    @Autowired
+//    private TokenService tokenService;
 
     @Value("${images-user-path}")
     private String pathImages;
@@ -76,19 +72,14 @@ public class UserService {
         newUser.setUsername(userDTO.username());
         newUser.setLogin(userDTO.username());
         newUser.setEmail(userDTO.email());
-        newUser.setPassword(new BCryptPasswordEncoder().encode(userDTO.password()));
+        newUser.setPassword(userDTO.password());
         newUser.setEntryDate(LocalDate.now());
-        if (userDTO.role() == null) {
-            newUser.setRole(UserRole.USER);
-        } else {
-            newUser.setRole(userDTO.role());
-        }
         return newUser;
     }
 
-    public String getToken(Authentication authentication) throws GenerateTokenErrorException {
-        return this.tokenService.generateToken((User) authentication.getPrincipal());
-    }
+//    public String getToken(Authentication authentication) throws GenerateTokenErrorException {
+//        return this.tokenService.generateToken((User) authentication.getPrincipal());
+//    }
 
     private User modelingNewRegistrationToSearchForABand(UserRegisterToSearchForABandDTO user) throws UserNotFoundException {
         User existingUser = this.findByUsernameForServer(user.username());
