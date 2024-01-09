@@ -34,6 +34,7 @@ public class SecurityConfiguration {
 
                 ).addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+        // apenas um teste
     }
 
     @Bean
