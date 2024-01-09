@@ -1,9 +1,10 @@
 package com.gabriel.music.redesocial.exceptions;
 
-import com.gabriel.music.redesocial.infra.security.exception.GenerateTokenErrorException;
 import com.gabriel.music.redesocial.service.Exceptions.*;
-import com.gabriel.music.redesocial.service.post.exceptions.*;
-import com.gabriel.music.redesocial.service.user.exceptions.*;
+import com.gabriel.music.redesocial.service.post.exceptions.CommentNotFoundException;
+import com.gabriel.music.redesocial.service.post.exceptions.PostNotFoundException;
+import com.gabriel.music.redesocial.service.user.exceptions.UserMidiaNotFoundException;
+import com.gabriel.music.redesocial.service.user.exceptions.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -278,14 +279,14 @@ public class MainExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(GenerateTokenErrorException.class)
-    public ResponseEntity<StandardError> generateTokenErrorException(GenerateTokenErrorException ex, HttpServletRequest request) {
-        StandardError error = new StandardError(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                ex.getMessage(),
-                request.getRequestURI(),
-                "GenerateTokenErrorException");
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler(GenerateTokenErrorException.class)
+//    public ResponseEntity<StandardError> generateTokenErrorException(GenerateTokenErrorException ex, HttpServletRequest request) {
+//        StandardError error = new StandardError(
+//                LocalDateTime.now(),
+//                HttpStatus.BAD_REQUEST.value(),
+//                ex.getMessage(),
+//                request.getRequestURI(),
+//                "GenerateTokenErrorException");
+//        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+//    }
 }

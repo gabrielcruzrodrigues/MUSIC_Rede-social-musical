@@ -6,7 +6,6 @@ import com.gabriel.music.redesocial.domain.enums.InstrumentsEnum;
 import com.gabriel.music.redesocial.domain.material.Material;
 import com.gabriel.music.redesocial.domain.post.Comment;
 import com.gabriel.music.redesocial.domain.post.Post;
-import com.gabriel.music.redesocial.infra.security.domain.authentication.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -16,12 +15,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -29,7 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -108,9 +103,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Comment> comments;
 
-    @Column(name = "role", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+//    @Column(name = "role", nullable = false)
+//    @Enumerated(EnumType.STRING)
+//    private UserRole role;
 
     @Override
     public String toString() {
@@ -122,42 +117,5 @@ public class User implements UserDetails {
                 + ", posts=" + this.getPosts() + "imageReference()=" + getImageProfile().getImageReference() + ", imageProfile=" + this.getImageProfile() + ", imageBackground=" + this.getImageBackground()
                 + ", phoneNumber=" + this.getPhoneNumber() + ", photos=" + this.getPhotos() + ", videos=" + this.getVideos() + ", friends=" + this.getFriends()
                 + ", createdMaterials=" + this.getCreatedMaterials() + ", comments=" + this.getComments() + ")";
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-        if (this.role == UserRole.USER) return List.of(new SimpleGrantedAuthority("ROLE_SELLER"));
-        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 }
