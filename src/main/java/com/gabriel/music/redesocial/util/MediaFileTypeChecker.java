@@ -25,7 +25,7 @@ public class MediaFileTypeChecker {
     private static boolean isVideo(MultipartFile file) throws FileNullContentException {
         String fileName = file.getOriginalFilename();
         if (file != null) {
-            return fileName.endsWith(".mp4") || fileName.endsWith(".mkv");
+            return fileName.endsWith(".mp4") || fileName.endsWith(".mkv") || fileName.endsWith(".mov");
         } else {
             throw new FileNullContentException();
         }
