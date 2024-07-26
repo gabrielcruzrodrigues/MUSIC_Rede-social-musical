@@ -1,0 +1,19 @@
+services:
+  postgres-db:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=music
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234 
+
+  spring-app:
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres-db
+    
