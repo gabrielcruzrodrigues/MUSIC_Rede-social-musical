@@ -1,5 +1,5 @@
 # rede_social_music(nome temporário)
-Uma rede social para amantes da música! com o intuito de compartilhar materiais de estudo e encontrar músicos e bandas.
+Sistema de rede social para amantes da música! com o intuito de compartilhar materiais de estudo e encontrar músicos e bandas.
 
 ## Recursos adicionados
 * Cadastro inicial para acessar o básico da plataforma.
@@ -9,7 +9,15 @@ Uma rede social para amantes da música! com o intuito de compartilhar materiais
 * upload de fotos e videos.
 * sistema de posts, com likes, comentários e compartilhamentos.
 * authenticação e autorização
-  
+# 🔹Como rodar o projeto
+1. Tenha o docker instalado na sua máquina;
+2. Clone o repositório na sua máquina;
+3. Acesse a pasta;
+4. Garanta que o docker esta rodando;
+5. Abra o git bash;
+6. Permita a execução do arquivo start.sh com o comando `chmod +x ./start.sh`;
+7. Rode o comando `./start.sh`;
+8. Acesse `http://localhost:9090` para acessar a interface do projeto;
 
 <br>
 (A documentação sera feita e disponibilizada em breve em breve)
