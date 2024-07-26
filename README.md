@@ -17,7 +17,7 @@ Sistema de rede social para amantes da música! com o intuito de compartilhar ma
 5. Abra o git bash;
 6. Permita a execução do arquivo start.sh com o comando `chmod +x ./start.sh`;
 7. Rode o comando `./start.sh`;
-8. Acesse `http://localhost:9090` para acessar a interface do projeto;
+8. Utilize `http://localhost:8080/endpoint` para acessar a api;
 
 <br>
 (A documentação sera feita e disponibilizada em breve em breve)
