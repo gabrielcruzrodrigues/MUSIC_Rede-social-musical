@@ -15,9 +15,10 @@ Sistema de rede social para amantes da música! com o intuito de compartilhar ma
 3. Acesse a pasta;
 4. Garanta que o docker esta rodando;
 5. Abra o git bash;
-6. Permita a execução do arquivo start.sh com o comando `chmod +x ./start.sh`;
-7. Rode o comando `./start.sh`;
-8. Utilize `http://localhost:8080/endpoint` para acessar a api;
+6. Rode o comando `mvn -N io.takari:maven:wrapper`;
+7. Permita a execução do arquivo start.sh com o comando `chmod +x ./start.sh`;
+8. Rode o comando `./start.sh`;
+9. Utilize `http://localhost:8080/endpoint` para acessar a api;
 
 <br>
 (A documentação sera feita e disponibilizada em breve em breve)
